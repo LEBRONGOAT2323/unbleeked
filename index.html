@@ -4,7 +4,9 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>UNBLEEKED</title>
+    <!-- Favicon link with ID for the Tab Cloaker -->
     <link id="favicon" rel="icon" type="image/x-icon" href="https://www.google.com">
+    
     <style>
         /* 1. ANIMATED BACKGROUND */
         body { 
@@ -16,9 +18,14 @@
             color: white; text-align: center; min-height: 100vh;
             overflow-x: hidden;
         }
-        @keyframes gradient { 0% { background-position: 0% 50%; } 50% { background-position: 100% 50%; } 100% { background-position: 0% 50%; } }
 
-        /* 2. CUSTOM CSS GEAR ICON (RESTORED) */
+        @keyframes gradient { 
+            0% { background-position: 0% 50%; } 
+            50% { background-position: 100% 50%; } 
+            100% { background-position: 0% 50%; } 
+        }
+
+        /* 2. MECHANICAL GEAR SETTINGS ICON */
         .settings-icon {
             position: fixed; top: 25px; right: 25px;
             width: 50px; height: 50px;
@@ -32,47 +39,65 @@
             box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
         }
         .settings-icon:hover { transform: scale(1.1); border-color: #007bff; box-shadow: 0 0 20px rgba(0, 123, 255, 0.5); }
-        
-        .gear-shape {
-            width: 24px; height: 24px;
-            background: #fff; border-radius: 50%;
-            position: relative; animation: gear-rotate 8s linear infinite; 
-        }
-        .gear-shape::before, .gear-shape::after {
-            content: ""; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);
-            width: 32px; height: 8px; background: #fff; border-radius: 2px;
-        }
+        .gear-shape { width: 24px; height: 24px; background: #fff; border-radius: 50%; position: relative; animation: gear-rotate 8s linear infinite; }
+        .gear-shape::before, .gear-shape::after { content: ""; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); width: 32px; height: 8px; background: #fff; border-radius: 2px; }
         .gear-shape::after { transform: translate(-50%, -50%) rotate(90deg); }
-        .gear-inner {
-            position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);
-            width: 10px; height: 10px; background: #1a1a2e; border-radius: 50%; z-index: 2;
-        }
+        .gear-inner { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); width: 10px; height: 10px; background: #1a1a2e; border-radius: 50%; z-index: 2; }
         .gear-teeth-extra { position: absolute; width: 100%; height: 100%; transform: rotate(45deg); }
-        .gear-teeth-extra::before, .gear-teeth-extra::after {
-            content: ""; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);
-            width: 32px; height: 8px; background: #fff; border-radius: 2px;
-        }
+        .gear-teeth-extra::before, .gear-teeth-extra::after { content: ""; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); width: 32px; height: 8px; background: #fff; border-radius: 2px; }
         .gear-teeth-extra::after { transform: translate(-50%, -50%) rotate(90deg); }
         @keyframes gear-rotate { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
 
-        /* 3. SETTINGS MENU */
-        #settings-menu { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0, 0, 0, 0.6); backdrop-filter: blur(20px); z-index: 2001; justify-content: center; align-items: center; }
-        .settings-content { background: rgba(255, 255, 255, 0.05); padding: 40px; border-radius: 40px; border: 1px solid rgba(255, 255, 255, 0.15); width: 380px; text-align: left; }
-        .cloak-option { display: flex; align-items: center; width: 100%; padding: 15px; margin: 12px 0; border: 1px solid rgba(255, 255, 255, 0.1); border-radius: 18px; background: rgba(255, 255, 255, 0.03); color: white; cursor: pointer; transition: 0.3s; }
-        .cloak-option:hover { background: rgba(0, 123, 255, 0.2); transform: translateX(10px); }
-        .cloak-option img { width: 24px; height: 24px; margin-right: 15px; }
+        /* 3. ENHANCED CLOAK MENU */
+        #settings-menu {
+            display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0, 0, 0, 0.6); backdrop-filter: blur(20px);
+            z-index: 2001; justify-content: center; align-items: center;
+        }
 
-        /* 4. GAME GRID & FALLBACKS */
+        .settings-content {
+            background: rgba(255, 255, 255, 0.05); padding: 40px; border-radius: 40px;
+            border: 1px solid rgba(255, 255, 255, 0.15); width: 380px; text-align: left;
+            box-shadow: 0 25px 50px rgba(0,0,0,0.5);
+        }
+
+        .settings-content h2 { margin: 0 0 10px 0; font-size: 28px; color: #007bff; }
+        
+        .cloak-option {
+            display: flex; align-items: center; width: 100%; padding: 15px; margin: 12px 0;
+            border: 1px solid rgba(255, 255, 255, 0.1); border-radius: 18px;
+            background: rgba(255, 255, 255, 0.03); color: white;
+            cursor: pointer; transition: 0.3s; font-size: 16px; font-weight: 500;
+        }
+        .cloak-option:hover { background: rgba(0, 123, 255, 0.2); border-color: #007bff; transform: translateX(10px); }
+        .cloak-option img { width: 24px; height: 24px; margin-right: 15px; border-radius: 4px; }
+
+        .close-settings { margin-top: 20px; width: 100%; padding: 15px; border-radius: 18px; border: none; background: #333; color: white; cursor: pointer; }
+
+        /* 4. CONTENT GRID & FALLBACKS */
         h1 { font-size: 85px; margin-top: 60px; letter-spacing: 10px; text-transform: uppercase; font-weight: 900; text-shadow: 0 0 10px rgba(0, 123, 255, 0.7); }
+        
         .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); gap: 30px; padding: 40px; max-width: 1200px; margin: 0 auto; }
-        .game-card { cursor: pointer; background: rgba(255, 255, 255, 0.05); backdrop-filter: blur(10px); border: 1px solid rgba(255, 255, 255, 0.1); border-radius: 20px; overflow: hidden; transition: 0.4s; box-shadow: 0 8px 32px rgba(0,0,0,0.8); position: relative; }
-        .img-container { width: 100%; height: 180px; background: linear-gradient(45deg, #1e1e2f, #2a2a40); display: flex; justify-content: center; align-items: center; position: relative; }
-        .img-container::after { content: "🎮"; font-size: 50px; opacity: 0.2; }
-        .game-card img { width: 100%; height: 100%; object-fit: cover; position: absolute; top: 0; left: 0; z-index: 2; }
-        .game-card:hover { transform: translateY(-10px); border-color: #007bff; box-shadow: 0 0 20px rgba(0,123,255,0.6); }
-        .game-card p { padding: 15px; margin: 0; font-weight: 600; background: rgba(0,0,0,0.3); }
+        
+        .game-card { 
+            cursor: pointer; background: rgba(255, 255, 255, 0.05); backdrop-filter: blur(10px); 
+            border: 1px solid rgba(255, 255, 255, 0.1); border-radius: 20px; 
+            overflow: hidden; transition: 0.4s; position: relative;
+        }
 
-        /* 5. OVERLAY */
+        .img-container { 
+            width: 100%; height: 180px; 
+            background: linear-gradient(45deg, #1e1e2f, #2a2a40); 
+            display: flex; justify-content: center; align-items: center; position: relative; 
+        }
+        .img-container::after { content: "🎮"; font-size: 50px; opacity: 0.2; }
+
+        .game-card img { width: 100%; height: 100%; object-fit: cover; position: absolute; top: 0; left: 0; z-index: 2; }
+        
+        .game-card:hover { transform: translateY(-10px); border-color: #007bff; box-shadow: 0 0 20px rgba(0,123,255,0.6); }
+        .game-card p { padding: 15px; margin: 0; font-weight: 600; background: rgba(0,0,0,0.3); position: relative; z-index: 3; }
+
+        /* 5. GAME IFRAME OVERLAY */
         #game-container { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: black; z-index: 3000; }
         iframe { width: 100%; height: 100%; border: none; }
         .close-btn { position: absolute; top: 20px; right: 30px; font-size: 50px; color: rgba(255,255,255,0.7); cursor: pointer; z-index: 3001; }
@@ -80,7 +105,7 @@
 </head>
 <body>
 
-    <!-- CSS GEAR ICON -->
+    <!-- ANIMATED GEAR -->
     <div class="settings-icon" onclick="toggleSettings()">
         <div class="gear-shape">
             <div class="gear-inner"></div>
@@ -91,26 +116,30 @@
     <!-- CLOAK MENU -->
     <div id="settings-menu" onclick="toggleSettings()">
         <div class="settings-content" onclick="event.stopPropagation()">
-            <h2 style="color:#007bff; margin-top:0;">Privacy Settings</h2>
-            <p style="font-size:14px; opacity:0.7;">Select a cloak to disguise this tab.</p>
+            <h2>Tab Cloak</h2>
+            <p style="opacity:0.7; margin-bottom: 20px;">Hide this tab from your history and tab bar.</p>
+            
             <button class="cloak-option" onclick="setCloak('Google Drive', 'https://ssl.gstatic.com')">
-                <img src="images/Google_Drive_icon.png" alt=""> Google Drive
+                <img src="images/Google_Drive_icon.png"> Google Drive
             </button>
             <button class="cloak-option" onclick="setCloak('Google Classroom', 'https://www.gstatic.com')">
-                <img src="images/GoogleClassromIcon.png" alt=""> Google Classroom
+                <img src="images/GoogleClassromIcon.png"> Google Classroom
             </button>
             <button class="cloak-option" onclick="setCloak('Desmos | Graphing Calculator', 'https://www.desmos.com')">
-                <img src="images/DesmosIcon.png" alt=""> Desmos
+                <img src="images/DesmosIcon.png"> Desmos
             </button>
             <button class="cloak-option" onclick="setCloak('UNBLEEKED', 'https://www.google.com')">
-                Reset to Default
+                <img src="https://www.google.com"> Reset to Default
             </button>
+
+            <button class="close-settings" onclick="toggleSettings()">Save & Close</button>
         </div>
     </div>
 
     <h1>UNBLEEKED</h1>
     
     <div class="grid">
+        <!-- Subway Surfers -->
         <div class="game-card" onclick="play('https://bi6zone.vercel.app/g/subwaysurfers/original.html')">
             <div class="img-container">
                 <img src="images/SubwaySurfersLogoRemastered.jpg" alt="Subway Surfers" onerror="this.style.display='none'">
@@ -118,6 +147,7 @@
             <p>Subway Surfers</p>
         </div>
 
+        <!-- Minecraft -->
         <div class="game-card" onclick="play('https://bi6zone.vercel.app/g/minecraft.html')">
             <div class="img-container">
                 <img src="images/MinecraftLogo.jpg" alt="Minecraft" onerror="this.style.display='none'">
@@ -125,48 +155,61 @@
             <p>Minecraft</p>
         </div>
 
-        <div class="game-card" onclick="alert('More Coming Soon!')">
+        <!-- Placeholder for broken links -->
+        <div class="game-card" onclick="alert('Coming soon!')">
             <div class="img-container">
-                <img src="images/missing.jpg" alt="Upcoming" onerror="this.style.display='none'">
+                <img src="images/MissingImage.jpg" alt="Future Game" onerror="this.style.display='none'">
             </div>
             <p>Coming Soon</p>
         </div>
     </div>
 
+    <!-- GAME VIEWPORT -->
     <div id="game-container">
         <span class="close-btn" onclick="closeGame()">&times;</span>
         <iframe id="game-iframe"></iframe>
     </div>
 
     <script>
+        // Toggle the Settings Menu
         function toggleSettings() {
             const menu = document.getElementById('settings-menu');
             menu.style.display = (menu.style.display === 'flex') ? 'none' : 'flex';
         }
 
+        // Apply Cloak (Title + Icon)
         function setCloak(title, iconUrl) {
             document.title = title;
-            let link = document.querySelector("link[rel*='icon']");
-            if (!link) { link = document.createElement('link'); link.rel = 'icon'; document.head.appendChild(link); }
-            link.href = iconUrl;
-            localStorage.setItem('cloakTitle', title); localStorage.setItem('cloakIcon', iconUrl);
+            const favicon = document.getElementById('favicon');
+            favicon.href = iconUrl;
+            
+            // Save to browser memory
+            localStorage.setItem('cloakTitle', title);
+            localStorage.setItem('cloakIcon', iconUrl);
         }
 
+        // Auto-load Cloak on Start
         window.onload = function() {
             const savedTitle = localStorage.getItem('cloakTitle');
             const savedIcon = localStorage.getItem('cloakIcon');
             if (savedTitle && savedIcon) setCloak(savedTitle, savedIcon);
         };
 
+        // Open Game
         function play(url) {
-            document.getElementById('game-iframe').src = url;
-            document.getElementById('game-container').style.display = 'block';
+            const container = document.getElementById('game-container');
+            const iframe = document.getElementById('game-iframe');
+            iframe.src = url;
+            container.style.display = 'block';
             document.body.style.overflow = 'hidden';
         }
 
+        // Close Game
         function closeGame() {
-            document.getElementById('game-container').style.display = 'none';
-            document.getElementById('game-iframe').src = '';
+            const container = document.getElementById('game-container');
+            const iframe = document.getElementById('game-iframe');
+            container.style.display = 'none';
+            iframe.src = '';
             document.body.style.overflow = 'auto';
         }
     </script>
