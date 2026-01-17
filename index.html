@@ -1,8 +1,46 @@
-<html>
-
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GPortal - Unblocked</title>
+    <style>
+        body { font-family: sans-serif; background: #111; color: white; text-align: center; }
+        .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 20px; padding: 20px; }
+        .game-card { cursor: pointer; border: 2px solid #333; border-radius: 10px; overflow: hidden; transition: 0.3s; }
+        .game-card:hover { transform: scale(1.05); border-color: #007bff; }
+        .game-card img { width: 100%; height: 150px; object-fit: cover; }
+        /* Fullscreen Game Overlay */
+        #game-container { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: black; z-index: 1000; }
+        iframe { width: 100%; height: 100%; border: none; }
+        .close-btn { position: absolute; top: 10px; right: 20px; font-size: 30px; color: white; cursor: pointer; z-index: 1001; }
+    </style>
+</head>
 <body>
-  <h1>UNBLEEKED</h1>
-  <p>Welcome to UNBLEEKED</p>
-</body>
+    <h1>Play Unblocked</h1>
+    <div class="grid">
+        <!-- Game Item 1 -->
+        <div class="game-card" onclick="play('https://example-game.com')">
+            <img src="https://via.placeholder.com" alt="Game 1">
+            <p>Example Game 1</p>
+        </div>
+        <!-- Add more cards here -->
+    </div>
 
+    <div id="game-container">
+        <span class="close-btn" onclick="closeGame()">&times;</span>
+        <iframe id="game-iframe"></iframe>
+    </div>
+
+    <script>
+        function play(url) {
+            document.getElementById('game-iframe').src = url;
+            document.getElementById('game-container').style.display = 'block';
+        }
+        function closeGame() {
+            document.getElementById('game-container').style.display = 'none';
+            document.getElementById('game-iframe').src = '';
+        }
+    </script>
+</body>
 </html>
