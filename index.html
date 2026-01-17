@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>UNBLEEKED</title>
-    <!-- The ID "favicon" allows the script to swap the icon instantly -->
+    <!-- Default favicon -->
     <link id="favicon" rel="icon" type="image/x-icon" href="https://www.google.com">
     
     <style>
@@ -108,7 +108,7 @@
     <div id="settings-menu" onclick="toggleSettings()">
         <div class="settings-content" onclick="event.stopPropagation()">
             <h2>Tab Cloak</h2>
-            <p style="opacity:0.7; margin-bottom: 20px;">Disguise this tab in your browser bar.</p>
+            <p style="opacity:0.7; margin-bottom: 20px;">Hide this tab in your browser bar.</p>
             
             <button class="cloak-option" onclick="setCloak('Google Drive', 'https://ssl.gstatic.com')">
                 <img src="images/Google_Drive_icon.png"> Google Drive
@@ -177,47 +177,59 @@
         }
 
         /**
-         * UPDATED: Changes both the Title AND the Favicon Link
+         * FORCED FAVICON REPLACEMENT (2026 METHOD)
+         * Deletes the old icon and forces a fresh load to bypass browser cache.
          */
         function setCloak(title, iconUrl) {
-            // 1. Change the tab title
+            // 1. Update the document title
             document.title = title;
+
+            // 2. Remove all existing favicon tags
+            const existingIcons = document.querySelectorAll('link[rel*="icon"]');
+            existingIcons.forEach(icon => icon.remove());
+
+            // 3. Create a brand new link element
+            const newIcon = document.createElement('link');
+            newIcon.id = 'favicon';
+            newIcon.rel = 'icon';
+            newIcon.type = 'image/x-icon';
             
-            // 2. Change the favicon image
-            const favicon = document.getElementById('favicon');
-            favicon.href = iconUrl;
+            // 4. Cache-busting URL (Forces browser to see it as a new file)
+            newIcon.href = iconUrl + '?v=' + new Date().getTime(); 
             
-            // 3. Save to localStorage so it stays disguised on refresh
+            // 5. Inject into head
+            document.getElementsByTagName('head')[0].appendChild(newIcon);
+
+            // 6. Save to browser storage
             localStorage.setItem('cloakTitle', title);
             localStorage.setItem('cloakIcon', iconUrl);
         }
 
-        // Auto-load saved Cloak when page opens
+        // Auto-load saved Cloak on every page load
         window.onload = function() {
             const savedTitle = localStorage.getItem('cloakTitle');
             const savedIcon = localStorage.getItem('cloakIcon');
             if (savedTitle && savedIcon) {
-                document.title = savedTitle;
-                document.getElementById('favicon').href = savedIcon;
+                setCloak(savedTitle, savedIcon);
             }
         };
 
-        // Open Game Logic
+        // Open Game
         function play(url) {
             const container = document.getElementById('game-container');
             const iframe = document.getElementById('game-iframe');
             iframe.src = url;
             container.style.display = 'block';
-            document.body.style.overflow = 'hidden';
+            document.body.style.overflow = 'hidden'; 
         }
 
-        // Close Game Logic
+        // Close Game
         function closeGame() {
             const container = document.getElementById('game-container');
             const iframe = document.getElementById('game-iframe');
             container.style.display = 'none';
             iframe.src = ''; 
-            document.body.style.overflow = 'auto';
+            document.body.style.overflow = 'auto'; 
         }
     </script>
 </body>
