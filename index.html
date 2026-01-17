@@ -4,10 +4,10 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>UNBLEEKED</title>
+    <link id="favicon" rel="icon" type="image/x-icon" href="https://www.google.com">
     <style>
-        /* Animated Gradient Background */
         body { 
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; 
+            font-family: 'Segoe UI', system-ui, -apple-system, sans-serif; 
             margin: 0;
             padding: 0;
             background: linear-gradient(-45deg, #0f0c29, #302b63, #24243e, #111);
@@ -23,91 +23,150 @@
             50% { background-position: 100% 50%; }
             100% { background-position: 0% 50%; }
         }
-        
-        h1 { 
-            font-size: 85px; 
-            margin-top: 60px;
-            letter-spacing: 10px;
-            text-transform: uppercase;
-            font-weight: 900;
-            text-shadow: 0 0 10px rgba(0, 123, 255, 0.7), 0 0 20px rgba(0, 123, 255, 0.5);
+
+        /* MODERN SETTINGS GEAR ICON */
+        .settings-icon {
+            position: fixed;
+            top: 25px;
+            right: 25px;
+            width: 50px;
+            height: 50px;
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 14px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            cursor: pointer;
+            z-index: 2000;
+            transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+        }
+        .settings-icon:hover { transform: scale(1.1); border-color: #007bff; box-shadow: 0 0 20px rgba(0, 123, 255, 0.5); }
+        .gear-shape { width: 24px; height: 24px; background: #fff; border-radius: 50%; position: relative; animation: gear-rotate 8s linear infinite; }
+        .gear-shape::before, .gear-shape::after { content: ""; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); width: 32px; height: 8px; background: #fff; border-radius: 2px; }
+        .gear-shape::after { transform: translate(-50%, -50%) rotate(90deg); }
+        .gear-inner { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); width: 10px; height: 10px; background: #1a1a2e; border-radius: 50%; z-index: 2; }
+        .gear-teeth-extra { position: absolute; width: 100%; height: 100%; transform: rotate(45deg); }
+        .gear-teeth-extra::before, .gear-teeth-extra::after { content: ""; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); width: 32px; height: 8px; background: #fff; border-radius: 2px; }
+        .gear-teeth-extra::after { transform: translate(-50%, -50%) rotate(90deg); }
+        @keyframes gear-rotate { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
+
+        /* ENHANCED SETTINGS MENU */
+        #settings-menu {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.6);
+            backdrop-filter: blur(20px);
+            z-index: 2001;
+            justify-content: center;
+            align-items: center;
+            animation: fadeIn 0.3s ease;
         }
 
-        .grid { 
-            display: grid; 
-            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); 
-            gap: 30px; 
-            padding: 40px; 
-            max-width: 1200px;
-            margin: 0 auto;
+        .settings-content {
+            background: rgba(255, 255, 255, 0.05);
+            padding: 40px;
+            border-radius: 40px;
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            width: 380px;
+            box-shadow: 0 25px 50px rgba(0,0,0,0.5);
+            text-align: left;
         }
-        
-        .game-card { 
-            cursor: pointer; 
-            background: rgba(255, 255, 255, 0.05); 
-            backdrop-filter: blur(10px); 
-            -webkit-backdrop-filter: blur(10px);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            border-radius: 20px; 
-            overflow: hidden; 
-            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); 
-            box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.8);
-        }
-        
-        .game-card:hover { 
-            transform: translateY(-10px) scale(1.02); 
-            border-color: #007bff; 
-            box-shadow: 0 0 20px rgba(0, 123, 255, 0.6);
-            background: rgba(255, 255, 255, 0.1);
-        }
-        
-        .game-card img { 
-            width: 100%; 
-            height: 180px; 
-            display: block;
-            object-fit: cover; 
-            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-        }
-        
-        .game-card p {
+
+        .settings-content h2 { margin: 0 0 10px 0; font-size: 28px; letter-spacing: 1px; color: #007bff; }
+        .settings-content p { margin: 0 0 25px 0; opacity: 0.7; font-size: 14px; }
+
+        .cloak-option {
+            display: flex;
+            align-items: center;
+            width: 100%;
             padding: 15px;
-            margin: 0;
-            font-size: 1.1rem;
-            font-weight: 600;
-            letter-spacing: 1px;
+            margin: 12px 0;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 18px;
+            background: rgba(255, 255, 255, 0.03);
+            color: white;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-size: 16px;
+            font-weight: 500;
         }
-        
-        #game-container { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: black; z-index: 1000; }
-        iframe { width: 100%; height: 100%; border: none; }
-        .close-btn { 
-            position: absolute; 
-            top: 20px; 
-            right: 30px; 
-            font-size: 50px; 
-            color: rgba(255,255,255,0.7); 
-            cursor: pointer; 
-            z-index: 1001; 
+        .cloak-option:hover { background: rgba(0, 123, 255, 0.2); border-color: #007bff; transform: translateX(10px); }
+        .cloak-option img { width: 24px; height: 24px; margin-right: 15px; }
+
+        .close-settings {
+            margin-top: 20px;
+            width: 100%;
+            padding: 15px;
+            border-radius: 18px;
+            border: none;
+            background: #333;
+            color: white;
+            font-weight: bold;
+            cursor: pointer;
             transition: 0.3s;
         }
-        .close-btn:hover { color: white; transform: rotate(90deg); }
+        .close-settings:hover { background: #444; }
+
+        @keyframes fadeIn { from { opacity: 0; transform: scale(0.9); } to { opacity: 1; transform: scale(1); } }
+
+        /* CONTENT GRID */
+        h1 { font-size: 85px; margin-top: 60px; letter-spacing: 10px; text-transform: uppercase; font-weight: 900; text-shadow: 0 0 10px rgba(0, 123, 255, 0.7); }
+        .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); gap: 30px; padding: 40px; max-width: 1200px; margin: 0 auto; }
+        .game-card { cursor: pointer; background: rgba(255, 255, 255, 0.05); backdrop-filter: blur(10px); border: 1px solid rgba(255, 255, 255, 0.1); border-radius: 20px; overflow: hidden; transition: 0.4s; box-shadow: 0 8px 32px rgba(0,0,0,0.8); }
+        .game-card:hover { transform: translateY(-10px); border-color: #007bff; box-shadow: 0 0 20px rgba(0,123,255,0.6); }
+        .game-card img { width: 100%; height: 180px; object-fit: cover; }
+        .game-card p { padding: 15px; margin: 0; font-weight: 600; }
+        #game-container { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: black; z-index: 1000; }
+        iframe { width: 100%; height: 100%; border: none; }
+        .close-btn { position: absolute; top: 20px; right: 30px; font-size: 50px; color: rgba(255,255,255,0.7); cursor: pointer; z-index: 1001; }
     </style>
 </head>
 <body>
 
+    <div class="settings-icon" onclick="toggleSettings()">
+        <div class="gear-shape"><div class="gear-inner"></div><div class="gear-teeth-extra"></div></div>
+    </div>
+
+    <div id="settings-menu" onclick="toggleSettings()">
+        <div class="settings-content" onclick="event.stopPropagation()">
+            <h2>Privacy Settings</h2>
+            <p>Select a cloak to hide this tab in your browser history and tab bar.</p>
+            
+            <button class="cloak-option" onclick="setCloak('Google Drive', 'https://ssl.gstatic.com')">
+                <img src="https://ssl.gstatic.com" alt=""> Google Drive
+            </button>
+            <button class="cloak-option" onclick="setCloak('Google Classroom', 'https://www.gstatic.com')">
+                <img src="https://www.gstatic.com" alt=""> Google Classroom
+            </button>
+            <button class="cloak-option" onclick="setCloak('Desmos | Graphing Calculator', 'https://www.desmos.com')">
+                <img src="https://www.desmos.com" alt=""> Desmos
+            </button>
+            <button class="cloak-option" onclick="setCloak('UNBLEEKED', 'https://www.google.com')">
+                <img src="https://www.google.com" alt=""> Reset to Default
+            </button>
+
+            <button class="close-settings" onclick="toggleSettings()">Save & Close</button>
+        </div>
+    </div>
+
     <h1>UNBLEEKED</h1>
     
     <div class="grid">
-      
         <div class="game-card" onclick="play('https://bi6zone.vercel.app/g/subwaysurfers/original.html')">
             <img src="images/SubwaySurfersLogoRemastered.jpg" alt="Subway Surfers">
             <p>Subway Surfers</p>
         </div>
-
         <div class="game-card" onclick="play('https://bi6zone.vercel.app/g/minecraft.html')">
             <img src="images/MinecraftLogo.jpg" alt="Minecraft">
             <p>Minecraft</p>
         </div>
-
         <div class="game-card" onclick="alert('More Games Coming Soon!')">
             <img src="images/ImageFileName.jpg" alt="More Games">
             <p>Coming Soon</p>
@@ -120,21 +179,41 @@
     </div>
 
     <script>
+        function toggleSettings() {
+            const menu = document.getElementById('settings-menu');
+            menu.style.display = (menu.style.display === 'flex') ? 'none' : 'flex';
+        }
+
+        function setCloak(title, iconUrl) {
+            document.title = title;
+            let link = document.querySelector("link[rel*='icon']");
+            if (!link) {
+                link = document.createElement('link');
+                link.rel = 'icon';
+                document.head.appendChild(link);
+            }
+            link.href = iconUrl;
+            localStorage.setItem('cloakTitle', title);
+            localStorage.setItem('cloakIcon', iconUrl);
+        }
+
+        window.onload = function() {
+            const savedTitle = localStorage.getItem('cloakTitle');
+            const savedIcon = localStorage.getItem('cloakIcon');
+            if (savedTitle && savedIcon) setCloak(savedTitle, savedIcon);
+        };
+
         function play(url) {
-            const container = document.getElementById('game-container');
-            const iframe = document.getElementById('game-iframe');
-            iframe.src = url;
-            container.style.display = 'block';
+            document.getElementById('game-iframe').src = url;
+            document.getElementById('game-container').style.display = 'block';
             document.body.style.overflow = 'hidden';
         }
+
         function closeGame() {
-            const container = document.getElementById('game-container');
-            const iframe = document.getElementById('game-iframe');
-            container.style.display = 'none';
-            iframe.src = '';
+            document.getElementById('game-container').style.display = 'none';
+            document.getElementById('game-iframe').src = '';
             document.body.style.overflow = 'auto';
         }
     </script>
 </body>
 </html>
-
