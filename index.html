@@ -92,6 +92,31 @@
         #game-container { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: black; z-index: 3000; }
         iframe { width: 100%; height: 100%; border: none; }
         .close-btn { position: absolute; top: 20px; right: 30px; font-size: 50px; color: rgba(255,255,255,0.7); cursor: pointer; z-index: 3001; }
+    
+        /* PANIC KEY & URL INPUT POLISH */
+#panic-key-input,
+#panic-url-input {
+    width: 100%;
+    padding: 12px 15px;
+    margin-top: 5px;
+    margin-bottom: 15px;
+    border-radius: 12px;           /* curved edges */
+    border: 1px solid rgba(255,255,255,0.3);
+    background: rgba(255,255,255,0.05);
+    color: white;
+    font-size: 16px;
+    font-weight: 500;
+    outline: none;
+    transition: 0.3s;
+}
+
+#panic-key-input:focus,
+#panic-url-input:focus {
+    border-color: #007bff;
+    background: rgba(0,123,255,0.1);
+    box-shadow: 0 0 8px rgba(0,123,255,0.4);
+}
+
     </style>
 </head>
 <body>
@@ -123,7 +148,6 @@
                 <img src="https://www.google.com/favicon.ico"> Reset to Default
             </button>
 
-            <button class="close-settings" onclick="toggleSettings()">Save & Close</button>
             
         <hr style="opacity:0.2; margin:20px 0;">
 
