@@ -1,16 +1,16 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
     <title>UNBLEEKED</title>
     <!-- Default favicon -->
     <link id="favicon" rel="icon" type="image/x-icon" href="https://www.google.com">
-    
+
     <style>
         /* 1. ANIMATED BACKGROUND */
-        body { 
-            font-family: 'Segoe UI', system-ui, -apple-system, sans-serif; 
+        body {
+            font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
             margin: 0; padding: 0;
             background: linear-gradient(-45deg, #0f0c29, #302b63, #24243e, #111);
             background-size: 400% 400%;
@@ -19,10 +19,10 @@
             overflow-x: hidden;
         }
 
-        @keyframes gradient { 
-            0% { background-position: 0% 50%; } 
-            50% { background-position: 100% 50%; } 
-            100% { background-position: 0% 50%; } 
+        @keyframes gradient {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
         }
 
         /* 2. MECHANICAL GEAR SETTINGS ICON */
@@ -58,6 +58,11 @@
             background: rgba(255, 255, 255, 0.05); padding: 40px; border-radius: 40px;
             border: 1px solid rgba(255, 255, 255, 0.15); width: 380px; text-align: left;
             box-shadow: 0 25px 50px rgba(0,0,0,0.5);
+
+            /* Make settings content scrollable when tall */
+            max-height: calc(100vh - 80px);
+            overflow-y: auto;
+            -webkit-overflow-scrolling: touch;
         }
         .settings-content h2 { margin: 0 0 10px 0; font-size: 28px; color: #007bff; }
         .cloak-option {
@@ -70,18 +75,45 @@
         .cloak-option img { width: 24px; height: 24px; margin-right: 15px; border-radius: 4px; }
         .close-settings { margin-top: 20px; width: 100%; padding: 15px; border-radius: 18px; border: none; background: #333; color: white; cursor: pointer; }
 
+        /* Scrollbar polish for settings-content */
+        .settings-content::-webkit-scrollbar { width: 10px; }
+        .settings-content::-webkit-scrollbar-track { background: transparent; }
+        .settings-content::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.08); border-radius: 8px; border: 2px solid transparent; background-clip: padding-box; }
+        .settings-content::-webkit-scrollbar-thumb:hover { background: rgba(255,255,255,0.12); }
+
+        /* Admin modal and controls */
+        #admin-modal {
+            display: none; position: fixed; z-index: 4000; left: 0; top: 0; width: 100%; height: 100%;
+            background: rgba(0,0,0,0.6); backdrop-filter: blur(6px);
+            justify-content: center; align-items: center;
+        }
+        .admin-box {
+            width: 360px; background: rgba(10,10,20,0.95); padding: 20px; border-radius: 14px; color: white;
+            border: 1px solid rgba(255,255,255,0.06); box-shadow: 0 10px 30px rgba(0,0,0,0.6);
+        }
+        .admin-box h3 { margin-top: 0; color: #ffd166; }
+        .admin-input { width: 100%; padding: 12px; margin-top: 10px; border-radius: 10px; border: 1px solid rgba(255,255,255,0.14); background: rgba(255,255,255,0.02); color: white; }
+        .admin-actions { display:flex; gap:10px; margin-top: 12px; justify-content:flex-end; }
+        .btn { padding: 10px 14px; border-radius: 10px; border: none; cursor: pointer; font-weight: 600; }
+        .btn-primary { background: #007bff; color: white; }
+        .btn-ghost { background: rgba(255,255,255,0.04); color: white; border: 1px solid rgba(255,255,255,0.06); }
+
+        #admin-controls { display: none; margin-top: 18px; padding: 12px; border-radius: 12px; background: rgba(255,255,255,0.02); border: 1px solid rgba(255,255,255,0.04); }
+        #admin-controls h4 { margin: 6px 0 12px 0; color: #ffd166; }
+        .admin-btn { display:block; width:100%; text-align:left; padding:10px; margin:8px 0; border-radius:10px; background: rgba(0,0,0,0.35); border:1px solid rgba(255,255,255,0.04); color:white; cursor:pointer; }
+
         /* 4. CONTENT GRID */
         h1 { font-size: 85px; margin: 60px 0 20px 0; letter-spacing: 10px; text-transform: uppercase; font-weight: 900; text-shadow: 0 0 10px rgba(0, 123, 255, 0.7); }
         .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); gap: 30px; padding: 40px; max-width: 1200px; margin: 0 auto; }
-        .game-card { 
-            cursor: pointer; background: rgba(255, 255, 255, 0.05); backdrop-filter: blur(10px); 
-            border: 1px solid rgba(255, 255, 255, 0.1); border-radius: 20px; 
+        .game-card {
+            cursor: pointer; background: rgba(255, 255, 255, 0.05); backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1); border-radius: 20px;
             overflow: hidden; transition: 0.4s; position: relative;
         }
-        .img-container { 
-            width: 100%; height: 180px; 
-            background: linear-gradient(45deg, #1e1e2f, #2a2a40); 
-            display: flex; justify-content: center; align-items: center; position: relative; 
+        .img-container {
+            width: 100%; height: 180px;
+            background: linear-gradient(45deg, #1e1e2f, #2a2a40);
+            display: flex; justify-content: center; align-items: center; position: relative;
         }
         .img-container::after { content: "🎮"; font-size: 50px; opacity: 0.2; }
         .game-card img { width: 100%; height: 100%; object-fit: cover; position: absolute; top: 0; left: 0; z-index: 2; }
@@ -92,31 +124,30 @@
         #game-container { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: black; z-index: 3000; }
         iframe { width: 100%; height: 100%; border: none; }
         .close-btn { position: absolute; top: 20px; right: 30px; font-size: 50px; color: rgba(255,255,255,0.7); cursor: pointer; z-index: 3001; }
-    
+
         /* PANIC KEY & URL INPUT POLISH */
-#panic-key-input,
-#panic-url-input {
-    width: 100%;
-    padding: 12px 15px;
-    margin-top: 5px;
-    margin-bottom: 15px;
-    border-radius: 12px;           /* curved edges */
-    border: 1px solid rgba(255,255,255,0.3);
-    background: rgba(255,255,255,0.05);
-    color: white;
-    font-size: 16px;
-    font-weight: 500;
-    outline: none;
-    transition: 0.3s;
-}
+        #panic-key-input,
+        #panic-url-input {
+            width: 100%;
+            padding: 12px 15px;
+            margin-top: 5px;
+            margin-bottom: 15px;
+            border-radius: 12px;
+            border: 1px solid rgba(255,255,255,0.3);
+            background: rgba(255,255,255,0.05);
+            color: white;
+            font-size: 16px;
+            font-weight: 500;
+            outline: none;
+            transition: 0.3s;
+        }
 
-#panic-key-input:focus,
-#panic-url-input:focus {
-    border-color: #007bff;
-    background: rgba(0,123,255,0.1);
-    box-shadow: 0 0 8px rgba(0,123,255,0.4);
-}
-
+        #panic-key-input:focus,
+        #panic-url-input:focus {
+            border-color: #007bff;
+            background: rgba(0,123,255,0.1);
+            box-shadow: 0 0 8px rgba(0,123,255,0.4);
+        }
     </style>
 </head>
 <body>
@@ -132,46 +163,75 @@
     <!-- CLOAK MENU -->
     <div id="settings-menu" onclick="toggleSettings()">
         <div class="settings-content" onclick="event.stopPropagation()">
+            
+             <!-- ADMIN LOGIN BUTTON -->
+            <button class="cloak-option" onclick="openAdminLogin()">
+                <img src="images/Lock.png" alt="admin"> Admin Login
+            </button>
+
+            <hr style="opacity:0.2; margin:20px 0;">
+            
             <h2>Tab Cloak</h2>
             <p style="opacity:0.7; margin-bottom: 20px;">Hide this tab in your browser bar.</p>
-            
+
             <button class="cloak-option" onclick="setCloak('Google Drive', 'https://drive.google.com/favicon.ico')">
-                <img src="images/Google_Drive_icon.png"> Google Drive
+                <img src="images/Google_Drive_icon.png" alt=""> Google Drive
             </button>
             <button class="cloak-option" onclick="setCloak('Google Classroom', 'https://edu.google.com/images/svg/gsuite-icons/classroom.svg')">
-                <img src="https://edu.google.com/images/svg/gsuite-icons/classroom.svg"> Google Classroom
+                <img src="https://edu.google.com/images/svg/gsuite-icons/classroom.svg" alt=""> Google Classroom
             </button>
             <button class="cloak-option" onclick="setCloak('Desmos | Graphing Calculator', 'https://www.desmos.com/favicon.ico')">
-                <img src="images/DesmosIcon.png"> Desmos
+                <img src="images/DesmosIcon.png" alt=""> Desmos
             </button>
             <button class="cloak-option" onclick="setCloak('ELANCO Gateway', 'https://resources.finalsite.net/images/f_auto,q_auto,t_image_size_1/v1627325122/elancok12paus/wwvhvbwalfumgihhoafl/ELANCO-Logo-286c.png')">
-                <img src="images/ELANCO.png"> ELANCO Gateway
+                <img src="images/ELANCO.png" alt=""> ELANCO Gateway
             </button>
             <button class="cloak-option" onclick="setCloak('UNBLEEKED', 'https://www.google.com/favicon.ico')">
-                <img src="https://www.google.com/favicon.ico"> Reset to Default
+                <img src="https://www.google.com/favicon.ico" alt=""> Reset to Default
             </button>
 
             
-        <hr style="opacity:0.2; margin:20px 0;">
 
-        <!-- 🔴 PANIC KEY SETTINGS -->
-        <h3>Panic Key</h3>
+            <hr style="opacity:0.2; margin:20px 0;">
 
-        <label>Key (single character)</label>
-        <input id="panic-key-input" maxlength="1" placeholder="`">
+            <!-- 🔴 PANIC KEY SETTINGS -->
+            <h3>Panic Key</h3>
 
-        <label style="margin-top:10px;">Redirect URL</label>
-        <input id="panic-url-input" placeholder="https://drive.google.com">
+            <label>Key (single character)</label>
+            <input id="panic-key-input" maxlength="1" placeholder="`">
 
-        <button class="cloak-option" onclick="toggleSettings()">Save & Close</button>
+            <label style="margin-top:10px;">Redirect URL</label>
+            <input id="panic-url-input" placeholder="https://drive.google.com">
+
+            <button class="cloak-option" onclick="toggleSettings()">Save & Close</button>
+
+            <!-- ADMIN CONTROLS (hidden until admin) -->
+            <div id="admin-controls" aria-hidden="true">
+                <h4>Admin Controls</h4>
+                <button class="admin-btn" onclick="adminAddGame()">➕ Add Game</button>
+                <button class="admin-btn" onclick="adminRemoveLastGame()">🗑️ Remove Last Game</button>
+                <button class="admin-btn" onclick="revokeAdmin()">🔒 Revoke Admin</button>
+            </div>
+        </div>
     </div>
-</div>
-    
-    
+
+    <!-- ADMIN PASSWORD MODAL -->
+    <div id="admin-modal" onclick="closeAdminModal()">
+        <div class="admin-box" onclick="event.stopPropagation()">
+            <h3>Admin Login</h3>
+            <p style="opacity:0.8; margin-top:6px;">Enter admin password to unlock controls.</p>
+            <input id="admin-password" class="admin-input" type="password" placeholder="Password">
+            <div class="admin-actions">
+                <button class="btn btn-ghost" onclick="closeAdminModal()">Cancel</button>
+                <button class="btn btn-primary" onclick="verifyAdminPassword()">Unlock</button>
+            </div>
+            <p id="admin-error" style="color:#ff6b6b; opacity:0.9; margin-top:10px; display:none;">Incorrect password.</p>
+        </div>
+    </div>
 
     <h1>UNBLEEKED</h1>
-    
-    <div class="grid">
+
+    <div class="grid" id="game-grid">
         <!-- Subway Surfers -->
         <div class="game-card" onclick="play('https://bi6zone.vercel.app/g/subwaysurfers/original.html')">
             <div class="img-container">
@@ -243,7 +303,7 @@
             </div>
             <p>Fruit Ninja</p>
         </div>
-        
+
         <!-- Placeholder -->
         <div class="game-card" onclick="alert('Coming soon!')">
             <div class="img-container">
@@ -260,99 +320,231 @@
     </div>
 
     <script>
-        // Toggle Settings Menu
-        function toggleSettings() {
-            const menu = document.getElementById('settings-menu');
-            menu.style.display = (menu.style.display === 'flex') ? 'none' : 'flex';
+        /* =========================
+           GLOBAL UI FUNCTIONS
+           ========================= */
+
+        // Silent revoke used when closing the settings menu so admin controls are removed
+        function revokeAdminLocal() {
+            try {
+                localStorage.removeItem('isAdmin');
+            } catch (e) {}
+            showAdminControls(false);
         }
 
-        /**
-         * FORCED FAVICON REPLACEMENT (2026 METHOD)
-         * Deletes the old icon and forces a fresh load to bypass browser cache.
-         */
-        function setCloak(title, iconUrl) {
-            // 1. Update the document title
-            document.title = title;
+        function toggleSettings() {
+            const menu = document.getElementById('settings-menu');
+            // Use computed style to reliably detect visibility
+            const isOpen = window.getComputedStyle(menu).display === 'flex';
+            if (isOpen) {
+                menu.style.display = 'none';
+                // When leaving settings, remove admin controls so re-entering requires login
+                revokeAdminLocal();
+            } else {
+                menu.style.display = 'flex';
+            }
+        }
 
-            // 2. Remove all existing favicon tags
+        function setCloak(title, iconUrl) {
+            document.title = title;
             const existingIcons = document.querySelectorAll('link[rel*="icon"]');
             existingIcons.forEach(icon => icon.remove());
 
-            // 3. Create a brand new link element
             const newIcon = document.createElement('link');
             newIcon.id = 'favicon';
             newIcon.rel = 'icon';
             newIcon.type = 'image/x-icon';
-            
-            // 4. Cache-busting URL (Forces browser to see it as a new file)
-            newIcon.href = iconUrl + '?v=' + new Date().getTime(); 
-            
-            // 5. Inject into head
+            newIcon.href = iconUrl + '?v=' + new Date().getTime();
             document.getElementsByTagName('head')[0].appendChild(newIcon);
 
-            // 6. Save to browser storage
             localStorage.setItem('cloakTitle', title);
             localStorage.setItem('cloakIcon', iconUrl);
         }
 
-/* =========================
-       PANIC KEY LOGIC (FIXED)
-    ========================= */
-
-    // 🔹 SAVE panic key
-    document.getElementById("panic-key-input").addEventListener("input", e => {
-        localStorage.setItem("panicKey", e.target.value.toLowerCase());
-    });
-
-    // 🔹 SAVE panic URL
-    document.getElementById("panic-url-input").addEventListener("change", e => {
-        localStorage.setItem("panicURL", e.target.value);
-    });
-
-    // 🔹 TRIGGER panic
-    document.addEventListener("keydown", e => {
-        const panicKey = localStorage.getItem("panicKey");
-        const panicURL = localStorage.getItem("panicURL");
-
-        if (!panicKey || !panicURL) return;
-
-        if (e.key.toLowerCase() === panicKey) {
-            localStorage.setItem("panicReturn", location.href);
-            location.replace(panicURL);
-        }
-    });
-
-    // 🔹 LOAD saved values
-    window.onload = function() {
-        const savedTitle = localStorage.getItem('cloakTitle');
-        const savedIcon = localStorage.getItem('cloakIcon');
-        if (savedTitle && savedIcon) {
-            setCloak(savedTitle, savedIcon);
+        function play(url) {
+            const container = document.getElementById('game-container');
+            const iframe = document.getElementById('game-iframe');
+            iframe.src = url;
+            container.style.display = 'block';
+            document.body.style.overflow = 'hidden';
         }
 
-        const pk = localStorage.getItem("panicKey");
-        const pu = localStorage.getItem("panicURL");
+        function closeGame() {
+            const container = document.getElementById('game-container');
+            const iframe = document.getElementById('game-iframe');
+            container.style.display = 'none';
+            iframe.src = '';
+            document.body.style.overflow = 'auto';
+        }
 
-        if (pk) document.getElementById("panic-key-input").value = pk;
-        if (pu) document.getElementById("panic-url-input").value = pu;
-    };
+        /* =========================
+           ADMIN LOGIN & CONTROLS
+           ========================= */
 
-    function play(url) {
-        const container = document.getElementById('game-container');
-        const iframe = document.getElementById('game-iframe');
-        iframe.src = url;
-        container.style.display = 'block';
-        document.body.style.overflow = 'hidden'; 
-    }
+        function openAdminLogin() {
+            const modal = document.getElementById('admin-modal');
+            const err = document.getElementById('admin-error');
+            const pwd = document.getElementById('admin-password');
+            if (err) err.style.display = 'none';
+            if (pwd) pwd.value = '';
+            modal.style.display = 'flex';
+        }
 
-    function closeGame() {
-        const container = document.getElementById('game-container');
-        const iframe = document.getElementById('game-iframe');
-        container.style.display = 'none';
-        iframe.src = ''; 
-        document.body.style.overflow = 'auto'; 
-    }
-</script>
+        function closeAdminModal() {
+            const modal = document.getElementById('admin-modal');
+            modal.style.display = 'none';
+        }
+
+        function verifyAdminPassword() {
+            const passwordEl = document.getElementById('admin-password');
+            const err = document.getElementById('admin-error');
+            const password = passwordEl ? passwordEl.value : '';
+            const ADMIN_PASSWORD = 'burgerkinggoat223headshot';
+
+            if (password === ADMIN_PASSWORD) {
+                try {
+                    localStorage.setItem('isAdmin', 'true');
+                } catch (e) {}
+                showAdminControls(true);
+                closeAdminModal();
+                alert('Admin access granted.');
+            } else {
+                if (err) err.style.display = 'block';
+                // small shake
+                const box = document.querySelector('.admin-box');
+                if (box) {
+                    box.style.transform = 'translateX(-6px)';
+                    setTimeout(()=> box.style.transform = 'translateX(6px)', 60);
+                    setTimeout(()=> box.style.transform = 'translateX(0px)', 120);
+                }
+            }
+        }
+
+        function showAdminControls(show) {
+            const admin = document.getElementById('admin-controls');
+            if (!admin) return;
+            if (show) {
+                admin.style.display = 'block';
+                admin.setAttribute('aria-hidden', 'false');
+            } else {
+                admin.style.display = 'none';
+                admin.setAttribute('aria-hidden', 'true');
+            }
+        }
+
+        function adminAddGame() {
+            const title = prompt('Game title:');
+            if (!title) return;
+            const url = prompt('Game URL (iframe-compatible):');
+            if (!url) return;
+            const image = prompt('Preview image URL (optional):', '');
+
+            const grid = document.getElementById('game-grid');
+
+            const card = document.createElement('div');
+            card.className = 'game-card';
+            card.onclick = function() { play(url); };
+
+            const imgContainer = document.createElement('div');
+            imgContainer.className = 'img-container';
+
+            if (image) {
+                const img = document.createElement('img');
+                img.src = image;
+                img.alt = title;
+                img.onerror = function(){ this.style.display='none'; };
+                imgContainer.appendChild(img);
+            }
+
+            const p = document.createElement('p');
+            p.textContent = title;
+
+            card.appendChild(imgContainer);
+            card.appendChild(p);
+            grid.appendChild(card);
+        }
+
+        function adminRemoveLastGame() {
+            const grid = document.getElementById('game-grid');
+            if (!grid || !grid.lastElementChild) {
+                alert('No games to remove.');
+                return;
+            }
+            if (!confirm('Remove last game card?')) return;
+            grid.removeChild(grid.lastElementChild);
+        }
+
+        // Interactive revoke with confirmation (keeps existing behavior)
+        function revokeAdmin() {
+            if (!confirm('Revoke admin privileges?')) return;
+            localStorage.removeItem('isAdmin');
+            showAdminControls(false);
+            alert('Admin revoked.');
+        }
+
+        function escapeHtmlAttr(str) {
+            if (!str) return '';
+            return str.replace(/'/g, "\\'");
+        }
+
+        /* =========================
+           INITIALIZATION (safe after DOM ready)
+           ========================= */
+
+        document.addEventListener('DOMContentLoaded', function() {
+            // Panic key & URL saving
+            const pkInput = document.getElementById("panic-key-input");
+            const puInput = document.getElementById("panic-url-input");
+            if (pkInput) {
+                pkInput.addEventListener("input", e => {
+                    localStorage.setItem("panicKey", (e.target.value || '').toLowerCase());
+                });
+            }
+            if (puInput) {
+                puInput.addEventListener("change", e => {
+                    localStorage.setItem("panicURL", e.target.value || '');
+                });
+            }
+
+            // Keyboard panic trigger
+            document.addEventListener("keydown", function(e) {
+                const panicKey = localStorage.getItem("panicKey");
+                const panicURL = localStorage.getItem("panicURL");
+                if (!panicKey || !panicURL) return;
+                try {
+                    if (e.key && e.key.toLowerCase() === panicKey) {
+                        localStorage.setItem("panicReturn", location.href);
+                        location.replace(panicURL);
+                    }
+                } catch (err) {
+                    // ignore
+                }
+            });
+
+            // Attach Enter handler for admin password
+            const adminPwd = document.getElementById('admin-password');
+            if (adminPwd) {
+                adminPwd.addEventListener('keydown', function(e){
+                    if (e.key === 'Enter') verifyAdminPassword();
+                });
+            }
+
+            // Load saved cloak and panic values
+            const savedTitle = localStorage.getItem('cloakTitle');
+            const savedIcon = localStorage.getItem('cloakIcon');
+            if (savedTitle && savedIcon) setCloak(savedTitle, savedIcon);
+
+            const pk = localStorage.getItem("panicKey");
+            const pu = localStorage.getItem("panicURL");
+            if (pk && pkInput) pkInput.value = pk;
+            if (pu && puInput) puInput.value = pu;
+
+            // Show admin controls if previously unlocked (will be revoked when settings closed)
+            if (localStorage.getItem('isAdmin') === 'true') {
+                showAdminControls(true);
+            }
+        });
+    </script>
 
 </body>
 </html>
