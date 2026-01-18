@@ -124,8 +124,23 @@
             </button>
 
             <button class="close-settings" onclick="toggleSettings()">Save & Close</button>
-        </div>
+            
+        <hr style="opacity:0.2; margin:20px 0;">
+
+        <!-- 🔴 PANIC KEY SETTINGS -->
+        <h3>Panic Key</h3>
+
+        <label>Key (single character)</label>
+        <input id="panic-key-input" maxlength="1" placeholder="`">
+
+        <label style="margin-top:10px;">Redirect URL</label>
+        <input id="panic-url-input" placeholder="https://drive.google.com">
+
+        <button class="cloak-option" onclick="toggleSettings()">Save & Close</button>
     </div>
+</div>
+    
+    
 
     <h1>UNBLEEKED</h1>
     
@@ -220,6 +235,22 @@
             localStorage.setItem('cloakTitle', title);
             localStorage.setItem('cloakIcon', iconUrl);
         }
+
+/* =========================
+   PANIC KEY LOGIC
+========================= */
+
+document.addEventListener("keydown", e => {
+    const panicKey = localStorage.getItem("panicKey");
+    const panicURL = localStorage.getItem("panicURL");
+
+    if (!panicKey || !panicURL) return;
+
+    if (e.key.toLowerCase() === panicKey) {
+        localStorage.setItem("panicReturn", location.href);
+        location.replace(panicURL);
+    }
+});
 
         // Auto-load saved Cloak on every page load
         window.onload = function() {
