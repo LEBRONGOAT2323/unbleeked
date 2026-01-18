@@ -237,47 +237,63 @@
         }
 
 /* =========================
-   PANIC KEY LOGIC
-========================= */
+       PANIC KEY LOGIC (FIXED)
+    ========================= */
 
-document.addEventListener("keydown", e => {
-    const panicKey = localStorage.getItem("panicKey");
-    const panicURL = localStorage.getItem("panicURL");
+    // 🔹 SAVE panic key
+    document.getElementById("panic-key-input").addEventListener("input", e => {
+        localStorage.setItem("panicKey", e.target.value.toLowerCase());
+    });
 
-    if (!panicKey || !panicURL) return;
+    // 🔹 SAVE panic URL
+    document.getElementById("panic-url-input").addEventListener("change", e => {
+        localStorage.setItem("panicURL", e.target.value);
+    });
 
-    if (e.key.toLowerCase() === panicKey) {
-        localStorage.setItem("panicReturn", location.href);
-        location.replace(panicURL);
+    // 🔹 TRIGGER panic
+    document.addEventListener("keydown", e => {
+        const panicKey = localStorage.getItem("panicKey");
+        const panicURL = localStorage.getItem("panicURL");
+
+        if (!panicKey || !panicURL) return;
+
+        if (e.key.toLowerCase() === panicKey) {
+            localStorage.setItem("panicReturn", location.href);
+            location.replace(panicURL);
+        }
+    });
+
+    // 🔹 LOAD saved values
+    window.onload = function() {
+        const savedTitle = localStorage.getItem('cloakTitle');
+        const savedIcon = localStorage.getItem('cloakIcon');
+        if (savedTitle && savedIcon) {
+            setCloak(savedTitle, savedIcon);
+        }
+
+        const pk = localStorage.getItem("panicKey");
+        const pu = localStorage.getItem("panicURL");
+
+        if (pk) document.getElementById("panic-key-input").value = pk;
+        if (pu) document.getElementById("panic-url-input").value = pu;
+    };
+
+    function play(url) {
+        const container = document.getElementById('game-container');
+        const iframe = document.getElementById('game-iframe');
+        iframe.src = url;
+        container.style.display = 'block';
+        document.body.style.overflow = 'hidden'; 
     }
-});
 
-        // Auto-load saved Cloak on every page load
-        window.onload = function() {
-            const savedTitle = localStorage.getItem('cloakTitle');
-            const savedIcon = localStorage.getItem('cloakIcon');
-            if (savedTitle && savedIcon) {
-                setCloak(savedTitle, savedIcon);
-            }
-        };
+    function closeGame() {
+        const container = document.getElementById('game-container');
+        const iframe = document.getElementById('game-iframe');
+        container.style.display = 'none';
+        iframe.src = ''; 
+        document.body.style.overflow = 'auto'; 
+    }
+</script>
 
-        // Open Game
-        function play(url) {
-            const container = document.getElementById('game-container');
-            const iframe = document.getElementById('game-iframe');
-            iframe.src = url;
-            container.style.display = 'block';
-            document.body.style.overflow = 'hidden'; 
-        }
-
-        // Close Game
-        function closeGame() {
-            const container = document.getElementById('game-container');
-            const iframe = document.getElementById('game-iframe');
-            container.style.display = 'none';
-            iframe.src = ''; 
-            document.body.style.overflow = 'auto'; 
-        }
-    </script>
 </body>
 </html>
