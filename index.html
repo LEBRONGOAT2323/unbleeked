@@ -211,6 +211,7 @@
                 <button class="admin-btn" onclick="adminAddGame()">➕ Add Game</button>
                 <button class="admin-btn" onclick="adminRemoveLastGame()">🗑️ Remove Last Game</button>
                 <button class="admin-btn" onclick="revokeAdmin()">🔒 Revoke Admin</button>
+                <button class="admin-btn" onclick="adminEditGame()">✏️ Edit Admin Game</button>
             </div>
         </div>
     </div>
@@ -442,12 +443,16 @@ function saveAdminGames(games) {
 }
 
 
-function addGameCard({ title, url, image }) {
+function addGameCard({ title, url, image }, adminIndex = null) {
     const grid = document.getElementById('game-grid');
 
     const card = document.createElement('div');
     card.className = 'game-card';
     card.onclick = () => play(url);
+
+    if (adminIndex !== null) {
+        card.dataset.adminIndex = adminIndex;
+    }
 
     const imgContainer = document.createElement('div');
     imgContainer.className = 'img-container';
@@ -456,10 +461,7 @@ function addGameCard({ title, url, image }) {
         const img = document.createElement('img');
         img.src = image;
         img.alt = title;
-        img.loading = 'lazy';
-        img.onerror = function () {
-            this.style.display = 'none';
-        };
+        img.onerror = () => img.style.display = 'none';
         imgContainer.appendChild(img);
     }
 
@@ -470,6 +472,7 @@ function addGameCard({ title, url, image }) {
     card.appendChild(p);
     grid.appendChild(card);
 }
+
 
 
         function adminAddGame() {
@@ -485,7 +488,9 @@ function addGameCard({ title, url, image }) {
     games.push({ title, url, image });
     saveAdminGames(games);
 
-    addGameCard({ title, url, image });
+    addGameCard({ title, url, image }, games.length - 1);
+
+
 }
 
 
@@ -502,8 +507,61 @@ function addGameCard({ title, url, image }) {
     saveAdminGames(games);
 
     const grid = document.getElementById('game-grid');
-    grid.removeChild(grid.lastElementChild);
+    const cards = document.querySelectorAll('.game-card[data-admin-index]');
+const last = cards[cards.length - 1];
+if (last) last.remove();
+
 }
+
+        function adminEditGame() {
+    const games = getAdminGames();
+    if (games.length === 0) {
+        alert('No admin-added games to edit.');
+        return;
+    }
+
+    let list = games
+        .map((g, i) => `${i + 1}. ${g.title}`)
+        .join('\n');
+
+    const choice = prompt(
+        `Select a game to edit (number):\n\n${list}`
+    );
+
+    const index = Number(choice) - 1;
+    if (isNaN(index) || !games[index]) return;
+
+    const game = games[index];
+
+    const newTitle = prompt('Edit title:', game.title);
+    if (!newTitle) return;
+
+    const newUrl = prompt('Edit URL:', game.url);
+    if (!newUrl) return;
+
+    const newImage = prompt(
+        'Edit image URL (leave blank for none):',
+        game.image || ''
+    );
+
+    games[index] = {
+        title: newTitle,
+        url: newUrl,
+        image: newImage
+    };
+
+    saveAdminGames(games);
+
+    // Rebuild grid admin games
+    document
+        .querySelectorAll('.game-card[data-admin-index]')
+        .forEach(e => e.remove());
+
+    games.forEach((g, i) => addGameCard(g, i));
+
+    alert('Game updated.');
+}
+
 
 
         // Interactive revoke with confirmation (keeps existing behavior)
@@ -577,7 +635,8 @@ function closeAdminModal() {
 
     // Load admin-added games
 const savedGames = getAdminGames();
-savedGames.forEach(addGameCard);
+savedGames.forEach((game, index) => addGameCard(game, index));
+
 
 
     // Load saved cloak
