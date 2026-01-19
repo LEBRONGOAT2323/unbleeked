@@ -549,10 +549,7 @@ function closeAdminModal() {
     if (pkInput) pkInput.value = localStorage.getItem("panicKey") || '';
     if (puInput) puInput.value = localStorage.getItem("panicURL") || '';
 
-    // Restore admin state
-    if (localStorage.getItem('isAdmin') === 'true') {
-        showAdminControls(true);
-    }
+   
 });
 
     </script>
