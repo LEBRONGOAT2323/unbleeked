@@ -148,6 +148,113 @@
             background: rgba(0,123,255,0.1);
             box-shadow: 0 0 8px rgba(0,123,255,0.4);
         }
+        
+        /* =========================
+   📱 MOBILE UI POLISH
+   ========================= */
+@media (max-width: 768px) {
+
+    /* Title scaling */
+    h1 {
+        font-size: 42px;
+        letter-spacing: 4px;
+        margin-top: 30px;
+    }
+
+    /* Grid spacing */
+    .grid {
+        padding: 20px;
+        gap: 16px;
+    }
+
+    /* Game cards */
+    .game-card {
+        border-radius: 16px;
+    }
+
+    .img-container {
+        height: 140px;
+    }
+
+    .game-card p {
+        font-size: 15px;
+        padding: 12px;
+    }
+
+    /* Settings icon (bigger tap area) */
+    .settings-icon {
+        width: 56px;
+        height: 56px;
+        top: 16px;
+        right: 16px;
+    }
+
+    /* Settings modal */
+    .settings-content {
+        width: calc(100% - 32px);
+        padding: 24px;
+        border-radius: 24px;
+    }
+
+    .cloak-option {
+        padding: 14px;
+        font-size: 15px;
+        border-radius: 14px;
+    }
+
+    .cloak-option img {
+        width: 22px;
+        height: 22px;
+    }
+
+    /* Admin modal */
+    .admin-box {
+        width: calc(100% - 40px);
+        padding: 20px;
+        border-radius: 18px;
+    }
+
+    .admin-input {
+        font-size: 16px; /* prevents iOS zoom */
+    }
+
+    /* Buttons */
+    .btn,
+    .admin-btn {
+        padding: 14px;
+        font-size: 15px;
+    }
+
+    /* Game iframe close button */
+    .close-btn {
+        font-size: 40px;
+        top: 12px;
+        right: 18px;
+    }
+}
+
+    input,
+button,
+textarea {
+    font-size: 16px;
+}
+
+/* Remove blue tap highlight on mobile */
+.game-card,
+.cloak-option,
+.admin-btn,
+.btn {
+    -webkit-tap-highlight-color: transparent;
+}
+
+.game-card:active {
+    transform: scale(0.97);
+}
+
+
+
+
+        
     </style>
 </head>
 <body>
@@ -368,7 +475,10 @@
             iframe.src = url;
             container.style.display = 'block';
             document.body.style.overflow = 'hidden';
-        }
+         
+         // 📱 Lock to landscape on mobile (safe fallback)
+    screen.orientation?.lock?.("landscape").catch(() => {});
+}
 
         function closeGame() {
             const container = document.getElementById('game-container');
@@ -376,7 +486,9 @@
             container.style.display = 'none';
             iframe.src = '';
             document.body.style.overflow = 'auto';
-        }
+        // 🔓 Unlock orientation when exiting game
+    screen.orientation?.unlock?.();
+}
 
         /* =========================
            ADMIN LOGIN & CONTROLS
@@ -396,10 +508,11 @@ const ADMIN_LOCK_TIME = 60 * 1000; // 1 minute
 
     // 🔒 Check lock
     if (now < lockUntil) {
-        const remaining = Math.ceil((lockUntil - now) / 1000);
-        alert(`Too many failed attempts.\nTry again in ${remaining} seconds.`);
-        return;
-    }
+    const remaining = Math.ceil((lockUntil - now) / 1000);
+    alert(`Too many failed attempts.\nTry again in ${remaining} seconds.`);
+    passwordEl.value = '';
+    return;
+}
 
     const ADMIN_HASH =
         '216a2fef5d1dcaf6d4d167c07783a037c048598402bc6dc90e8a3f2ae0353fa2';
