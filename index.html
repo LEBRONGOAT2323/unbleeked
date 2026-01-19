@@ -381,44 +381,39 @@
            ADMIN LOGIN & CONTROLS
            ========================= */
 
-        function openAdminLogin() {
-            const modal = document.getElementById('admin-modal');
-            const err = document.getElementById('admin-error');
-            const pwd = document.getElementById('admin-password');
-            if (err) err.style.display = 'none';
-            if (pwd) pwd.value = '';
-            modal.style.display = 'flex';
-        }
+        async function verifyAdminPassword() {
+    const passwordEl = document.getElementById('admin-password');
+    const err = document.getElementById('admin-error');
+    const password = passwordEl ? passwordEl.value : '';
 
-        function closeAdminModal() {
-            const modal = document.getElementById('admin-modal');
-            modal.style.display = 'none';
-        }
+    // SHA-256 hash of your admin password
+    const ADMIN_HASH = '216a2fef5d1dcaf6d4d167c07783a037c048598402bc6dc90e8a3f2ae0353fa2';
 
-        function verifyAdminPassword() {
-            const passwordEl = document.getElementById('admin-password');
-            const err = document.getElementById('admin-error');
-            const password = passwordEl ? passwordEl.value : '';
-            const ADMIN_PASSWORD = 'burgerkinggoat223headshot';
+    // Hash the entered password
+    const enc = new TextEncoder().encode(password);
+    const buf = await crypto.subtle.digest('SHA-256', enc);
+    const hash = [...new Uint8Array(buf)]
+        .map(b => b.toString(16).padStart(2, '0'))
+        .join('');
 
-            if (password === ADMIN_PASSWORD) {
-                try {
-                    localStorage.setItem('isAdmin', 'true');
-                } catch (e) {}
-                showAdminControls(true);
-                closeAdminModal();
-                alert('Admin access granted.');
-            } else {
-                if (err) err.style.display = 'block';
-                // small shake
-                const box = document.querySelector('.admin-box');
-                if (box) {
-                    box.style.transform = 'translateX(-6px)';
-                    setTimeout(()=> box.style.transform = 'translateX(6px)', 60);
-                    setTimeout(()=> box.style.transform = 'translateX(0px)', 120);
-                }
-            }
+    if (hash === ADMIN_HASH) {
+        localStorage.setItem('isAdmin', 'true');
+        showAdminControls(true);
+        closeAdminModal();
+        alert('Admin access granted.');
+    } else {
+        if (err) err.style.display = 'block';
+
+        // shake animation
+        const box = document.querySelector('.admin-box');
+        if (box) {
+            box.style.transform = 'translateX(-6px)';
+            setTimeout(() => box.style.transform = 'translateX(6px)', 60);
+            setTimeout(() => box.style.transform = 'translateX(0px)', 120);
         }
+    }
+}
+
 
         function showAdminControls(show) {
             const admin = document.getElementById('admin-controls');
@@ -487,63 +482,79 @@
             return str.replace(/'/g, "\\'");
         }
 
+function openAdminLogin() {
+    const modal = document.getElementById('admin-modal');
+    const err = document.getElementById('admin-error');
+    if (err) err.style.display = 'none';
+    if (modal) modal.style.display = 'flex';
+}
+
+function closeAdminModal() {
+    const modal = document.getElementById('admin-modal');
+    if (modal) modal.style.display = 'none';
+}
+
         /* =========================
            INITIALIZATION (safe after DOM ready)
            ========================= */
 
         document.addEventListener('DOMContentLoaded', function() {
-            // Panic key & URL saving
-            const pkInput = document.getElementById("panic-key-input");
-            const puInput = document.getElementById("panic-url-input");
-            if (pkInput) {
-                pkInput.addEventListener("input", e => {
-                    localStorage.setItem("panicKey", (e.target.value || '').toLowerCase());
-                });
-            }
-            if (puInput) {
-                puInput.addEventListener("change", e => {
-                    localStorage.setItem("panicURL", e.target.value || '');
-                });
-            }
+    // Panic key & URL saving
+    const pkInput = document.getElementById("panic-key-input");
+    const puInput = document.getElementById("panic-url-input");
 
-            // Keyboard panic trigger
-            document.addEventListener("keydown", function(e) {
-                const panicKey = localStorage.getItem("panicKey");
-                const panicURL = localStorage.getItem("panicURL");
-                if (!panicKey || !panicURL) return;
-                try {
-                    if (e.key && e.key.toLowerCase() === panicKey) {
-                        localStorage.setItem("panicReturn", location.href);
-                        location.replace(panicURL);
-                    }
-                } catch (err) {
-                    // ignore
-                }
-            });
+    if (pkInput) {
+        pkInput.addEventListener("input", e => {
+            localStorage.setItem("panicKey", (e.target.value || '').toLowerCase());
+        });
+    }
 
-            // Attach Enter handler for admin password
-            const adminPwd = document.getElementById('admin-password');
-            if (adminPwd) {
-                adminPwd.addEventListener('keydown', function(e){
-                    if (e.key === 'Enter') verifyAdminPassword();
-                });
-            }
+    if (puInput) {
+        puInput.addEventListener("change", e => {
+            localStorage.setItem("panicURL", e.target.value || '');
+        });
+    }
 
-            // Load saved cloak and panic values
-            const savedTitle = localStorage.getItem('cloakTitle');
-            const savedIcon = localStorage.getItem('cloakIcon');
-            if (savedTitle && savedIcon) setCloak(savedTitle, savedIcon);
+    // Keyboard panic trigger
+    document.addEventListener("keydown", function(e) {
+        const panicKey = localStorage.getItem("panicKey");
+        const panicURL = localStorage.getItem("panicURL");
+        if (!panicKey || !panicURL) return;
 
-            const pk = localStorage.getItem("panicKey");
-            const pu = localStorage.getItem("panicURL");
-            if (pk && pkInput) pkInput.value = pk;
-            if (pu && puInput) puInput.value = pu;
+        if (e.key && e.key.toLowerCase() === panicKey) {
+            localStorage.setItem("panicReturn", location.href);
+            location.replace(panicURL);
+        }
+    });
 
-            // Show admin controls if previously unlocked (will be revoked when settings closed)
-            if (localStorage.getItem('isAdmin') === 'true') {
-                showAdminControls(true);
+    // Attach Enter handler for admin password
+    const adminPwd = document.getElementById('admin-password');
+    if (adminPwd) {
+        adminPwd.addEventListener('keydown', function(e){
+            if (e.key === 'Enter') {
+                verifyAdminPassword();
             }
         });
+    }
+
+
+
+
+    // Load saved cloak
+    const savedTitle = localStorage.getItem('cloakTitle');
+    const savedIcon = localStorage.getItem('cloakIcon');
+    if (savedTitle && savedIcon) setCloak(savedTitle, savedIcon);
+
+    // Load panic values
+    if (pkInput) pkInput.value = localStorage.getItem("panicKey") || '';
+    if (puInput) puInput.value = localStorage.getItem("panicURL") || '';
+
+    // Restore admin state
+    if (localStorage.getItem('isAdmin') === 'true') {
+        showAdminControls(true);
+    }
+});
+
     </script>
 
 </body>
