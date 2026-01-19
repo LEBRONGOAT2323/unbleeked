@@ -386,7 +386,7 @@
     const err = document.getElementById('admin-error');
     const password = passwordEl ? passwordEl.value : '';
 
-    // SHA-256 hash of your admin password
+    
     const ADMIN_HASH = '216a2fef5d1dcaf6d4d167c07783a037c048598402bc6dc90e8a3f2ae0353fa2';
 
     // Hash the entered password
@@ -427,47 +427,84 @@
             }
         }
 
+        const ADMIN_GAMES_KEY = 'adminGames';
+
+function getAdminGames() {
+    try {
+        return JSON.parse(localStorage.getItem(ADMIN_GAMES_KEY)) || [];
+    } catch {
+        return [];
+    }
+}
+
+function saveAdminGames(games) {
+    localStorage.setItem(ADMIN_GAMES_KEY, JSON.stringify(games));
+}
+
+
+function addGameCard({ title, url, image }) {
+    const grid = document.getElementById('game-grid');
+
+    const card = document.createElement('div');
+    card.className = 'game-card';
+    card.onclick = () => play(url);
+
+    const imgContainer = document.createElement('div');
+    imgContainer.className = 'img-container';
+
+    if (image) {
+        const img = document.createElement('img');
+        img.src = image;
+        img.alt = title;
+        img.loading = 'lazy';
+        img.onerror = function () {
+            this.style.display = 'none';
+        };
+        imgContainer.appendChild(img);
+    }
+
+    const p = document.createElement('p');
+    p.textContent = title;
+
+    card.appendChild(imgContainer);
+    card.appendChild(p);
+    grid.appendChild(card);
+}
+
+
         function adminAddGame() {
-            const title = prompt('Game title:');
-            if (!title) return;
-            const url = prompt('Game URL (iframe-compatible):');
-            if (!url) return;
-            const image = prompt('Preview image URL (optional):', '');
+    const title = prompt('Game title:');
+    if (!title) return;
 
-            const grid = document.getElementById('game-grid');
+    const url = prompt('Game URL (iframe-compatible):');
+    if (!url) return;
 
-            const card = document.createElement('div');
-            card.className = 'game-card';
-            card.onclick = function() { play(url); };
+    const image = prompt('Preview image URL (optional):', '');
 
-            const imgContainer = document.createElement('div');
-            imgContainer.className = 'img-container';
+    const games = getAdminGames();
+    games.push({ title, url, image });
+    saveAdminGames(games);
 
-            if (image) {
-                const img = document.createElement('img');
-                img.src = image;
-                img.alt = title;
-                img.onerror = function(){ this.style.display='none'; };
-                imgContainer.appendChild(img);
-            }
+    addGameCard({ title, url, image });
+}
 
-            const p = document.createElement('p');
-            p.textContent = title;
-
-            card.appendChild(imgContainer);
-            card.appendChild(p);
-            grid.appendChild(card);
-        }
 
         function adminRemoveLastGame() {
-            const grid = document.getElementById('game-grid');
-            if (!grid || !grid.lastElementChild) {
-                alert('No games to remove.');
-                return;
-            }
-            if (!confirm('Remove last game card?')) return;
-            grid.removeChild(grid.lastElementChild);
-        }
+    const games = getAdminGames();
+    if (games.length === 0) {
+        alert('No admin-added games to remove.');
+        return;
+    }
+
+    if (!confirm('Remove last admin-added game?')) return;
+
+    games.pop();
+    saveAdminGames(games);
+
+    const grid = document.getElementById('game-grid');
+    grid.removeChild(grid.lastElementChild);
+}
+
 
         // Interactive revoke with confirmation (keeps existing behavior)
         function revokeAdmin() {
@@ -538,6 +575,9 @@ function closeAdminModal() {
     }
 
 
+    // Load admin-added games
+const savedGames = getAdminGames();
+savedGames.forEach(addGameCard);
 
 
     // Load saved cloak
