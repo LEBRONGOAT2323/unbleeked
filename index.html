@@ -251,6 +251,17 @@ textarea {
     transform: scale(0.97);
 }
 
+/* 🔒 Locked admin button */
+.admin-btn.locked {
+    opacity: 0.5;
+    cursor: not-allowed;
+    pointer-events: none;
+    filter: grayscale(1);
+}
+
+.admin-btn.locked::after {
+    content: " 🔒";
+}
 
 
 
@@ -501,35 +512,29 @@ const ADMIN_LOCK_TIME = 60 * 1000; // 1 minute
         async function verifyAdminPassword() {
     const passwordEl = document.getElementById('admin-password');
     const err = document.getElementById('admin-error');
-    const password = passwordEl ? passwordEl.value : '';
-
+    const password = passwordEl.value;
     const now = Date.now();
+
     const lockUntil = Number(localStorage.getItem('adminLockUntil')) || 0;
-
-    // 🔒 Check lock
     if (now < lockUntil) {
-    const remaining = Math.ceil((lockUntil - now) / 1000);
-    alert(`Too many failed attempts.\nTry again in ${remaining} seconds.`);
-    passwordEl.value = '';
-    return;
-}
+        alert('Admin login is locked. Please wait.');
+        return;
+    }
 
-    const ADMIN_HASH =
-        '216a2fef5d1dcaf6d4d167c07783a037c048598402bc6dc90e8a3f2ae0353fa2';
+    const ADMIN_HASH = '216a2fef5d1dcaf6d4d167c07783a037c048598402bc6dc90e8a3f2ae0353fa2';
 
-    // Hash password
     const enc = new TextEncoder().encode(password);
     const buf = await crypto.subtle.digest('SHA-256', enc);
     const hash = [...new Uint8Array(buf)]
         .map(b => b.toString(16).padStart(2, '0'))
         .join('');
 
+    // ✅ SUCCESS
     if (hash === ADMIN_HASH) {
-        // ✅ SUCCESS — reset lock
         localStorage.removeItem('adminFailCount');
         localStorage.removeItem('adminLockUntil');
-
         localStorage.setItem('isAdmin', 'true');
+        updateAdminButtonLock();
         showAdminControls(true);
         closeAdminModal();
         alert('Admin access granted.');
@@ -552,14 +557,18 @@ const ADMIN_LOCK_TIME = 60 * 1000; // 1 minute
         setTimeout(() => box.style.transform = 'translateX(0px)', 120);
     }
 
-    // 🔒 Lock if max attempts reached
+    // 🔒 LOCK AFTER 3 FAILS
     if (fails >= MAX_ADMIN_ATTEMPTS) {
-        const lockTime = now + ADMIN_LOCK_TIME;
-        localStorage.setItem('adminLockUntil', lockTime);
+        localStorage.setItem('adminLockUntil', now + ADMIN_LOCK_TIME);
         localStorage.removeItem('adminFailCount');
-        alert('Too many failed attempts.\nAdmin login locked for 1 minute.');
+        alert('Too many failed attempts.\nLocked for 1 minute.');
+        updateAdminButtonLock();
+        closeAdminModal();
     }
 }
+
+
+
 
 
 
@@ -736,6 +745,27 @@ function closeAdminModal() {
     if (modal) modal.style.display = 'none';
 }
 
+function updateAdminButtonLock() {
+    const btn = document.querySelector('.cloak-option[onclick*="openAdminLogin"]');
+    if (!btn) return;
+
+    const now = Date.now();
+    const lockUntil = Number(localStorage.getItem('adminLockUntil')) || 0;
+
+    if (now < lockUntil) {
+        const remaining = Math.ceil((lockUntil - now) / 1000);
+        btn.classList.add('locked');
+        btn.textContent = `🔒 Admin Locked (${remaining}s)`;
+        setTimeout(updateAdminButtonLock, 1000);
+    } else {
+        btn.classList.remove('locked');
+        btn.textContent = '🔒 Admin Login';
+        localStorage.removeItem('adminLockUntil');
+    }
+}
+
+
+
         /* =========================
            INITIALIZATION (safe after DOM ready)
            ========================= */
@@ -794,6 +824,8 @@ savedGames.forEach((game, index) => addGameCard(game, index));
     // Load panic values
     if (pkInput) pkInput.value = localStorage.getItem("panicKey") || '';
     if (puInput) puInput.value = localStorage.getItem("panicURL") || '';
+
+    updateAdminButtonLock();
 
    
 });
