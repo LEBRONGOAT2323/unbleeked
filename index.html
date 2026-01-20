@@ -263,6 +263,71 @@ textarea {
     content: " 🔒";
 }
 
+/* =========================
+   🔍 SEARCH BAR
+   ========================= */
+.search-wrapper {
+    max-width: 520px;
+    margin: 10px auto 30px auto;
+    padding: 0 20px;
+}
+
+#game-search {
+    width: 100%;
+    padding: 16px 20px;
+    border-radius: 18px;
+    border: 1px solid rgba(255,255,255,0.25);
+    background: rgba(255,255,255,0.08);
+    backdrop-filter: blur(12px);
+    color: white;
+    font-size: 16px;
+    font-weight: 500;
+    outline: none;
+    transition: 0.3s ease;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.3);
+}
+
+#game-search::placeholder {
+    color: rgba(255,255,255,0.6);
+}
+
+#game-search:focus {
+    border-color: #007bff;
+    background: rgba(0,123,255,0.15);
+    box-shadow: 0 0 18px rgba(0,123,255,0.45);
+}
+
+/* Mobile spacing */
+@media (max-width: 768px) {
+    .search-wrapper {
+        margin-bottom: 20px;
+    }
+}
+
+/* =========================
+   ❌ NO RESULTS MESSAGE
+   ========================= */
+.no-results {
+    display: none;
+    text-align: center;
+    margin-top: 40px;
+    font-size: 18px;
+    font-weight: 600;
+    letter-spacing: 0.5px;
+    color: rgba(255, 255, 255, 0.7);
+    animation: fadeIn 0.25s ease;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(6px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
 
 
         
@@ -349,6 +414,24 @@ textarea {
     </div>
 
     <h1>UNBLEEKED</h1>
+
+
+    <!-- 🔍 SEARCH BAR -->
+<div class="search-wrapper">
+    <input
+        id="game-search"
+        type="text"
+        placeholder="Search games..."
+        autocomplete="off"
+    />
+</div>
+
+
+    <!-- ❌ NO RESULTS MESSAGE -->
+<div id="no-results" class="no-results">
+    No results found
+</div>
+
 
     <div class="grid" id="game-grid">
         <!-- Subway Surfers -->
@@ -855,6 +938,32 @@ savedGames.forEach((game, index) => addGameCard(game, index));
     if (puInput) puInput.value = localStorage.getItem("panicURL") || '';
 
     updateAdminButtonLock();
+
+   // 🔍 Live game search + no results message
+const searchInput = document.getElementById('game-search');
+const noResults = document.getElementById('no-results');
+
+if (searchInput) {
+    searchInput.addEventListener('input', function () {
+        const query = this.value.toLowerCase().trim();
+        const cards = document.querySelectorAll('.game-card');
+        let visibleCount = 0;
+
+        cards.forEach(card => {
+            const title = card.querySelector('p')?.textContent.toLowerCase() || '';
+            const match = title.includes(query);
+            card.style.display = match ? 'block' : 'none';
+            if (match) visibleCount++;
+        });
+
+        if (noResults) {
+            noResults.style.display =
+                visibleCount === 0 && query !== '' ? 'block' : 'none';
+        }
+    });
+}
+
+
 
    
 });
