@@ -772,13 +772,18 @@ function updateAdminButtonLock() {
         const remaining = Math.ceil((lockUntil - now) / 1000);
         btn.classList.add('locked');
         btn.textContent = `🔒 Admin Locked (${remaining}s)`;
+        btn.style.pointerEvents = 'none';   // Disable clicks
+        btn.style.cursor = 'not-allowed';   // Change cursor to not-allowed
         setTimeout(updateAdminButtonLock, 1000);
     } else {
         btn.classList.remove('locked');
         btn.textContent = '🔒 Admin Login';
+        btn.style.pointerEvents = 'auto';   // Enable clicks
+        btn.style.cursor = 'pointer';       // Normal pointer cursor
         localStorage.removeItem('adminLockUntil');
     }
 }
+
 
 
 
