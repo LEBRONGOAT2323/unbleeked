@@ -8,3 +8,8 @@ UNBLEEKED is a fun project I started a few months ago so me and my friends could
 2. The second [UNBLEEKED](https://Student.elanco.org/unbleeked/sites.google.com)
 3. The third [UNBLEEKED](http://unbouncepages.com/unbleeked/)
 4. THIS ONE [UNBLEEKED](https://lebrongoat2323.github.io/unbleeked/)
+
+
+# NOTICE:
+If none of these links work you can go to [Here](https://unbleeked2.netlify.app/), and if that doesn't work or is blocked, you can go [here](https://unbleeked.vercel.app/).
+The first one is a it running through Netlify, and the other is it running through Vercel. And if those don't work than your lowkey cooked twin 🥹✌
