@@ -1,10 +1,12 @@
 <!DOCTYPE html>
 
-<html>
+<html lang="en">
 <head>
 
 <meta charset="UTF-8">
-<title>UNBLEEKED|MAIN</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>UNBLEEKED | MAIN</title>
 
 <style>
 
@@ -13,44 +15,66 @@ margin:0;
 font-family:Arial, sans-serif;
 background:#111;
 color:white;
-text-align:center;
 }
 
-header{
-background:#000;
-padding:20px;
-font-size:32px;
-font-weight:bold;
-}
+/* Header */
 
-.container{
+.header{
 display:flex;
+align-items:center;
 justify-content:center;
-flex-wrap:wrap;
-gap:30px;
-margin-top:60px;
+background:#1a1a1a;
+padding:20px;
+font-size:28px;
+font-weight:bold;
+border-bottom:1px solid #333;
 }
+
+/* Grid */
+
+.grid{
+display:grid;
+grid-template-columns:repeat(auto-fill,minmax(200px,1fr));
+gap:20px;
+padding:40px;
+max-width:1200px;
+margin:auto;
+}
+
+/* Card */
 
 .card{
 background:#1c1c1c;
-padding:40px;
-width:200px;
 border-radius:12px;
-text-decoration:none;
-color:white;
-font-size:22px;
+overflow:hidden;
+cursor:pointer;
 transition:0.2s;
+text-align:center;
 }
 
 .card:hover{
-background:#333;
 transform:scale(1.05);
+background:#262626;
 }
 
-footer{
-margin-top:80px;
-font-size:14px;
+.card img{
+width:100%;
+height:140px;
+object-fit:cover;
+}
+
+.card-title{
+padding:15px;
+font-size:18px;
+}
+
+/* Footer */
+
+.footer{
+text-align:center;
+padding:20px;
 color:#777;
+font-size:14px;
 }
 
 </style>
@@ -59,33 +83,37 @@ color:#777;
 
 <body>
 
-<header>
+<div class="header">
 UNBLEEKED
-</header>
+</div>
 
-<div class="container">
+<div class="grid">
 
-<a class="card" href="/g.html">
-Games
-</a>
+<div class="card" onclick="location.href='/g.html'">
+<img src="https://images.unsplash.com/photo-1614294149010-950b698f72c0">
+<div class="card-title">Games</div>
+</div>
 
-<a class="card" href="/a.html">
-Apps
-</a>
+<div class="card" onclick="location.href='/a.html'">
+<img src="https://images.unsplash.com/photo-1518770660439-4636190af475">
+<div class="card-title">Apps</div>
+</div>
 
-<a class="card" href="/e.html">
-Exploits
-</a>
+<div class="card" onclick="location.href='/e.html'">
+<img src="https://images.unsplash.com/photo-1550751827-4bd374c3f58b">
+<div class="card-title">Exploits</div>
+</div>
 
-<a class="card" href="/movies.html">
-Movies
-</a>
+<div class="card" onclick="location.href='/movies.html'">
+<img src="https://images.unsplash.com/photo-1489599849927-2ee91cede3ba">
+<div class="card-title">Movies</div>
+</div>
 
 </div>
 
-<footer>
+<div class="footer">
 Unbleeked Portal
-</footer>
+</div>
 
 </body>
 </html>
