@@ -546,7 +546,7 @@ textarea {
         </div>
 
         <!-- BTD1 -->
-        <div class="game-card" onclick="play('https://lebrongoat2323.github.io/unbleeked/games/clbloonsTD1.html')">
+        <div class="game-card" onclick="play('/games/clbloonsTD1.html')">
             <div class="img-container">
                 <img src="images/BTD1.webp" alt="BTD1" onerror="this.style.display='none'">
             </div>
@@ -554,7 +554,7 @@ textarea {
         </div>
 
         <!-- BTD2 -->
-        <div class="game-card" onclick="play('https://lebrongoat2323.github.io/unbleeked/games/clbloonsTD2.html')">
+        <div class="game-card" onclick="play('/games/clbloonsTD2.html')">
             <div class="img-container">
                 <img src="images/BTD2.webp" alt="BTD2" onerror="this.style.display='none'">
             </div>
@@ -562,7 +562,7 @@ textarea {
         </div>
 
         <!-- BTD3 -->
-        <div class="game-card" onclick="play('https://lebrongoat2323.github.io/unbleeked/games/clbloonsTD3.html')">
+        <div class="game-card" onclick="play('/games/clbloonsTD3.html')">
             <div class="img-container">
                 <img src="https://play-lh.googleusercontent.com/LeZ9qnLV9Sc8dM0nzQrKPoEsrOiT5mpEYFIs91ztvcq3NWZNJBA2e0U7UsG4WNRxyeA=w240-h480-rw" alt="BTD3" onerror="this.style.display='none'">
             </div>
@@ -570,7 +570,7 @@ textarea {
         </div>
 
         <!-- BTD4 -->
-        <div class="game-card" onclick="play('https://lebrongoat2323.github.io/unbleeked/games/clbloonsTD4.html')">
+        <div class="game-card" onclick="play('/games/clbloonsTD4.html')">
             <div class="img-container">
                 <img src="https://assets-prd.ignimgs.com/2022/08/16/bloons-td4-button-1660612386362.jpg" alt="BTD4" onerror="this.style.display='none'">
             </div>
@@ -578,7 +578,7 @@ textarea {
         </div>
 
          <!-- BTD5 -->
-        <div class="game-card" onclick="play('https://lebrongoat2323.github.io/unbleeked/games/clbloonsTD5.html')">
+        <div class="game-card" onclick="play('/games/clbloonsTD5.html')">
             <div class="img-container">
                 <img src="https://play-lh.googleusercontent.com/LLEUf9Qcd6N2L4nynBArv7wHyvPLiKBJtXjFEfgD4yS80ZJtQREVjIJE_HXFRDAJxQ" alt="BTD5" onerror="this.style.display='none'">
             </div>
@@ -667,7 +667,7 @@ textarea {
         </div>
 
          <!-- Escape Road-->
-        <div class="game-card" onclick="play('https://unbleeked.vercel.app/games/Escape%20Road.html')">
+        <div class="game-card" onclick="play('/games/Escape%20Road.html')">
             <div class="img-container">
                 <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQLNdYFCgVVSqnj-Qxrw8mrlCz1SQv7un2_BQ&s" alt="Escape Road" onerror="this.style.display='none'">
             </div>
@@ -675,7 +675,7 @@ textarea {
         </div>
 
         <!-- Escape Road 2-->
-        <div class="game-card" onclick="play('https://unbleeked.vercel.app/games/Escape%20Road%202.html')">
+        <div class="game-card" onclick="play('/games/Escape%20Road%202.html')">
             <div class="img-container">
                 <img src="https://mograph.com/wp-content/uploads/2026/01/escape-road-2-game-1.png" alt="Escape Road 2" onerror="this.style.display='none'">
             </div>
@@ -739,52 +739,21 @@ textarea {
             localStorage.setItem('cloakIcon', iconUrl);
         }
 
-        async function play(url) {
+        function play(url) {
 
     const container = document.getElementById("game-container");
-    const iframe = document.getElementById("game-iframe");
-
-    const isInternal =
-    url.startsWith("/") ||
-    url.startsWith("./") ||
-    url.startsWith("games/") ||
-    new URL(url, location.href).origin === location.origin;
 
     container.style.display = "block";
     document.body.style.overflow = "hidden";
 
-    // 📱 lock landscape for mobile
+    container.innerHTML = `
+        <span class="close-btn" onclick="closeGame()">&times;</span>
+        <iframe src="${url}" allowfullscreen></iframe>
+    `;
+
+    // try to lock landscape for mobile
     screen.orientation?.lock?.("landscape").catch(()=>{});
 
-    if (isInternal) {
-
-        try {
-
-            const res = await fetch(url);
-            const html = await res.text();
-
-            container.innerHTML = `
-                <span class="close-btn" onclick="closeGame()">&times;</span>
-                <div id="game-content">${html}</div>
-            `;
-
-            history.pushState({game:true}, "", "#game");
-
-        } catch (err) {
-
-            alert("Game failed to load.");
-
-        }
-
-    } else {
-
-        iframe.src = url;
-        container.innerHTML = `
-            <span class="close-btn" onclick="closeGame()">&times;</span>
-            <iframe id="game-iframe" src="${url}"></iframe>
-        `;
-
-    }
 }
 
         function closeGame() {
@@ -1162,6 +1131,10 @@ if (searchInput) {
 
 
    
+});
+
+document.addEventListener("keydown", e => {
+    if (e.key === "Escape") closeGame();
 });
 
     </script>
