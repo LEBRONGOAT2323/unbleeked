@@ -13,68 +13,66 @@
 body{
 margin:0;
 font-family:Arial, sans-serif;
-background:#111;
+background:#0f0f0f;
 color:white;
 }
 
-/* Header */
+/* Header (same style as games page) */
 
 .header{
 display:flex;
 align-items:center;
 justify-content:center;
 background:#1a1a1a;
-padding:20px;
-font-size:28px;
-font-weight:bold;
+padding:18px;
 border-bottom:1px solid #333;
 }
 
-/* Grid */
-
-.grid{
-display:grid;
-grid-template-columns:repeat(auto-fill,minmax(200px,1fr));
-gap:20px;
-padding:40px;
-max-width:1200px;
-margin:auto;
+.logo{
+font-size:26px;
+font-weight:bold;
 }
 
-/* Card */
+/* Main content */
 
-.card{
-background:#1c1c1c;
-border-radius:12px;
-overflow:hidden;
-cursor:pointer;
-transition:0.2s;
+.main-container{
+max-width:1000px;
+margin:auto;
+padding:60px 20px;
 text-align:center;
 }
 
-.card:hover{
-transform:scale(1.05);
+/* Section buttons */
+
+.section-grid{
+display:grid;
+grid-template-columns:repeat(auto-fit,minmax(200px,1fr));
+gap:25px;
+margin-top:40px;
+}
+
+.section-card{
+background:#1c1c1c;
+padding:40px;
+border-radius:12px;
+cursor:pointer;
+transition:0.2s;
+font-size:20px;
+}
+
+.section-card:hover{
 background:#262626;
-}
-
-.card img{
-width:100%;
-height:140px;
-object-fit:cover;
-}
-
-.card-title{
-padding:15px;
-font-size:18px;
+transform:scale(1.05);
 }
 
 /* Footer */
 
 .footer{
 text-align:center;
-padding:20px;
+padding:25px;
 color:#777;
-font-size:14px;
+border-top:1px solid #333;
+margin-top:60px;
 }
 
 </style>
@@ -84,29 +82,33 @@ font-size:14px;
 <body>
 
 <div class="header">
-UNBLEEKED
+<div class="logo">Unbleeked</div>
 </div>
 
-<div class="grid">
+<div class="main-container">
 
-<div class="card" onclick="location.href='/g.html'">
-<img src="https://images.unsplash.com/photo-1614294149010-950b698f72c0">
-<div class="card-title">Games</div>
+<h1>Welcome</h1>
+
+<p>Select a section</p>
+
+<div class="section-grid">
+
+<div class="section-card" onclick="location.href='/g.html'">
+🎮 Games
 </div>
 
-<div class="card" onclick="location.href='/a.html'">
-<img src="https://images.unsplash.com/photo-1518770660439-4636190af475">
-<div class="card-title">Apps</div>
+<div class="section-card" onclick="location.href='/a.html'">
+📱 Apps
 </div>
 
-<div class="card" onclick="location.href='/e.html'">
-<img src="https://images.unsplash.com/photo-1550751827-4bd374c3f58b">
-<div class="card-title">Exploits</div>
+<div class="section-card" onclick="location.href='/e.html'">
+💻 Exploits
 </div>
 
-<div class="card" onclick="location.href='/movies.html'">
-<img src="https://images.unsplash.com/photo-1489599849927-2ee91cede3ba">
-<div class="card-title">Movies</div>
+<div class="section-card" onclick="location.href='/movies.html'">
+🎬 Movies
+</div>
+
 </div>
 
 </div>
