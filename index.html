@@ -149,25 +149,19 @@
             box-shadow: 0 0 8px rgba(0,123,255,0.4);
         }
         
-        /* =========================
-   📱 MOBILE UI POLISH
-   ========================= */
 @media (max-width: 768px) {
 
-    /* Title scaling */
     h1 {
         font-size: 42px;
         letter-spacing: 4px;
         margin-top: 30px;
     }
 
-    /* Grid spacing */
     .grid {
         padding: 20px;
         gap: 16px;
     }
 
-    /* Game cards */
     .game-card {
         border-radius: 16px;
     }
@@ -181,7 +175,6 @@
         padding: 12px;
     }
 
-    /* Settings icon (bigger tap area) */
     .settings-icon {
         width: 56px;
         height: 56px;
@@ -189,7 +182,6 @@
         right: 16px;
     }
 
-    /* Settings modal */
     .settings-content {
         width: calc(100% - 32px);
         padding: 24px;
@@ -207,7 +199,6 @@
         height: 22px;
     }
 
-    /* Admin modal */
     .admin-box {
         width: calc(100% - 40px);
         padding: 20px;
@@ -215,17 +206,17 @@
     }
 
     .admin-input {
-        font-size: 16px; /* prevents iOS zoom */
+        font-size: 16px; 
     }
 
-    /* Buttons */
+    
     .btn,
     .admin-btn {
         padding: 14px;
         font-size: 15px;
     }
 
-    /* Game iframe close button */
+    
     .close-btn {
         font-size: 40px;
         top: 12px;
@@ -239,7 +230,6 @@ textarea {
     font-size: 16px;
 }
 
-/* Remove blue tap highlight on mobile */
 .game-card,
 .cloak-option,
 .admin-btn,
@@ -251,7 +241,6 @@ textarea {
     transform: scale(0.97);
 }
 
-/* 🔒 Locked admin button */
 .admin-btn.locked {
     opacity: 0.5;
     cursor: not-allowed;
@@ -263,9 +252,6 @@ textarea {
     content: " 🔒";
 }
 
-/* =========================
-   🔍 SEARCH BAR
-   ========================= */
 .search-wrapper {
     max-width: 520px;
     margin: 10px auto 30px auto;
@@ -297,16 +283,13 @@ textarea {
     box-shadow: 0 0 18px rgba(0,123,255,0.45);
 }
 
-/* Mobile spacing */
 @media (max-width: 768px) {
     .search-wrapper {
         margin-bottom: 20px;
     }
 }
 
-/* =========================
-   ❌ NO RESULTS MESSAGE
-   ========================= */
+
 .no-results {
     display: none;
     text-align: center;
@@ -330,14 +313,22 @@ textarea {
 }
 
 
-/* 🔍 Centered search bar */
 .search-wrapper {
     display: flex;
     justify-content: center;
     margin: 20px auto 30px;
 }
 
+#game-content {
+    width:100%;
+    height:100%;
+}
 
+#game-content iframe,
+#game-content canvas {
+    width:100%;
+    height:100%;
+}
         
     </style>
 </head>
@@ -748,25 +739,69 @@ textarea {
             localStorage.setItem('cloakIcon', iconUrl);
         }
 
-        function play(url) {
-            const container = document.getElementById('game-container');
-            const iframe = document.getElementById('game-iframe');
-            iframe.src = url;
-            container.style.display = 'block';
-            document.body.style.overflow = 'hidden';
-         
-         // 📱 Lock to landscape on mobile (safe fallback)
-    screen.orientation?.lock?.("landscape").catch(() => {});
+        async function play(url) {
+
+    const container = document.getElementById("game-container");
+    const iframe = document.getElementById("game-iframe");
+
+    const isInternal =
+    url.startsWith("/") ||
+    url.startsWith("./") ||
+    url.startsWith("games/") ||
+    new URL(url, location.href).origin === location.origin;
+
+    container.style.display = "block";
+    document.body.style.overflow = "hidden";
+
+    // 📱 lock landscape for mobile
+    screen.orientation?.lock?.("landscape").catch(()=>{});
+
+    if (isInternal) {
+
+        try {
+
+            const res = await fetch(url);
+            const html = await res.text();
+
+            container.innerHTML = `
+                <span class="close-btn" onclick="closeGame()">&times;</span>
+                <div id="game-content">${html}</div>
+            `;
+
+            history.pushState({game:true}, "", "#game");
+
+        } catch (err) {
+
+            alert("Game failed to load.");
+
+        }
+
+    } else {
+
+        iframe.src = url;
+        container.innerHTML = `
+            <span class="close-btn" onclick="closeGame()">&times;</span>
+            <iframe id="game-iframe" src="${url}"></iframe>
+        `;
+
+    }
 }
 
         function closeGame() {
-            const container = document.getElementById('game-container');
-            const iframe = document.getElementById('game-iframe');
-            container.style.display = 'none';
-            iframe.src = '';
-            document.body.style.overflow = 'auto';
-        // 🔓 Unlock orientation when exiting game
+
+    const container = document.getElementById("game-container");
+
+    container.style.display = "none";
+
+    container.innerHTML = `
+        <span class="close-btn" onclick="closeGame()">&times;</span>
+        <iframe id="game-iframe"></iframe>
+    `;
+
+    document.body.style.overflow = "auto";
+
     screen.orientation?.unlock?.();
+
 }
 
         /* =========================
