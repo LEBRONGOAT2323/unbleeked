@@ -1,39 +1,109 @@
 <!DOCTYPE html>
 
-<html>
+<html lang="en">
 <head>
-
 <meta charset="UTF-8">
-<title>Apps</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>UNBLEEKED | APPS</title>
+
+<link id="favicon" rel="icon" type="image/x-icon" href="https://www.google.com/favicon.ico">
 
 <style>
 
+
 body{
+font-family:'Segoe UI',system-ui,-apple-system,sans-serif;
 margin:0;
-font-family:Arial;
-background:#111;
+padding:0;
+background:linear-gradient(-45deg,#0f0c29,#302b63,#24243e,#111);
+background-size:400% 400%;
+animation:gradient 15s ease infinite;
 color:white;
 text-align:center;
+min-height:100vh;
+overflow-x:hidden;
 }
 
-.navbar{
-background:#000;
+@keyframes gradient{
+0%{background-position:0% 50%}
+50%{background-position:100% 50%}
+100%{background-position:0% 50%}
+}
+
+h1{
+font-size:85px;
+margin:60px 0 20px 0;
+letter-spacing:10px;
+text-transform:uppercase;
+font-weight:900;
+text-shadow:0 0 10px rgba(0,123,255,0.7);
+}
+
+/* GRID (same as games page) */
+
+.grid{
+display:grid;
+grid-template-columns:repeat(auto-fill,minmax(250px,1fr));
+gap:30px;
+padding:40px;
+max-width:1200px;
+margin:0 auto;
+}
+
+/* CARDS */
+
+.game-card{
+cursor:pointer;
+background:rgba(255,255,255,0.05);
+backdrop-filter:blur(10px);
+border:1px solid rgba(255,255,255,0.1);
+border-radius:20px;
+overflow:hidden;
+transition:0.4s;
+}
+
+.img-container{
+width:100%;
+height:180px;
+background:linear-gradient(45deg,#1e1e2f,#2a2a40);
+display:flex;
+justify-content:center;
+align-items:center;
+position:relative;
+}
+
+.img-container::after{
+content:"📂";
+font-size:50px;
+opacity:0.2;
+}
+
+.game-card img{
+width:100%;
+height:100%;
+object-fit:cover;
+position:absolute;
+top:0;
+left:0;
+}
+
+.game-card:hover{
+transform:translateY(-10px);
+border-color:#007bff;
+box-shadow:0 0 20px rgba(0,123,255,0.6);
+}
+
+.game-card p{
 padding:15px;
+margin:0;
+font-weight:600;
+background:rgba(0,0,0,0.3);
 }
 
-.navbar a{
-color:white;
-text-decoration:none;
-margin:0 15px;
-font-size:18px;
-}
-
-.navbar a:hover{
-text-decoration:underline;
-}
-
-.content{
-margin-top:50px;
+.footer{
+text-align:center;
+padding:30px;
+color:#aaa;
 }
 
 </style>
@@ -42,19 +112,40 @@ margin-top:50px;
 
 <body>
 
-<div class="navbar">
+<h1 onclick="location.href='/main.html'" style="cursor:pointer;">APPS</h1>
 
-<a href="/main.html">Home</a> <a href="/g.html">Games</a> <a href="/a.html">Apps</a> <a href="/e.html">Exploits</a> <a href="/movies.html">Movies</a>
+<div class="grid">
+
+<div class="game-card" onclick="window.open('a/Etch-a-sketch.html', '_blank')">
+  <div class="img-container">
+    <img src="/images/etchasketch.png">
+  </div>
+  <p>Etch-a-Sketch</p>
+</div>
+
+<div class="game-card" onclick="location.href='/a.html'">
+<div class="img-container">
+<img src="/images/apps.png">
+</div>
+<p>Apps</p>
+</div>
+
+<div class="game-card" onclick="location.href='/e.html'">
+<div class="img-container">
+<img src="/images/exploits.png">
+</div>
+<p>Exploits</p>
+</div>
+
+<div class="game-card" onclick="location.href='/movies.html'">
+<div class="img-container">
+<img src="/images/movies.png">
+</div>
+<p>Movies</p>
+</div>
 
 </div>
 
-<div class="content">
-
-<h1>Apps</h1>
-
-<p>Apps will be added here soon.</p>
-
-</div>
 
 </body>
 </html>
