@@ -8,7 +8,7 @@
 [![Vercel](https://img.shields.io/badge/vercel-Live-success?style=for-the-badge)](https://unbleeked.vercel.app)
 
 Welcome to **UNBLEEKED**, a centralized hub for browser games, web applications, and tools designed to run on restricted networks such as school Wi-Fi.
-Developed and maintained by **Harrison Sipes**, this project provides lightweight, HTML-based experiences that run directly in the browser with no downloads required.
+Developed and maintained by **LEBRONGOAT2323**, this project provides lightweight, HTML-based experiences that run directly in the browser with no downloads required.
 
 ---
 
