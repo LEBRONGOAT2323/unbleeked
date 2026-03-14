@@ -1,0 +1,951 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BI6ZONE - AI Humanizer</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary: 45, 100%, 65%;
+            --primary-dark: 45, 100%, 55%;
+            --primary-light: 45, 100%, 75%;
+            --accent: 30, 100%, 60%;
+            --background: 0, 0%, 3%;
+            --surface: 0, 0%, 8%;
+            --surface-elevated: 0, 0%, 12%;
+            --text-primary: 45, 80%, 90%;
+            --text-secondary: 45, 40%, 70%;
+            --text-muted: 45, 20%, 50%;
+            --border: 45, 30%, 20%;
+            --shadow: 45, 100%, 20%;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            min-height: 100vh;
+            background: 
+                radial-gradient(circle at 40% 10%, hsla(var(--primary), 0.15) 0%, transparent 50%),
+                radial-gradient(circle at 60% 90%, hsla(var(--accent), 0.12) 0%, transparent 50%),
+                radial-gradient(circle at 80% 30%, hsla(var(--primary), 0.08) 0%, transparent 60%),
+                linear-gradient(135deg, hsl(var(--background)) 0%, hsl(0, 0%, 1%) 100%);
+            color: hsl(var(--text-primary));
+            overflow-x: hidden;
+        }
+
+        body::before {
+            content: '';
+            position: fixed;
+            inset: 0;
+            background: 
+                conic-gradient(from 0deg at 20% 20%, transparent, hsla(var(--primary), 0.02), transparent),
+                conic-gradient(from 90deg at 80% 80%, transparent, hsla(var(--accent), 0.015), transparent);
+            pointer-events: none;
+            z-index: 1;
+            animation: gradientSpin 25s linear infinite;
+        }
+
+        @keyframes gradientSpin {
+            to { transform: rotate(360deg); }
+        }
+
+        .container {
+            position: relative;
+            z-index: 10;
+            max-width: 1600px;
+            margin: 0 auto;
+            padding: 2rem;
+            min-height: 100vh;
+        }
+
+        .top-navigation {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 2rem;
+            position: relative;
+        }
+
+        .back-button {
+            background: hsla(var(--surface-elevated), 0.8);
+            border: 1px solid hsla(var(--border), 0.4);
+            color: hsl(var(--text-secondary));
+            backdrop-filter: blur(10px);
+            border-radius: 1rem;
+            padding: 0.8rem 1.5rem;
+            font-weight: 500;
+            font-family: inherit;
+            font-size: 0.9rem;
+            cursor: pointer;
+            transition: all 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .back-button:hover {
+            background: hsla(var(--surface-elevated), 0.9);
+            border-color: hsla(var(--primary), 0.4);
+            color: hsl(var(--text-primary));
+            transform: translateY(-1px);
+            box-shadow: 
+                0 4px 15px hsla(var(--primary), 0.15),
+                0 1px 0 hsla(var(--primary), 0.1) inset;
+        }
+
+        .dropdown-container {
+            position: relative;
+            display: inline-block;
+        }
+
+        .dropdown-button {
+            background: hsla(var(--surface-elevated), 0.8);
+            border: 1px solid hsla(var(--border), 0.4);
+            color: hsl(var(--text-secondary));
+            backdrop-filter: blur(10px);
+            border-radius: 1rem;
+            padding: 0.8rem 1.5rem;
+            font-weight: 500;
+            font-family: inherit;
+            font-size: 0.9rem;
+            cursor: pointer;
+            transition: all 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            outline: none;
+        }
+
+        .dropdown-button:hover {
+            background: hsla(var(--surface-elevated), 0.9);
+            border-color: hsla(var(--primary), 0.4);
+            color: hsl(var(--text-primary));
+            transform: translateY(-1px);
+            box-shadow: 
+                0 4px 15px hsla(var(--primary), 0.15),
+                0 1px 0 hsla(var(--primary), 0.1) inset;
+        }
+
+        .dropdown-arrow {
+            transition: transform 0.3s ease;
+            font-size: 0.8rem;
+        }
+
+        .dropdown-button.active .dropdown-arrow {
+            transform: rotate(180deg);
+        }
+
+        .dropdown-menu {
+            position: absolute;
+            top: 100%;
+            right: 0;
+            margin-top: 0.5rem;
+            background: hsla(var(--surface-elevated), 0.95);
+            border: 1px solid hsla(var(--border), 0.6);
+            border-radius: 1.5rem;
+            padding: 1rem;
+            backdrop-filter: blur(20px);
+            box-shadow: 
+                0 12px 40px hsla(var(--shadow), 0.3),
+                0 1px 0 hsla(var(--primary), 0.1) inset;
+            z-index: 1000;
+            min-width: 200px;
+            opacity: 0;
+            visibility: hidden;
+            transform: translateY(-10px);
+            transition: all 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+        }
+
+        .dropdown-menu.show {
+            opacity: 1;
+            visibility: visible;
+            transform: translateY(0);
+        }
+
+        .dropdown-item {
+            display: block;
+            padding: 0.75rem 1rem;
+            color: hsl(var(--text-secondary));
+            text-decoration: none;
+            border-radius: 0.8rem;
+            margin-bottom: 0.5rem;
+            transition: all 0.3s ease;
+            font-size: 0.9rem;
+            font-weight: 500;
+        }
+
+        .dropdown-item:last-child {
+            margin-bottom: 0;
+        }
+
+        .dropdown-item:hover {
+            background: hsla(var(--primary), 0.1);
+            color: hsl(var(--text-primary));
+            transform: translateX(4px);
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 3rem;
+            animation: headerSlide 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+        }
+
+        @keyframes headerSlide {
+            from { opacity: 0; transform: translateY(-30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .logo {
+            font-size: 3.5rem;
+            font-weight: 700;
+            background: linear-gradient(135deg, hsl(var(--primary)) 0%, hsl(var(--primary-light)) 50%, hsl(var(--accent)) 100%);
+            background-clip: text;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 0.5rem;
+            letter-spacing: -0.02em;
+        }
+
+        .subtitle {
+            font-size: 1.5rem;
+            color: hsl(var(--text-secondary));
+            font-weight: 400;
+            margin-bottom: 0.75rem;
+        }
+
+        .description {
+            font-size: 1.1rem;
+            color: hsl(var(--text-muted));
+            max-width: 800px;
+            margin: 0 auto;
+            line-height: 1.7;
+        }
+
+        .main-workspace {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 2rem;
+            height: calc(100vh - 280px);
+            min-height: 600px;
+            animation: workspaceSlide 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94) 0.3s both;
+        }
+
+        @keyframes workspaceSlide {
+            from { opacity: 0; transform: translateY(40px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .input-panel, .output-panel {
+            background: hsla(var(--surface), 0.85);
+            border: 1px solid hsla(var(--border), 0.6);
+            border-radius: 2.5rem;
+            backdrop-filter: blur(25px);
+            box-shadow: 
+                0 15px 50px hsla(var(--shadow), 0.3),
+                0 1px 0 hsla(var(--primary), 0.1) inset;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .input-panel::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: linear-gradient(90deg, 
+                transparent, 
+                hsl(var(--primary)), 
+                hsl(var(--primary-light)), 
+                hsl(var(--accent)), 
+                transparent
+            );
+        }
+
+        .output-panel::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: linear-gradient(90deg, 
+                transparent, 
+                hsl(var(--accent)), 
+                hsl(var(--primary-light)), 
+                hsl(var(--primary)), 
+                transparent
+            );
+        }
+
+        .panel-header {
+            padding: 2rem 2.5rem 1rem;
+            border-bottom: 1px solid hsla(var(--border), 0.3);
+            background: hsla(var(--surface), 0.5);
+        }
+
+        .panel-title {
+            font-size: 1.4rem;
+            font-weight: 600;
+            color: hsl(var(--text-primary));
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .panel-subtitle {
+            color: hsl(var(--text-muted));
+            font-size: 0.95rem;
+            line-height: 1.5;
+        }
+
+        .panel-content {
+            flex: 1;
+            padding: 2rem 2.5rem;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .text-area {
+            flex: 1;
+            width: 100%;
+            background: hsla(var(--surface-elevated), 0.9);
+            border: 1px solid hsla(var(--border), 0.4);
+            border-radius: 1.5rem;
+            padding: 1.5rem;
+            color: hsl(var(--text-primary));
+            font-size: 1rem;
+            font-family: inherit;
+            line-height: 1.6;
+            resize: none;
+            backdrop-filter: blur(15px);
+            transition: all 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+            min-height: 200px;
+        }
+
+        .text-area:focus {
+            outline: none;
+            border-color: hsla(var(--primary), 0.6);
+            background: hsla(var(--surface-elevated), 1);
+            box-shadow: 
+                0 0 0 3px hsla(var(--primary), 0.1),
+                0 10px 40px hsla(var(--primary), 0.2);
+            transform: translateY(-1px);
+        }
+
+        .text-area::placeholder {
+            color: hsl(var(--text-muted));
+            font-style: italic;
+        }
+
+        .output-area {
+            flex: 1;
+            background: hsla(var(--surface-elevated), 0.7);
+            border: 1px solid hsla(var(--border), 0.3);
+            border-radius: 1.5rem;
+            padding: 1.5rem;
+            color: hsl(var(--text-primary));
+            font-size: 1rem;
+            line-height: 1.6;
+            backdrop-filter: blur(15px);
+            white-space: pre-wrap;
+            overflow-y: auto;
+            min-height: 200px;
+            scrollbar-width: thin;
+            scrollbar-color: hsla(var(--primary), 0.5) transparent;
+        }
+
+        .output-area::-webkit-scrollbar {
+            width: 6px;
+        }
+
+        .output-area::-webkit-scrollbar-track {
+            background: transparent;
+        }
+
+        .output-area::-webkit-scrollbar-thumb {
+            background: linear-gradient(180deg, hsla(var(--primary), 0.6), hsla(var(--primary), 0.3));
+            border-radius: 3px;
+        }
+
+        .action-buttons {
+            display: flex;
+            gap: 1rem;
+            margin-top: 1.5rem;
+            flex-wrap: wrap;
+        }
+
+        .btn {
+            background: linear-gradient(135deg, hsl(var(--primary)) 0%, hsl(var(--primary-dark)) 100%);
+            color: hsl(0, 0%, 5%);
+            border: none;
+            border-radius: 1.2rem;
+            padding: 1rem 2rem;
+            font-weight: 600;
+            font-family: inherit;
+            font-size: 0.95rem;
+            cursor: pointer;
+            transition: all 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+            position: relative;
+            overflow: hidden;
+            box-shadow: 0 8px 25px hsla(var(--primary), 0.35);
+            flex: 1;
+            min-width: 120px;
+        }
+
+        .btn::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(135deg, transparent 0%, hsla(255, 255, 255, 0.2) 50%, transparent 100%);
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .btn:hover::before {
+            opacity: 1;
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 12px 40px hsla(var(--primary), 0.45);
+        }
+
+        .btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .btn-secondary {
+            background: hsla(var(--surface-elevated), 0.8);
+            color: hsl(var(--text-primary));
+            border: 1px solid hsla(var(--border), 0.5);
+            box-shadow: 0 4px 15px hsla(0, 0%, 0%, 0.1);
+        }
+
+        .btn-secondary:hover {
+            background: hsla(var(--surface-elevated), 1);
+            border-color: hsla(var(--primary), 0.4);
+            box-shadow: 0 8px 25px hsla(0, 0%, 0%, 0.15);
+        }
+
+        .empty-state {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100%;
+            text-align: center;
+            color: hsl(var(--text-muted));
+            padding: 2rem;
+        }
+
+        .empty-icon {
+            font-size: 4rem;
+            margin-bottom: 1rem;
+            opacity: 0.6;
+        }
+
+        .loading-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100%;
+            gap: 1.5rem;
+        }
+
+        .spinner {
+            width: 50px;
+            height: 50px;
+            border: 4px solid hsla(var(--primary), 0.2);
+            border-top: 4px solid hsl(var(--primary));
+            border-radius: 50%;
+            animation: spin 1.2s linear infinite;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        .loading-text {
+            color: hsl(var(--text-secondary));
+            font-weight: 500;
+            font-size: 1.1rem;
+        }
+
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem;
+            margin-top: 1.5rem;
+        }
+
+        .feature-chip {
+            background: hsla(var(--surface-elevated), 0.6);
+            border: 1px solid hsla(var(--border), 0.3);
+            border-radius: 1rem;
+            padding: 0.75rem 1rem;
+            text-align: center;
+            color: hsl(var(--text-secondary));
+            font-size: 0.9rem;
+            backdrop-filter: blur(10px);
+            transition: all 0.3s ease;
+        }
+
+        .feature-chip:hover {
+            background: hsla(var(--primary), 0.1);
+            border-color: hsla(var(--primary), 0.3);
+            color: hsl(var(--text-primary));
+        }
+
+        @media (max-width: 1200px) {
+            .main-workspace {
+                grid-template-columns: 1fr;
+                gap: 1.5rem;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 1rem;
+            }
+            
+            .logo {
+                font-size: 2.8rem;
+            }
+            
+            .subtitle {
+                font-size: 1.3rem;
+            }
+            
+            .description {
+                font-size: 1rem;
+            }
+            
+            .panel-content {
+                padding: 1.5rem;
+            }
+            
+            .action-buttons {
+                flex-direction: column;
+            }
+            
+            .btn {
+                flex: none;
+            }
+
+            .top-navigation {
+                flex-direction: column;
+                gap: 1rem;
+                align-items: stretch;
+            }
+
+            .back-button, .dropdown-button {
+                width: 100%;
+                justify-content: center;
+            }
+
+            .dropdown-menu {
+                right: 0;
+                left: 0;
+                min-width: auto;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="top-navigation">
+            <a href="index.html" class="back-button">
+                ← Back to Homework Bot
+            </a>
+            <div class="dropdown-container">
+                <button class="dropdown-button" id="moreButton" onclick="toggleDropdown()">
+                    More
+                    <span class="dropdown-arrow">▼</span>
+                </button>
+                <div class="dropdown-menu" id="dropdownMenu">
+                    <a href="pdf-chat.html" class="dropdown-item">📄 PDF Chat</a>
+                    <a href="youtube-summarizer.html" class="dropdown-item">🎥 YouTube Summarizer</a>
+                    <a href="main.html" class="dropdown-item">🚀 Exit to UNBLEEKED</a>
+                </div>
+            </div>
+        </div>
+        
+        <div class="header">
+            <h1 class="logo">UNBLEEKED</h1>
+            <p class="subtitle">🤖✨ AI Humanizer Pro</p>
+            <p class="description">Transform robotic AI-generated text into natural, human-like content. Our advanced AI rewrites text to sound more authentic, engaging, and naturally human while preserving the original meaning.</p>
+        </div>
+
+        <div class="main-workspace">
+            <!-- Input Panel -->
+            <div class="input-panel">
+                <div class="panel-header">
+                    <h2 class="panel-title">
+                        🤖 AI-Generated Text Input
+                    </h2>
+                    <p class="panel-subtitle">Paste your AI-generated content below to make it sound more human and natural</p>
+                </div>
+                <div class="panel-content">
+                    <textarea 
+                        id="inputText" 
+                        class="text-area" 
+                        placeholder="Paste your AI-generated text here...
+
+Example:
+'The implementation of artificial intelligence in modern business operations has demonstrated significant potential for optimization and efficiency enhancement across various operational domains.'
+
+Will become more human and natural!"
+                    ></textarea>
+                    
+                    <div class="action-buttons">
+                        <button class="btn" id="humanizeBtn" onclick="humanizeText()">
+                            ✨ Humanize Text
+                        </button>
+                        <button class="btn btn-secondary" onclick="clearInput()">
+                            🗑️ Clear
+                        </button>
+                    </div>
+
+                    <div class="features-grid">
+                        <div class="feature-chip">🎯 Natural Tone</div>
+                        <div class="feature-chip">💬 Conversational</div>
+                        <div class="feature-chip">🔥 Engaging</div>
+                        <div class="feature-chip">✅ Authentic</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Output Panel -->
+            <div class="output-panel">
+                <div class="panel-header">
+                    <h2 class="panel-title">
+                        ✨ Humanized Output
+                    </h2>
+                    <p class="panel-subtitle">Your text transformed into natural, human-like content</p>
+                </div>
+                <div class="panel-content">
+                    <div id="outputText" class="output-area">
+                        <div class="empty-state">
+                            <div class="empty-icon">📝</div>
+                            <h3>Ready to humanize your text</h3>
+                            <p>Enter some AI-generated text on the left and click "Humanize Text" to see the magic happen!</p>
+                        </div>
+                    </div>
+                    
+                    <div class="action-buttons">
+                        <button class="btn btn-secondary" id="copyBtn" onclick="copyToClipboard()" disabled>
+                            📋 Copy Result
+                        </button>
+                        <button class="btn btn-secondary" onclick="clearOutput()" disabled id="clearOutputBtn">
+                            🗑️ Clear Output
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+
+function showLoading() {
+const outputArea = document.getElementById('outputText');
+const humanizeBtn = document.getElementById('humanizeBtn');
+
+humanizeBtn.disabled = true;
+humanizeBtn.innerHTML = '🔄 Processing...';
+
+outputArea.innerHTML = `
+<div class="loading-container">
+<div class="spinner"></div>
+<div class="loading-text">Humanizing your text...</div>
+</div>
+`;
+}
+
+function hideLoading(){
+const humanizeBtn = document.getElementById('humanizeBtn');
+humanizeBtn.disabled = false;
+humanizeBtn.innerHTML = '✨ Humanize Text';
+}
+
+function enableOutputButtons(){
+document.getElementById('copyBtn').disabled=false;
+document.getElementById('clearOutputBtn').disabled=false;
+}
+
+function disableOutputButtons(){
+document.getElementById('copyBtn').disabled=true;
+document.getElementById('clearOutputBtn').disabled=true;
+}
+
+
+
+function humanizeText(){
+
+const inputText = document.getElementById("inputText").value.trim();
+
+if(!inputText){
+alert("Please enter text first.");
+return;
+}
+
+showLoading();
+
+setTimeout(()=>{
+
+let text = inputText;
+
+
+
+/* robotic phrase replacements */
+
+const replacements = {
+
+"furthermore":"also",
+"moreover":"on top of that",
+"additionally":"plus",
+"in conclusion":"so basically",
+"it is important to note that":"one thing to keep in mind is",
+"due to the fact that":"because",
+"in order to":"to",
+"individuals":"people",
+"numerous":"a lot of",
+"demonstrates":"shows",
+"significant":"big",
+"utilize":"use",
+"facilitates":"helps",
+"implement":"start using",
+"optimization":"improving",
+"therefore":"so",
+"however":"but",
+"thus":"so",
+"as a result":"because of this"
+
+};
+
+for(const key in replacements){
+
+const regex = new RegExp(key,"gi");
+text = text.replace(regex,replacements[key]);
+
+}
+
+
+
+/* split sentences */
+
+let sentences = text.split(/(?<=[.!?])\s+/);
+
+
+
+/* tone additions */
+
+const starters = [
+"Honestly,",
+"To be fair,",
+"In simple terms,",
+"Basically,",
+"Here's the thing —",
+"At the end of the day,"
+];
+
+const enders = [
+"you know?",
+"which makes sense.",
+"and that really matters.",
+"when you think about it."
+];
+
+const transitions = [
+"Also,",
+"Plus,",
+"On top of that,",
+"Another thing is",
+"At the same time,"
+];
+
+
+/* sentence humanizing */
+
+for(let i=0;i<sentences.length;i++){
+
+let s = sentences[i].trim();
+
+if(s.length > 140){
+
+let mid = Math.floor(s.length/2);
+
+let breakPoint = s.indexOf(" ", mid);
+
+if(breakPoint !== -1){
+
+sentences[i] = s.slice(0,breakPoint) + ". " + s.slice(breakPoint+1);
+
+}
+
+}
+
+
+
+/* random starter */
+
+if(Math.random() < 0.22){
+
+sentences[i] = starters[Math.floor(Math.random()*starters.length)] + " " + sentences[i];
+
+}
+
+
+
+/* random ending */
+
+if(Math.random() < 0.18){
+
+sentences[i] += " " + enders[Math.floor(Math.random()*enders.length)];
+
+}
+
+
+
+/* add transitions */
+
+if(i>0 && Math.random()<0.25){
+
+sentences[i] = transitions[Math.floor(Math.random()*transitions.length)] + " " + sentences[i];
+
+}
+
+}
+
+
+
+/* join sentences */
+
+let result = sentences.join(" ");
+
+
+
+/* remove double spaces */
+
+result = result.replace(/\s+/g," ").trim();
+
+
+
+document.getElementById("outputText").textContent = result;
+
+enableOutputButtons();
+
+hideLoading();
+
+},700);
+
+}
+
+
+
+function clearInput(){
+document.getElementById("inputText").value="";
+}
+
+
+
+function clearOutput(){
+
+document.getElementById("outputText").innerHTML=`
+<div class="empty-state">
+<div class="empty-icon">📝</div>
+<h3>Ready to humanize your text</h3>
+<p>Enter some AI-generated text on the left and click "Humanize Text".</p>
+</div>
+`;
+
+disableOutputButtons();
+
+}
+
+
+
+async function copyToClipboard(){
+
+const text = document.getElementById("outputText").textContent;
+
+await navigator.clipboard.writeText(text);
+
+const btn = document.getElementById("copyBtn");
+
+const original = btn.innerHTML;
+
+btn.innerHTML="✅ Copied!";
+
+setTimeout(()=>{
+
+btn.innerHTML=original;
+
+},1500);
+
+}
+
+
+
+/* dropdown */
+
+function toggleDropdown(){
+
+const dropdownMenu=document.getElementById("dropdownMenu");
+
+const moreButton=document.getElementById("moreButton");
+
+dropdownMenu.classList.toggle("show");
+
+moreButton.classList.toggle("active");
+
+}
+
+
+
+document.addEventListener("click",function(event){
+
+const dropdownContainer=document.querySelector(".dropdown-container");
+
+const dropdownMenu=document.getElementById("dropdownMenu");
+
+const moreButton=document.getElementById("moreButton");
+
+if(!dropdownContainer.contains(event.target)){
+
+dropdownMenu.classList.remove("show");
+
+moreButton.classList.remove("active");
+
+}
+
+});
+
+
+
+document.getElementById("inputText").addEventListener("input",function(){
+
+this.style.height="auto";
+
+this.style.height=Math.max(this.scrollHeight,200)+"px";
+
+});
+
+</script>
+</body>
+</html>
