@@ -505,6 +505,33 @@ Unbleeked Portal
             }
         }
 
+        function setCloak(title, iconUrl) {
+            document.title = title;
+            const existingIcons = document.querySelectorAll('link[rel*="icon"]');
+            existingIcons.forEach(icon => icon.remove());
+            document.getElementById("settings-menu").style.display = "none";
+
+            const newIcon = document.createElement('link');
+            newIcon.id = 'favicon';
+            newIcon.rel = 'icon';
+            newIcon.type = 'image/x-icon';
+            newIcon.href = iconUrl + '?v=' + new Date().getTime();
+            document.getElementsByTagName('head')[0].appendChild(newIcon);
+
+            localStorage.setItem('cloakTitle', title);
+            localStorage.setItem('cloakIcon', iconUrl);
+        }
+        
+        window.addEventListener("load", () => {
+    const savedTitle = localStorage.getItem("cloakTitle");
+    const savedIcon = localStorage.getItem("cloakIcon");
+
+    if (savedTitle) document.title = savedTitle;
+    if (savedIcon) {
+        const favicon = document.getElementById("favicon");
+        if (favicon) favicon.href = savedIcon;
+    }
+});
     
         // Typewriter effect
         const typewriter = document.getElementById('typewriter');
