@@ -30,6 +30,132 @@ overflow-x:hidden;
 100%{background-position:0% 50%}
 }
 
+  /* 2. MECHANICAL GEAR SETTINGS ICON */
+        .settings-icon {
+            position: fixed; top: 25px; right: 25px;
+            width: 50px; height: 50px;
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 14px;
+            display: flex; justify-content: center; align-items: center;
+            cursor: pointer; z-index: 2000;
+            transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+        }
+        .settings-icon:hover { transform: scale(1.1); border-color: #007bff; box-shadow: 0 0 20px rgba(0, 123, 255, 0.5); }
+        .gear-shape { width: 24px; height: 24px; background: #fff; border-radius: 50%; position: relative; animation: gear-rotate 8s linear infinite; }
+        .gear-shape::before, .gear-shape::after { content: ""; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); width: 32px; height: 8px; background: #fff; border-radius: 2px; }
+        .gear-shape::after { transform: translate(-50%, -50%) rotate(90deg); }
+        .gear-inner { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); width: 10px; height: 10px; background: #1a1a2e; border-radius: 50%; z-index: 2; }
+        .gear-teeth-extra { position: absolute; width: 100%; height: 100%; transform: rotate(45deg); }
+        .gear-teeth-extra::before, .gear-teeth-extra::after { content: ""; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); width: 32px; height: 8px; background: #fff; border-radius: 2px; }
+        .gear-teeth-extra::after { transform: translate(-50%, -50%) rotate(90deg); }
+        @keyframes gear-rotate { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
+
+        /* 3. CLOAK MENU */
+        #settings-menu {
+            display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0, 0, 0, 0.6); backdrop-filter: blur(20px);
+            z-index: 2001; justify-content: center; align-items: center;
+        }
+        .settings-content {
+            background: rgba(255, 255, 255, 0.05); padding: 40px; border-radius: 40px;
+            border: 1px solid rgba(255, 255, 255, 0.15); width: 380px; text-align: left;
+            box-shadow: 0 25px 50px rgba(0,0,0,0.5);
+
+            /* Make settings content scrollable when tall */
+            max-height: calc(100vh - 80px);
+            overflow-y: auto;
+            -webkit-overflow-scrolling: touch;
+        }
+        .settings-content h2 { margin: 0 0 10px 0; font-size: 28px; color: #007bff; }
+        .cloak-option {
+            display: flex; align-items: center; width: 100%; padding: 15px; margin: 12px 0;
+            border: 1px solid rgba(255, 255, 255, 0.1); border-radius: 18px;
+            background: rgba(255, 255, 255, 0.03); color: white;
+            cursor: pointer; transition: 0.3s; font-size: 16px; font-weight: 500;
+        }
+        .cloak-option:hover { background: rgba(0, 123, 255, 0.2); border-color: #007bff; transform: translateX(10px); }
+        .cloak-option img { width: 24px; height: 24px; margin-right: 15px; border-radius: 4px; }
+        .close-settings { margin-top: 20px; width: 100%; padding: 15px; border-radius: 18px; border: none; background: #333; color: white; cursor: pointer; }
+
+        /* Scrollbar polish for settings-content */
+        .settings-content::-webkit-scrollbar { width: 10px; }
+        .settings-content::-webkit-scrollbar-track { background: transparent; }
+        .settings-content::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.08); border-radius: 8px; border: 2px solid transparent; background-clip: padding-box; }
+        .settings-content::-webkit-scrollbar-thumb:hover { background: rgba(255,255,255,0.12); }
+
+        /* Admin modal and controls */
+        #admin-modal {
+            display: none; position: fixed; z-index: 4000; left: 0; top: 0; width: 100%; height: 100%;
+            background: rgba(0,0,0,0.6); backdrop-filter: blur(6px);
+            justify-content: center; align-items: center;
+        }
+        .admin-box {
+            width: 360px; background: rgba(10,10,20,0.95); padding: 20px; border-radius: 14px; color: white;
+            border: 1px solid rgba(255,255,255,0.06); box-shadow: 0 10px 30px rgba(0,0,0,0.6);
+        }
+        .admin-box h3 { margin-top: 0; color: #ffd166; }
+        .admin-input { width: 100%; padding: 12px; margin-top: 10px; border-radius: 10px; border: 1px solid rgba(255,255,255,0.14); background: rgba(255,255,255,0.02); color: white; }
+        .admin-actions { display:flex; gap:10px; margin-top: 12px; justify-content:flex-end; }
+        .btn { padding: 10px 14px; border-radius: 10px; border: none; cursor: pointer; font-weight: 600; }
+        .btn-primary { background: #007bff; color: white; }
+        .btn-ghost { background: rgba(255,255,255,0.04); color: white; border: 1px solid rgba(255,255,255,0.06); }
+
+        #admin-controls { display: none; margin-top: 18px; padding: 12px; border-radius: 12px; background: rgba(255,255,255,0.02); border: 1px solid rgba(255,255,255,0.04); }
+        #admin-controls h4 { margin: 6px 0 12px 0; color: #ffd166; }
+        .admin-btn { display:block; width:100%; text-align:left; padding:10px; margin:8px 0; border-radius:10px; background: rgba(0,0,0,0.35); border:1px solid rgba(255,255,255,0.04); color:white; cursor:pointer; }
+
+        /* 4. CONTENT GRID */
+        h1 { font-size: 85px; margin: 60px 0 20px 0; letter-spacing: 10px; text-transform: uppercase; font-weight: 900; text-shadow: 0 0 10px rgba(0, 123, 255, 0.7); }
+        .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); gap: 30px; padding: 40px; max-width: 1200px; margin: 0 auto; }
+        .game-card {
+            cursor: pointer; background: rgba(255, 255, 255, 0.05); backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1); border-radius: 20px;
+            overflow: hidden; transition: 0.4s; position: relative;
+        }
+        .img-container {
+            width: 100%; height: 180px;
+            background: linear-gradient(45deg, #1e1e2f, #2a2a40);
+            display: flex; justify-content: center; align-items: center; position: relative;
+        }
+        .img-container::after { content: "🎮"; font-size: 50px; opacity: 0.2; }
+        .game-card img { width: 100%; height: 100%; object-fit: cover; position: absolute; top: 0; left: 0; z-index: 2; }
+        .game-card:hover { transform: translateY(-10px); border-color: #007bff; box-shadow: 0 0 20px rgba(0,123,255,0.6); }
+        .game-card p { padding: 15px; margin: 0; font-weight: 600; background: rgba(0,0,0,0.3); position: relative; z-index: 3; }
+
+        /* 5. GAME IFRAME OVERLAY */
+        #game-container { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: black; z-index: 3000; }
+        iframe { width: 100%; height: 100%; border: none; }
+        .close-btn { position: absolute; top: 20px; right: 30px; font-size: 50px; color: rgba(255,255,255,0.7); cursor: pointer; z-index: 3001; }
+
+        /* PANIC KEY & URL INPUT POLISH */
+        #panic-key-input,
+        #panic-url-input {
+            width: 100%;
+            padding: 12px 15px;
+            margin-top: 5px;
+            margin-bottom: 15px;
+            border-radius: 12px;
+            border: 1px solid rgba(255,255,255,0.3);
+            background: rgba(255,255,255,0.05);
+            color: white;
+            font-size: 16px;
+            font-weight: 500;
+            outline: none;
+            transition: 0.3s;
+        }
+
+        #panic-key-input:focus,
+        #panic-url-input:focus {
+            border-color: #007bff;
+            background: rgba(0,123,255,0.1);
+            box-shadow: 0 0 8px rgba(0,123,255,0.4);
+        }
+        
+@media (max-width: 768px) {
+
 h1{
 font-size:120px;
 margin:60px 0 20px 0;
@@ -199,11 +325,114 @@ letter-spacing:6px;
 transition:transform .3s ease, box-shadow .3s ease, border-color .3s ease;
 }
 
+.admin-btn.locked {
+    opacity: 0.5;
+    cursor: not-allowed;
+    pointer-events: none;
+    filter: grayscale(1);
+}
+
+.admin-btn.locked::after {
+    content: " 🔒";
+}
+
+
+    .settings-icon {
+        width: 56px;
+        height: 56px;
+        top: 16px;
+        right: 16px;
+    }
+
+    .settings-content {
+        width: calc(100% - 32px);
+        padding: 24px;
+        border-radius: 24px;
+    }
+
 </style>
 
 </head>
 
 <body>
+
+  <!-- SETTINGS ICON -->
+    <div class="settings-icon" onclick="toggleSettings()">
+        <div class="gear-shape">
+            <div class="gear-inner"></div>
+            <div class="gear-teeth-extra"></div>
+        </div>
+    </div>
+    
+     <!-- CLOAK MENU -->
+    <div id="settings-menu" onclick="toggleSettings()">
+        <div class="settings-content" onclick="event.stopPropagation()">
+            
+             <!-- ADMIN LOGIN BUTTON -->
+            <button class="cloak-option" onclick="openAdminLogin()">
+                <img src="images/Lock.png" alt="admin"> Admin Login
+            </button>
+
+            <hr style="opacity:0.2; margin:20px 0;">
+            
+            <h2>Tab Cloak</h2>
+            <p style="opacity:0.7; margin-bottom: 20px;">Hide this tab in your browser bar.</p>
+
+            <button class="cloak-option" onclick="setCloak('Google Drive', 'https://drive.google.com/favicon.ico')">
+                <img src="images/Google_Drive_icon.png" alt=""> Google Drive
+            </button>
+            <button class="cloak-option" onclick="setCloak('Google Classroom', 'https://edu.google.com/images/svg/gsuite-icons/classroom.svg')">
+                <img src="https://edu.google.com/images/svg/gsuite-icons/classroom.svg" alt=""> Google Classroom
+            </button>
+            <button class="cloak-option" onclick="setCloak('Desmos | Graphing Calculator', 'https://www.desmos.com/favicon.ico')">
+                <img src="images/DesmosIcon.png" alt=""> Desmos
+            </button>
+            <button class="cloak-option" onclick="setCloak('ELANCO Gateway', 'https://resources.finalsite.net/images/f_auto,q_auto,t_image_size_1/v1627325122/elancok12paus/wwvhvbwalfumgihhoafl/ELANCO-Logo-286c.png')">
+                <img src="images/ELANCO.png" alt=""> ELANCO Gateway
+            </button>
+            <button class="cloak-option" onclick="setCloak('UNBLEEKED', 'https://www.google.com/favicon.ico')">
+                <img src="https://www.google.com/favicon.ico" alt=""> Reset to Default
+            </button>
+
+            
+
+            <hr style="opacity:0.2; margin:20px 0;">
+
+            <!-- 🔴 PANIC KEY SETTINGS -->
+            <h3>Panic Key</h3>
+
+            <label>Key (single character)</label>
+            <input id="panic-key-input" maxlength="1" placeholder="`">
+
+            <label style="margin-top:10px;">Redirect URL</label>
+            <input id="panic-url-input" placeholder="https://drive.google.com">
+
+            <button class="cloak-option" onclick="toggleSettings()">Save & Close</button>
+
+            <!-- ADMIN CONTROLS (hidden until admin) -->
+            <div id="admin-controls" aria-hidden="true">
+                <h4>Admin Controls</h4>
+                <button class="admin-btn" onclick="adminAddGame()">➕ Add Game</button>
+                <button class="admin-btn" onclick="adminRemoveLastGame()">🗑️ Remove Last Game</button>
+                <button class="admin-btn" onclick="revokeAdmin()">🔒 Revoke Admin</button>
+                <button class="admin-btn" onclick="adminEditGame()">✏️ Edit Admin Game</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- ADMIN PASSWORD MODAL -->
+    <div id="admin-modal" onclick="closeAdminModal()">
+        <div class="admin-box" onclick="event.stopPropagation()">
+            <h3>Admin Login</h3>
+            <p style="opacity:0.8; margin-top:6px;">Enter admin password to unlock controls.</p>
+            <input id="admin-password" class="admin-input" type="password" placeholder="Password">
+            <div class="admin-actions">
+                <button class="btn btn-ghost" onclick="closeAdminModal()">Cancel</button>
+                <button class="btn btn-primary" onclick="verifyAdminPassword()">Unlock</button>
+            </div>
+            <p id="admin-error" style="color:#ff6b6b; opacity:0.9; margin-top:10px; display:none;">Incorrect password.</p>
+        </div>
+    </div>
 
 <div class="background">
 <div class="glow-1"></div>
@@ -254,6 +483,29 @@ Unbleeked Portal
 </div>
 
   <script>
+    
+     // Silent revoke used when closing the settings menu so admin controls are removed
+        function revokeAdminLocal() {
+            try {
+                localStorage.removeItem('isAdmin');
+            } catch (e) {}
+            showAdminControls(false);
+        }
+
+        function toggleSettings() {
+            const menu = document.getElementById('settings-menu');
+            // Use computed style to reliably detect visibility
+            const isOpen = window.getComputedStyle(menu).display === 'flex';
+            if (isOpen) {
+                menu.style.display = 'none';
+                // When leaving settings, remove admin controls so re-entering requires login
+                revokeAdminLocal();
+            } else {
+                menu.style.display = 'flex';
+            }
+        }
+
+    
         // Typewriter effect
         const typewriter = document.getElementById('typewriter');
         const text = 'UNBLEEKED';
