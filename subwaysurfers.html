@@ -532,7 +532,7 @@ transition:transform .3s ease, box-shadow .3s ease, border-color .3s ease;
                 </div>
 
               <div class="game-card" data-category="pc">
-                    <div class="img-container" onclick="window.location.href='/g/subwaysurfers/san-fransico.html'">
+                    <div class="img-container" onclick="window.location.href='/g/subwaysurfers/san-fransisco.html'">
                         <img src="https://files.catbox.moe/ds1wxj.jpg" alt="San Francisco">
                     </div>
                     <div class="game-name">San Francisco</div>
@@ -568,9 +568,9 @@ transition:transform .3s ease, box-shadow .3s ease, border-color .3s ease;
                 <a href="pp.html" class="footer-link">privacy policy</a>
                 <a href="ul.html" class="footer-link">update log</a>
                 <a href="/faq/index.html" class="footer-link">faq</a>
-                <a id="openBlankList" class="footer-link">open blank</a>
+                <a href="#" class="footer-link" onclick="openBlank(); return false;">open blank</a>
                 <a href="https://github.com/LEBRONGOAT2323" target="_blank" class="footer-link">github</a>
-                <a href=" " target="_blank" class="footer-link">support</a>
+                <a href="#" target="_blank" class="footer-link">support</a>
             </div>
         </footer>
     </div>
@@ -644,42 +644,22 @@ transition:transform .3s ease, box-shadow .3s ease, border-color .3s ease;
         handleAutoGrid();
     </script>
     <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            var openBlankLink = document.getElementById('openBlankLink');
-        
-            openBlankLink.addEventListener('click', function(event) {
-                event.preventDefault();
-        
-                var newTab = window.open('about:blank', '_blank');
-        
-                if (newTab) {
-                    var newTabBody = newTab.document.body;
-                    newTabBody.style.padding = '0';
-                    newTabBody.style.margin = '0';
-                    newTabBody.style.border = 'hidden';
-        
-                    var iframe = document.createElement('iframe');
-                    iframe.src = window.location.href;
-                    iframe.style.width = '100%';
-                    iframe.style.height = '100%';
-                    iframe.style.border = 'hidden';
+        function openBlank() {
+    const newTab = window.open('about:blank', '_blank');
 
-                    iframe.onload = function() {
-                        var links = iframe.contentDocument.querySelectorAll('a[target="_blank"]');
-                        links.forEach(function(link) {
-                            link.addEventListener('click', function(event) {
-                                event.preventDefault();
-                                iframe.contentWindow.location.href = link.href;
-                            });
-                        });
-                    };
-        
-                    newTab.document.body.appendChild(iframe);
-                } else {
-                    alert("couldn't manage to open a new tab :(");
-                }
-            });
-        });
+    if (!newTab) {
+        alert("Popup blocked");
+        return;
+    }
+
+    newTab.document.write(`
+    <iframe src="${window.location.href}" 
+    style="position:fixed;top:0;left:0;width:100vw;height:100vh;border:none;">
+    </iframe>
+`);
+
+    newTab.document.close();
+}
         
         const glow1 = document.querySelector(".glow-1");
 const glow2 = document.querySelector(".glow-2");
