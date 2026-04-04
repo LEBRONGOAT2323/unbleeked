@@ -1,31 +1,36 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-    <title>GAMES | UNBLEEKED </title>
-    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&display=swap" rel="stylesheet">
-    <!-- Default favicon -->
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GAMES | UNBLEEKED</title>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&display=swap" rel="stylesheet">
     <link id="favicon" rel="icon" type="image/x-icon" href="https://files.catbox.moe/j364dj.png">
-
     <style>
-        /* 1. ANIMATED BACKGROUND */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
         body {
-            font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
-            margin: 0; padding: 0;
-            background: linear-gradient(-45deg, #0f0c29, #302b63, #24243e, #111);
-            background-size: 400% 400%;
-            animation: gradient 15s ease infinite;
-            color: white; text-align: center; min-height: 100vh;
+             font-family: 'Orbitron', monospace;
+            background:linear-gradient(-45deg,#0f0c29,#302b63,#24243e,#111);
+            background-size:400% 400%;
+            animation:gradient 15s ease infinite;
+            color:white;
+            text-align:center;
+            min-height:100vh;
+            overflow-x:hidden;
             overflow-x: hidden;
         }
-
-        @keyframes gradient {
-            0% { background-position: 0% 50%; }
-            50% { background-position: 100% 50%; }
-            100% { background-position: 0% 50%; }
+        
+        @keyframes gradient{
+        0%{background-position:0% 50%}
+        50%{background-position:100% 50%}
+        100%{background-position:0% 50%}
         }
-
+        
         /* 2. MECHANICAL GEAR SETTINGS ICON */
         .settings-icon {
             position: fixed; top: 25px; right: 25px;
@@ -125,6 +130,8 @@
         #game-container { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: black; z-index: 3000; }
         iframe { width: 100%; height: 100%; border: none; }
         .close-btn { position: absolute; top: 20px; right: 30px; font-size: 50px; color: rgba(255,255,255,0.7); cursor: pointer; z-index: 3001; }
+        opacity: 0;
+        transition: 0.3s;
 
         /* PANIC KEY & URL INPUT POLISH */
         #panic-key-input,
@@ -152,193 +159,265 @@
         
 @media (max-width: 768px) {
 
-    h1 {
-        font-size: 42px;
-        letter-spacing: 4px;
-        margin-top: 30px;
-    }
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+            position: relative;
+            z-index: 10;
+        }
 
-    .grid {
-        padding: 20px;
-        gap: 16px;
-    }
+        /* Background Effects */
+        .background {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 1;
+        }
 
-    .game-card {
-        border-radius: 16px;
-    }
+        .glow-ring {
+            position: absolute;
+            border-radius: 50%;
+            filter: blur(80px);
+        }
 
-    .img-container {
-        height: 140px;
-    }
-
-    .game-card p {
-        font-size: 15px;
-        padding: 12px;
-    }
-
-    .settings-icon {
-        width: 56px;
-        height: 56px;
-        top: 16px;
-        right: 16px;
-    }
-
-    .settings-content {
-        width: calc(100% - 32px);
-        padding: 24px;
-        border-radius: 24px;
-    }
-
-    .cloak-option {
-        padding: 14px;
-        font-size: 15px;
-        border-radius: 14px;
-    }
-
-    .cloak-option img {
-        width: 22px;
-        height: 22px;
-    }
-
-    .admin-box {
-        width: calc(100% - 40px);
-        padding: 20px;
-        border-radius: 18px;
-    }
-
-    .admin-input {
-        font-size: 16px; 
-    }
-
-    
-    .btn,
-    .admin-btn {
-        padding: 14px;
-        font-size: 15px;
-    }
-
-    
-    .close-btn {
-        font-size: 40px;
-        top: 12px;
-        right: 18px;
-    }
+        .glow-1 {
+top: 25%;
+left: 25%;
+width: 400px;
+height: 400px;
+background: rgba(212, 175, 55, 0.1);
+animation: float 12s ease-in-out infinite, pulseGlow 6s ease-in-out infinite;
 }
 
-    input,
-button,
-textarea {
-    font-size: 16px;
+.glow-2 {
+bottom: 25%;
+right: 25%;
+width: 400px;
+height: 400px;
+background: rgba(212, 175, 55, 0.08);
+animation: float 16s ease-in-out infinite reverse, pulseGlow 8s ease-in-out infinite;
 }
 
-.game-card,
-.cloak-option,
-.admin-btn,
-.btn {
-    -webkit-tap-highlight-color: transparent;
+.glow-3 {
+top: 50%;
+left: 50%;
+transform: translate(-50%, -50%);
+width: 800px;
+height: 800px;
+background: rgba(212, 175, 55, 0.05);
+filter: blur(120px);
+animation: float 20s ease-in-out infinite, pulseGlow 10s ease-in-out infinite;
 }
 
-.game-card:active {
-    transform: scale(0.97);
+        /* Header */
+        .header {
+            text-align: center;
+            padding: 2rem 0;
+        }
+
+        .back-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.75rem 1.5rem;
+            background: rgba(212, 175, 55, 0.1);
+            border: 1px solid rgba(255,255,255,0.3);
+            border-radius: 0.75rem;
+            color: #ffffff;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            margin-bottom: 2rem;
+        }
+
+        .back-btn:hover {
+            background: rgba(212, 175, 55, 0.2);
+            border-color: #ffffff;
+        }
+
+        .title {
+            font-size: 4rem;
+            font-weight: 900;
+            color: white;
+            text-shadow:0 0 10px rgba(0,123,255,0.7);
+            letter-spacing: 0.2em;
+            margin-bottom: 2rem;
+            animation: glow-pulse 2s ease-in-out infinite alternate;
+        }
+
+        .typewriter {
+            border-right: 2px solid #ffffff;
+            animation: typewriter 4s steps(5) 1s infinite, blink 1s step-end infinite;
+            white-space: nowrap;
+            overflow: hidden;
+            width: 5ch;
+            margin: 0 auto;
+        }
+
+        /* Controls */
+        .controls {
+            display: flex;
+            justify-content: center;
+            gap: 1.5rem;
+            margin-bottom: 3rem;
+            flex-wrap: wrap;
+        }
+
+        .search-container {
+            position: relative;
+        }
+
+        .search-input {
+            width: 300px;
+            height: 3.5rem;
+            padding: 0 1rem 0 3rem;
+            background: rgba(212, 175, 55, 0.1);
+            border: 1px solid rgba(255,255,255,0.3);
+            border-radius: 0.75rem;
+            color: #ffffff;
+            font-size: 1rem;
+            font-family: 'Orbitron', monospace;
+        }
+
+        .search-input:focus {
+            outline: none;
+            border-color: #ffffff;
+              box-shadow: 0 0 25px rgba(255,255,255,0.4);
+        }
+
+        .search-icon {
+            position: absolute;
+            left: 1rem;
+            top: 50%;
+            transform: translateY(-50%);
+            color: rgba(255,255,255,0.4);
+        }
+
+        .select-container {
+            position: relative;
+        }
+
+        .select {
+            height: 3.5rem;
+            padding: 0 2.5rem 0 1rem;
+            background: rgba(212, 175, 55, 0.1);
+            border: 1px solid rgba(255,255,255,0.3);
+            border-radius: 0.75rem;
+            color: #ffffff;
+            font-size: 1rem;
+            font-family: 'Orbitron', monospace;
+            cursor: pointer;
+            appearance: none;
+        }
+        
+        .select option {
+            color: #000000;
+            background: #ffffff;
+        }
+
+        .select:focus {
+            outline: none;
+            border-color: #ffffff;
+            box-shadow: 0 0 25px rgba(255,255,255,0.4);
+        }
+
+        /* Games Grid */
+        .games-grid {
+            display: grid;
+            gap: 1.5rem;
+            margin-bottom: 4rem;
+        }
+
+        .grid-mobile { grid-template-columns: 1fr; }
+        .grid-tablet { grid-template-columns: repeat(2, 1fr); }
+        .grid-desktop { grid-template-columns: repeat(3, 1fr); }
+
+        .game-card{
+cursor:pointer;
+background:rgba(0,0,0,0.3);
+backdrop-filter:blur(10px);
+border:1px solid rgba(0,0,0,0.3);
+border-radius:20px;
+overflow:hidden;
+transition:0.4s;
 }
 
-.admin-btn.locked {
-    opacity: 0.5;
-    cursor: not-allowed;
-    pointer-events: none;
-    filter: grayscale(1);
+.img-container{
+width:100%;
+height:180px;
+background:linear-gradient(45deg,#1e1e2f,#2a2a40);
+display:flex;
+justify-content:center;
+align-items:center;
+position:relative;
 }
 
-.admin-btn.locked::after {
-    content: " 🔒";
-}
-
-.search-wrapper {
-    max-width: 520px;
-    margin: 10px auto 30px auto;
-    padding: 0 20px;
-}
-
-#game-search {
-    width: 100%;
-    padding: 16px 20px;
-    border-radius: 18px;
-    border: 1px solid rgba(255,255,255,0.25);
-    background: rgba(255,255,255,0.08);
-    backdrop-filter: blur(12px);
-    color: white;
-    font-size: 16px;
-    font-weight: 500;
-    outline: none;
-    transition: 0.3s ease;
-    box-shadow: 0 10px 25px rgba(0,0,0,0.3);
-}
-
-#game-search::placeholder {
-    color: rgba(255,255,255,0.6);
-}
-
-#game-search:focus {
-    border-color: #007bff;
-    background: rgba(0,123,255,0.15);
-    box-shadow: 0 0 18px rgba(0,123,255,0.45);
-}
-
-@media (max-width: 768px) {
-    .search-wrapper {
-        margin-bottom: 20px;
-    }
-}
-
-
-.no-results {
-    display: none;
-    text-align: center;
-    margin-top: 40px;
-    font-size: 18px;
-    font-weight: 600;
-    letter-spacing: 0.5px;
-    color: rgba(255, 255, 255, 0.7);
-    animation: fadeIn 0.25s ease;
-}
-
-@keyframes fadeIn {
-    from {
-        opacity: 0;
-        transform: translateY(6px);
-    }
-    to {
-        opacity: 1;
-        transform: translateY(0);
-    }
-}
-
-
-.search-wrapper {
-    display: flex;
-    justify-content: center;
-    margin: 20px auto 30px;
-}
-
-#game-content {
+.img-container img {
     width:100%;
     height:100%;
+    object-fit:cover;
+    position:absolute;
+    top:0;
+    left:0;
+    z-index:2;
 }
 
-#game-content iframe,
-#game-content canvas {
-    width:100%;
-    height:100%;
+.img-container::after{
+    content:"📂";
+    font-size:50px;
+    opacity:0.2;
+    position:absolute;
+    z-index:1;
 }
 
+.game-card img{
+width:100%;
+height:100%;
+object-fit:cover;
+position:absolute;
+top:0;
+left:0;
+}
 
- /* Footer */
+.game-card:hover{
+transform:translateY(-10px);
+border-color:#007bff;
+box-shadow:0 0 20px rgba(0,123,255,0.6);
+}
+
+.game-card p{
+padding:15px;
+margin:0;
+font-weight:600;
+background:rgba(0,0,0,0.3);
+}
+
+        .game-name {
+            padding: 0.75rem;
+            background: rgba(0, 0, 0, 0.3);
+            border-top: 1px solid rgba(212, 175, 55, 0.2);
+            height: 50px;
+            display: flex;
+            align-items: center;
+            font-size: 0.9rem;
+            font-weight: bold;
+            color: #ffffff;
+            text-transform: lowercase;
+        }
+        
+        .games-grid{
+            transition:all 0.3s ease;
+        }
+
+
+        /* Footer */
         .footer {
             text-align: center;
             padding: 2rem 0;
             border-top: 1px solid rgba(255,255,255,0.2);
             margin-top: 2rem;
-            font-family: 'Orbitron', sans-serif;
         }
 
         .footer-links {
@@ -354,7 +433,6 @@ textarea {
             position: relative;
             font-size: 0.9rem;
             transition: all 0.3s ease;
-            font-family: 'Orbitron', sans-serif;
         }
 
         .footer-link::after {
@@ -379,6 +457,46 @@ textarea {
             text-shadow: 0 0 10px #ffffff;
         }
 
+        /* Animations */
+       @keyframes glow-pulse {
+0% { text-shadow:0 0 10px rgba(0,123,255,0.7); }
+
+100% { 
+text-shadow:
+0 0 20px rgba(0,123,255,0.9),
+0 0 40px rgba(0,123,255,0.8),
+0 0 70px rgba(0,123,255,0.7);
+}
+}
+
+        @keyframes typewriter {
+            from { width: 0; }
+            to { width: 5ch; }
+        }
+
+        @keyframes blink {
+            from, to { border-color: transparent; }
+            50% { border-color: #ffffff; }
+        }
+
+        @keyframes float {
+0% {
+transform: translate(0px, 0px) scale(1);
+}
+50% {
+transform: translate(40px, -30px) scale(1.1);
+}
+100% {
+transform: translate(0px, 0px) scale(1);
+}
+}
+
+@keyframes pulseGlow {
+0% { opacity: 0.3; }
+50% { opacity: 0.6; }
+100% { opacity: 0.3; }
+}
+
         /* Responsive */
         @media (max-width: 768px) {
             .title { font-size: 2.5rem; }
@@ -387,11 +505,52 @@ textarea {
             .footer-links { gap: 1rem; }
         }
         
+        
+        
+        
     </style>
 </head>
 <body>
+    <div class="background">
+        <div class="glow-ring glow-1"></div>
+        <div class="glow-ring glow-2"></div>
+        <div class="glow-ring glow-3"></div>
+    </div>
 
-    <!-- SETTINGS ICON -->
+    <div class="container">
+        <header class="header">
+            <a href="main.html" class="back-btn">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/>
+                    <polyline points="9,22 9,12 15,12 15,22"/>
+                </svg>
+                Back to Homepage
+            </a>
+            
+            <h1 class="title" onclick="location.href='/main.html'" style="cursor:pointer;">
+                <span class="typewriter">GAMES</span>
+            </h1>
+
+            <div class="controls">
+                <div class="search-container">
+                    <svg class="search-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <circle cx="11" cy="11" r="8"/>
+                        <path d="M21 21l-4.35-4.35"/>
+                    </svg>
+                    <input type="text" class="search-input" placeholder="Search games..." id="searchInput">
+                </div>
+
+                <div class="select-container">
+                    <select class="select" id="gridSelect">
+                        <option value="auto">Auto Grid</option>
+                        <option value="mobile">Mobile (1 col)</option>
+                        <option value="tablet">Tablet (2 col)</option>
+                        <option value="desktop">Desktop (3 col)</option>
+                    </select>
+                </div>
+            </div>
+            
+             <!-- SETTINGS ICON -->
     <div class="settings-icon" onclick="toggleSettings()">
         <div class="gear-shape">
             <div class="gear-inner"></div>
@@ -400,7 +559,7 @@ textarea {
     </div>
 
     <!-- CLOAK MENU -->
-    <div id="settings-menu" onclick="toggleSettings()">
+    <div id="settings-menu" onclick="closeSettings(event)">
         <div class="settings-content" onclick="event.stopPropagation()">
             
              <!-- ADMIN LOGIN BUTTON -->
@@ -468,322 +627,262 @@ textarea {
             <p id="admin-error" style="color:#ff6b6b; opacity:0.9; margin-top:10px; display:none;">Incorrect password.</p>
         </div>
     </div>
+            
+        </header>
+        <main>
+            <div class="games-grid grid-desktop" id="gamesGrid">
+                <!-- Manual game cards - add each game here -->
+                
+                <!-- Game cards -->
+                <div class="game-card">
+                    <div class="img-container" data-category="placeholder" onclick="window.location.href='/subwaysurfers.html'">
+                        <img src="images/SubwaySurfersLogoRemastered.jpg" alt="Subway Surfers"> 
+                    </div>
+                        <div class="game-name">Subway Surfers</div>
+                </div>
+                
+                <div class="game-card">
+                    <div class="img-container" data-category="placeholder" onclick="play('https://bi6zone.vercel.app/g/minecraft.html')">
+                        <img src="images/MinecraftLogo.jpg" alt="Minecraft">
+                    </div>
+                        <div class="game-name">Minecraft</div>
+                </div>
 
-    <h1 onclick="location.href='/main.html'" style="cursor:pointer;">GAMES</h1>
+                <div class="game-card">
+                    <div class="img-container" data-category="placeholder" onclick="play('https://bi6zone.vercel.app/g/block-blast.html')">
+                        <img src="images/BlockBlastappicon.jpg" alt="Block Blast">
+                    </div>
+                        <div class="game-name">Block Blast</div>
+                </div>
 
+                <div class="game-card">
+                    <div class="img-container" data-category="placeholder" onclick="window.location.href='/g/Crossy%20Road.html'">
+                        <img src="https://files.catbox.moe/h00vy5" alt="Crossy Road">
+                    </div>
+                        <div class="game-name">Crossy Road</div>
+                </div>
 
-    <!-- 🔍 SEARCH BAR -->
-<div class="search-wrapper">
-    <input
-        id="game-search"
-        type="text"
-        placeholder="Search games..."
-        autocomplete="off"
-    />
-</div>
+                <div class="game-card">
+                    <div class="img-container" data-category="placeholder" onclick="play('https://bi6zone.vercel.app/g/retro-bowl.html')">
+                        <img src="images/Retro-Bowl.jpg" alt="Retro Bowl">
+                    </div>
+                        <div class="game-name">Retro Bowl</div>
+                </div>
 
+                <div class="game-card">
+                    <div class="img-container" data-category="placeholder" onclick="play('https://bi6zone.vercel.app/g/1v1-lol.html')">
+                        <img src="images/1v1.lol.jpeg" alt="1v1 lol">
+                    </div>
+                         <div class="game-name">1v1 lol</div>
+                </div>
 
-    <!-- ❌ NO RESULTS MESSAGE -->
-<div id="no-results" class="no-results">
-    No results found
-</div>
+                <div class="game-card">
+                    <div class="img-container" data-category="placeholder" onclick="play('https://bi6zone.vercel.app/g/run3.html')">
+                        <img src="images/Run3Logo.jpg" alt="Run 3">
+                    </div>
+                        <div class="game-name">Run 3</div>
+                </div>
 
-<main>
-    <div class="grid" id="game-grid">
-         <!-- Subway Surfers -->
-        <div class="game-card" onclick="window.location.href='/subwaysurfers.html'">
-    <div class="img-container">
-        <img src="images/SubwaySurfersLogoRemastered.jpg" alt="Subway Surfers" onerror="this.style.display='none'">
-    </div>
-    <p>Subway Surfers</p>
-</div>
-        <!-- Minecraft -->
-        <div class="game-card" onclick="play('https://bi6zone.vercel.app/g/minecraft.html')">
-            <div class="img-container">
-                <img src="images/MinecraftLogo.jpg" alt="Minecraft" onerror="this.style.display='none'">
+                <div class="game-card">
+                    <div class="img-container" data-category="placeholder" onclick="play('https://bi6zone.vercel.app/g/tiny-fishing.html')">
+                        <img src="https://files.catbox.moe/i3anhd.webp" alt="Tiny Fishing">
+                    </div>
+                        <div class="game-name">Tiny Fishing</div>
+                </div>
+
+                <div class="game-card">
+                    <div class="img-container" data-category="placeholder" onclick="play('https://bi6zone.vercel.app/g/fruit-ninja.html')">
+                        <img src="images/FruitNinja.jpg" alt="Fruit Ninja">
+                    </div>
+                        <div class="game-name">Fruit Ninja</div>
+                </div>
+
+                <div class="game-card">
+                    <div class="img-container" data-category="placeholder" onclick="play('https://bi6zone.vercel.app/g/paper-io-2.html')">
+                        <img src="https://files.catbox.moe/fhhv3d" alt="Paper.io 2">
+                    </div>
+                        <div class="game-name">Paper.io 2</div>
+                </div> 
+                
+                <div class="game-card">
+                    <div class="img-container" data-category="placeholder" onclick="play('https://bi6zone.vercel.app/g/basket-random.html')">
+                        <img src="https://files.catbox.moe/xq62ka" alt="Basket Random">
+                    </div>
+                        <div class="game-name">Basket Random</div>
+                </div> 
+                
+                <div class="game-card">
+                    <div class="img-container" data-category="placeholder" onclick="play('https://soccerrandom.netlify.app/')">
+                        <img src="https://files.catbox.moe/lnk6go" alt="Soccer Random">
+                    </div>
+                        <div class="game-name">Soccer Random</div>
+                </div> 
+                
+                <div class="game-card">
+                    <div class="img-container" data-category="placeholder" onclick="play('https://volleyrandom.netlify.app/')">
+                        <img src="https://files.catbox.moe/nrxxgo" alt="Volley Random">
+                    </div>
+                        <div class="game-name">Volley Random</div>
+                </div> 
+                
+                <div class="game-card">
+                    <div class="img-container" data-category="placeholder" onclick="play('https://boxingrandom.netlify.app/')">
+                        <img src="https://files.catbox.moe/0nb7uh" alt="Boxing Random">
+                    </div>
+                        <div class="game-name">Boxing Random</div>
+                </div> 
+                
+                <div class="game-card">
+                    <div class="img-container" data-category="placeholder" onclick="window.location.href='/g/clbloonsTD1.html'">
+                        <img src="images/BTD1.webp" alt="BTD1">
+                    </div>
+                        <div class="game-name">BTD 1</div>
+                </div>
+                
+                <div class="game-card">
+                    <div class="img-container" data-category="placeholder" onclick="window.location.href='/g/clbloonsTD2.html'">
+                        <img src="images/BTD2.webp" alt="BTD2">
+                    </div>
+                        <div class="game-name">BTD 2</div>
+                </div>
+                
+                <div class="game-card">
+                    <div class="img-container" data-category="placeholder" onclick="window.location.href='/g/clbloonsTD3.html'">
+                        <img src="https://files.catbox.moe/z5azm0" alt="BTD3">
+                    </div>
+                        <div class="game-name">BTD 3</div>
+                </div>
+                
+                <div class="game-card">
+                    <div class="img-container" data-category="placeholder" onclick="window.location.href='/g/clbloonsTD4.html'">
+                        <img src="https://files.catbox.moe/mel29y.jpg" alt="BTD4">
+                    </div>
+                        <div class="game-name">BTD 4</div>
+                </div>
+                
+                <div class="game-card">
+                    <div class="img-container" data-category="placeholder" onclick="window.location.href='/g/clbloonsTD5.html'">
+                        <img src="https://files.catbox.moe/bxp2jl" alt="BTD5">
+                    </div>
+                        <div class="game-name">BTD 5</div>
+                </div>
+                
+                <div class="game-card">
+                    <div class="img-container" data-category="placeholder" onclick="play('https://shrimplab.vercel.app/projects/tetris/index.html')">
+                        <img src="https://files.catbox.moe/l4nobo.jpg" alt="Tetris">
+                    </div>
+                        <div class="game-name">TETRIS</div>
+                </div> 
+                
+                 <div class="game-card">
+                    <div class="img-container" data-category="placeholder" onclick="play('https://trollpulse.vercel.app/')">
+                        <img src="images/TrollPulseLogo.png" alt="Troll Pulse">
+                    </div>
+                        <div class="game-name">TrollPulse</div>
+                </div> 
+                
+                <div class="game-card">
+                    <div class="img-container" data-category="placeholder" onclick="play('https://bi6zone.vercel.app/g/drift-boss.html')">
+                        <img src="https://files.catbox.moe/h0awau" alt="Drift Boss">
+                    </div>
+                        <div class="game-name">DRIFT BOSS</div>
+                </div> 
+                
+                 <div class="game-card">
+                    <div class="img-container" data-category="placeholder" onclick="play('https://bi6zone.vercel.app/g/drive-mad.html')">
+                        <img src="https://files.catbox.moe/kiihxw.png" alt="Drive Mad">
+                    </div>
+                        <div class="game-name">DRIVE MAD</div>
+                </div>
+                
+                 <div class="game-card">
+                    <div class="img-container" data-category="placeholder" onclick="play('https://bi6zone.vercel.app/g/geometry-dash.html')">
+                        <img src="https://files.catbox.moe/kbi3pv" alt="Geometry Dash">
+                    </div>
+                        <div class="game-name">Geometry Dash</div>
+                </div>
+                
+                <div class="game-card">
+                    <div class="img-container" data-category="placeholder" onclick="play('https://bi6zone.vercel.app/g/hole-io.html')">
+                        <img src="https://files.catbox.moe/at1v0h.png" alt="hole.io">
+                    </div>
+                        <div class="game-name">Hole.io</div>
+                </div>
+                
+                <div class="game-card">
+                    <div class="img-container" data-category="placeholder" onclick="play('https://bi6zone.vercel.app/g/slither-io.html')">
+                        <img src="https://files.catbox.moe/6sgjfa.png" alt="slither.io">
+                    </div>
+                        <div class="game-name">Slither.io</div>
+                </div>
+                
+                <div class="game-card">
+                    <div class="img-container" data-category="placeholder" onclick="play('https://bi6zone.vercel.app/g/snowball-io.html')">
+                        <img src="https://files.catbox.moe/y8dlxd" alt="snowball.io">
+                    </div>
+                        <div class="game-name">Snowball.io</div>
+                </div>
+                
+                <div class="game-card">
+                    <div class="img-container" data-category="placeholder" onclick="play('https://bi6zone.vercel.app/g/just-fall-io.html')">
+                        <img src="images/JustFalllol.png" alt="justfall.lol">
+                    </div>
+                        <div class="game-name">Justfall.lol</div>
+                </div>
+                
+                 <div class="game-card">
+                    <div class="img-container" data-category="placeholder" onclick="play('https://truecookieclicker.netlify.app/')">
+                        <img src="https://files.catbox.moe/hmfydt.png" alt="Cookie Clicker">
+                    </div>
+                        <div class="game-name">Cookie Clicker</div>
+                </div>
+                
+                <div class="game-card">
+                    <div class="img-container" data-category="placeholder" onclick="window.location.href='/g/Escape%20Road.html'">
+                        <img src="https://files.catbox.moe/2xbfwd" alt="Escape Road">
+                    </div>
+                        <div class="game-name">Escape Road</div>
+                </div>
+                
+                <div class="game-card">
+                    <div class="img-container" data-category="placeholder" onclick="window.location.href='/g/Escape%20Road%202.html'">
+                        <img src="https://files.catbox.moe/wmy3g4.png" alt="Escape Road 2">
+                    </div>
+                        <div class="game-name">Escape Road 2</div>
+                </div>
+                
+                <div class="game-card">
+                    <div class="img-container" data-category="placeholder" onclick="window.location.href='/g/Snow%20Rider%203D.html'">
+                        <img src="https://files.catbox.moe/q2uyb1.png" alt="Snow Rider 3D">
+                    </div>
+                        <div class="game-name">Snow Rider 3D</div>
+                </div>
+                
+                <div class="game-card">
+                    <div class="img-container" data-category="placeholder" onclick="play('https://neonwarp.vercel.app/')">
+                        <img src="Lebron-lowkey-goated" alt="Neon Warp">
+                    </div>
+                        <div class="game-name">Neon Warp</div>
+                </div>
+                
+                <div class="game-card">
+                    <div class="img-container" data-category="placeholder" onclick="play('https://pixel-idk.vercel.app/')">
+                        <img src="https://files.catbox.moe/mvua0h" alt="Pixel Panic">
+                    </div>
+                        <div class="game-name">Pixel Panic</div>
+                </div>
+                
+                 <div class="game-card">
+                    <div class="img-container" data-category="placeholder" onclick="alert('Coming soon!')">
+                        <img src="images/MissingImage.jpg" alt="Future Game">
+                    </div>
+                        <div class="game-name">Coming Soon</div>
+                </div>
+                
             </div>
-            <p>Minecraft</p>
-        </div>
+        </main>
 
-        <!-- Block Blast -->
-        <div class="game-card" onclick="play('https://bi6zone.vercel.app/g/block-blast.html')">
-            <div class="img-container">
-                <img src="images/BlockBlastappicon.jpg" alt="Block Blast" onerror="this.style.display='none'">
-            </div>
-            <p>Block Blast</p>
-        </div>
-
-        <!-- Crossy Road -->
-        <div class="game-card" onclick="play('/g/Crossy%20Road.html')">
-            <div class="img-container">
-                <img src="https://play-lh.googleusercontent.com/AlFw_nGMwf3ILG76Fh86xapntqdpvJvXN8syc2U6xZzMfapz-9NPZbvuwR8lmArVKik" alt="Crossy Road" onerror="this.style.display='none'">
-            </div>
-            <p>Crossy Road</p>
-        </div>
-
-        <!-- Retro Bowl -->
-        <div class="game-card" onclick="play('https://bi6zone.vercel.app/g/retro-bowl.html')">
-            <div class="img-container">
-                <img src="images/Retro-Bowl.jpg" alt="Retro Bowl" onerror="this.style.display='none'">
-            </div>
-            <p>Retro Bowl</p>
-        </div>
-
-        <!-- 1v1 lol -->
-        <div class="game-card" onclick="play('https://bi6zone.vercel.app/g/1v1-lol.html')">
-            <div class="img-container">
-                <img src="images/1v1.lol.jpeg" alt="1v1 lol" onerror="this.style.display='none'">
-            </div>
-            <p>1v1 lol</p>
-        </div>
-
-        <!-- Run 3 -->
-        <div class="game-card" onclick="play('https://bi6zone.vercel.app/g/run3.html')">
-            <div class="img-container">
-                <img src="images/Run3Logo.jpg" alt="Run 3" onerror="this.style.display='none'">
-            </div>
-            <p>Run 3</p>
-        </div>
-
-        <!-- Tiny Fishing -->
-        <div class="game-card" onclick="play('https://bi6zone.vercel.app/g/tiny-fishing.html')">
-            <div class="img-container">
-                <img src="https://tinyfishingame.com/tiny-fishing.webp" alt="Tiny Fishing" onerror="this.style.display='none'">
-            </div>
-            <p>Tiny Fishing</p>
-        </div>
-
-        <!-- Fruit Ninja -->
-        <div class="game-card" onclick="play('https://bi6zone.vercel.app/g/fruit-ninja.html')">
-            <div class="img-container">
-                <img src="images/FruitNinja.jpg" alt="Fruit Ninja" onerror="this.style.display='none'">
-            </div>
-            <p>Fruit Ninja</p>
-        </div>
-
-        <!-- Paper.io 2 -->
-        <div class="game-card" onclick="play('https://bi6zone.vercel.app/g/paper-io-2.html')">
-            <div class="img-container">
-                <img src="https://play-lh.googleusercontent.com/SWTpYqsX9RN2YirCDnAjQ8qsbgn4UrHkRRGsjwuASnHMVqssIvWKzq82mP82y_ffBSE=w240-h480-rw" alt="Paper.io 2" onerror="this.style.display='none'">
-            </div>
-            <p>Paper.io 2</p>
-        </div>
-
-        <!-- Basket Random -->
-        <div class="game-card" onclick="play('https://bi6zone.vercel.app/g/basket-random.html')">
-            <div class="img-container">
-                <img src="https://play-lh.googleusercontent.com/gP8T5Z1O-ngxIloiwcBZzrzyLPYDp0R_1BDNKUDZboIRPVImeyWI8-7aExvB9gAGNKc" alt="Basket Random" onerror="this.style.display='none'">
-            </div>
-            <p>Basket Random</p>
-        </div>
-
-        <!-- Soccer Random -->
-        <div class="game-card" onclick="play('https://soccerrandom.netlify.app/')">
-            <div class="img-container">
-                <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSreTmIP_fGgxrs3wrWurjI7HVLd33W6WY3yQ&s" alt="Soccer Random" onerror="this.style.display='none'">
-            </div>
-            <p>Soccer Random</p>
-        </div>
-
-        <!-- Volley Random -->
-        <div class="game-card" onclick="play('https://volleyrandom.netlify.app/')">
-            <div class="img-container">
-                <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRf6Ua6mTf9teNcVOQTjKKA3Hy8epsBB2qW0A&s" alt="Volley Random" onerror="this.style.display='none'">
-            </div>
-            <p>Volley Random</p>
-        </div>
-
-        <!-- Boxing Random -->
-        <div class="game-card" onclick="play('https://boxingrandom.netlify.app/')">
-            <div class="img-container">
-                <img src="https://play-lh.googleusercontent.com/ZuMoNX6xiIBRwdtSL-FN0xCdXyahk8SRaPZ5_4HzkdQEp2Tm_GAsha9OcsRoSDgSw8Y=w240-h480-rw" alt="Boxing Random" onerror="this.style.display='none'">
-            </div>
-            <p>Boxing Random</p>
-        </div>
-
-        <!-- BTD1 -->
-        <div class="game-card" onclick="play('/g/clbloonsTD1.html')">
-            <div class="img-container">
-                <img src="images/BTD1.webp" alt="BTD1" onerror="this.style.display='none'">
-            </div>
-            <p>BTD 1</p>
-        </div>
-
-        <!-- BTD2 -->
-        <div class="game-card" onclick="play('/g/clbloonsTD2.html')">
-            <div class="img-container">
-                <img src="images/BTD2.webp" alt="BTD2" onerror="this.style.display='none'">
-            </div>
-            <p>BTD 2</p>
-        </div>
-
-        <!-- BTD3 -->
-        <div class="game-card" onclick="play('/g/clbloonsTD3.html')">
-            <div class="img-container">
-                <img src="https://play-lh.googleusercontent.com/LeZ9qnLV9Sc8dM0nzQrKPoEsrOiT5mpEYFIs91ztvcq3NWZNJBA2e0U7UsG4WNRxyeA=w240-h480-rw" alt="BTD3" onerror="this.style.display='none'">
-            </div>
-            <p>BTD 3</p>
-        </div>
-
-        <!-- BTD4 -->
-        <div class="game-card" onclick="play('/g/clbloonsTD4.html')">
-            <div class="img-container">
-                <img src="https://assets-prd.ignimgs.com/2022/08/16/bloons-td4-button-1660612386362.jpg" alt="BTD4" onerror="this.style.display='none'">
-            </div>
-            <p>BTD 4</p>
-        </div>
-
-         <!-- BTD5 -->
-        <div class="game-card" onclick="play('/g/clblonsTD5.html')">
-            <div class="img-container">
-                <img src="https://play-lh.googleusercontent.com/LLEUf9Qcd6N2L4nynBArv7wHyvPLiKBJtXjFEfgD4yS80ZJtQREVjIJE_HXFRDAJxQ" alt="BTD5" onerror="this.style.display='none'">
-            </div>
-            <p>BTD 5</p>
-        </div>
-
-        <!-- TETRIS -->
-        <div class="game-card" onclick="play('https://shrimplab.vercel.app/projects/tetris/index.html')">
-            <div class="img-container">
-                <img src="https://voodooneon.com/cdn/shop/files/tetris-base-blackwall.jpg?v=1731540048" alt="TETRIS" onerror="this.style.display='none'">
-            </div>
-            <p>TETRIS</p>
-        </div>
-
-        <!-- TrollPulse -->
-        <div class="game-card" onclick="play('https://trollpulse.vercel.app/')">
-            <div class="img-container">
-                <img src="images/TrollPulseLogo.png" alt="TrollPulse" onerror="this.style.display='none'">
-            </div>
-            <p>TrollPulse</p>
-        </div>
-        
-        <!-- DRIFT BOSS -->
-        <div class="game-card" onclick="play('https://bi6zone.vercel.app/g/drift-boss.html')">
-            <div class="img-container">
-                <img src="https://play-lh.googleusercontent.com/Zu0LoruCtIG45qs6iffZkWqGTuzEWflNoH8TNRtfMJ2NGgJxQGfw8kqSrxKtXGjPqeqFLNsnubW6EnPUJvOi8g=w240-h480-rw" alt="DRIFT BOSS" onerror="this.style.display='none'">
-            </div>
-            <p>DRIFT BOSS</p>
-        </div>
-        
-        <!-- DRIVE MAD -->
-        <div class="game-card" onclick="play('https://bi6zone.vercel.app/g/drive-mad.html')">
-            <div class="img-container">
-                <img src="https://img.poki-cdn.com/cdn-cgi/image/q=78,scq=50,width=314,height=314,fit=cover,f=auto/00f074792a313e1c7edd4baa0fa64b89/drive-mad.png" alt="DRIVE MAD" onerror="this.style.display='none'">
-            </div>
-            <p>DRIVE MAD</p>
-        </div>
-
-        <!-- Geometry Dash -->
-        <div class="game-card" onclick="play('https://bi6zone.vercel.app/g/geometry-dash.html')">
-            <div class="img-container">
-                <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS1eWxJ7J_hNDXTAhHe1lk8NFORvcyvCsmguQ&s" alt="Geometry Dash" onerror="this.style.display='none'">
-            </div>
-            <p>Geometry Dash</p>
-        </div>
-
-
-        <!-- HOLE.io -->
-        <div class="game-card" onclick="play('https://bi6zone.vercel.app/g/hole-io.html')">
-            <div class="img-container">
-                <img src="https://iogames.games/data/image/game/hole-io.png" alt="HOLE.IO" onerror="this.style.display='none'">
-            </div>
-            <p>Hole.io</p>
-        </div>
-
-         <!--Slither.io-->
-        <div class="game-card" onclick="play('https://bi6zone.vercel.app/g/slither-io.html')">
-            <div class="img-container">
-                <img src="https://play-lh.googleusercontent.com/tRpviKT0mUi47iAaBne_yhe_xIuFzpW1mCIqoW457tNsKZddZHwiCUR2ga-rU3VXw04" alt="Slither.io" onerror="this.style.display='none'">
-            </div>
-            <p>Slither.io</p>
-        </div>
-
-        <!--Snowball.io-->
-        <div class="game-card" onclick="play('https://bi6zone.vercel.app/g/snowball-io.html')">
-            <div class="img-container">
-                <img src="https://play-lh.googleusercontent.com/X8FEOENa_t5mlRllBh2RRLc6sMnPIq56Wxa2ndValDOmwzIRhAv7MG6fT97TLQ2DK48" alt="Snowballl.io" onerror="this.style.display='none'">
-            </div>
-            <p>Snowball.io</p>
-        </div>
-
-        <!--JustFall.lol-->
-        <div class="game-card" onclick="play('https://bi6zone.vercel.app/g/just-fall-io.html')">
-            <div class="img-container">
-                <img src="images/JustFalllol.png" alt="JustFall.lol" onerror="this.style.display='none'">
-            </div>
-            <p>JustFall.lol</p>
-        </div>
-
-        <!-- Cookie Clicker-->
-        <div class="game-card" onclick="play('https://truecookieclicker.netlify.app/')">
-            <div class="img-container">
-                <img src="https://play-lh.googleusercontent.com/Z1MOuuiD05ZN5LkVmMEvKF0mqAc-FknaQ2j8s4dZiO-LSPQX4EEA3RVJdlQEtxe96ok" alt="Cookie Clicker" onerror="this.style.display='none'">
-            </div>
-            <p>Cookie Clicker</p>
-        </div>
-
-         <!-- Escape Road-->
-        <div class="game-card" onclick="play('/g/Escape%20Road.html')">
-            <div class="img-container">
-                <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQLNdYFCgVVSqnj-Qxrw8mrlCz1SQv7un2_BQ&s" alt="Escape Road" onerror="this.style.display='none'">
-            </div>
-            <p>Escape Road</p>
-        </div>
-
-        <!-- Escape Road 2-->
-        <div class="game-card" onclick="play('/g/Escape%20Road%202.html')">
-            <div class="img-container">
-                <img src="https://mograph.com/wp-content/uploads/2026/01/escape-road-2-game-1.png" alt="Escape Road 2" onerror="this.style.display='none'">
-            </div>
-            <p>Escape Road 2</p>
-        </div>
-
-         <!-- Snow Rider 3D-->
-        <div class="game-card" onclick="play('/g/Snow%20Rider%203D.html')">
-            <div class="img-container">
-                <img src="https://snow-rider3dgame.github.io/data/image/game/snow-rider-game.png" alt="Snow Rider 3D" onerror="this.style.display='none'">
-            </div>
-            <p>Snow Rider 3D</p>
-        </div>
-
-         <!-- Neon Warp-->
-        <div class="game-card" onclick="play('https://neonwarp.vercel.app/')">
-            <div class="img-container">
-                <img src="" alt="Neon Warp" onerror="this.style.display='none'">
-            </div>
-            <p>Neon Warp</p>
-        </div>
-
-        <!-- Pixel Panic -->
-        <div class="game-card" onclick="play('https://pixel-idk.vercel.app/')">
-            <div class="img-container">
-                <img src="https://files.catbox.moe/mvua0h" alt="Pixel Panic" onerror="this.style.display='none'">
-            </div>
-            <p>Pixel Panic</p>
-        </div>
-        
-        <!-- Placeholder -->
-        <div class="game-card" onclick="alert('Coming soon!')">
-            <div class="img-container">
-                <img src="images/MissingImage.jpg" alt="Future Game" onerror="this.style.display='none'">
-            </div>
-            <p>Coming Soon</p>
-        </div>
-    </div>
-
-    <!-- GAME VIEWPORT -->
-    <div id="game-container">
-        <span class="close-btn" onclick="closeGame()">&times;</span>
-        <iframe id="game-iframe"></iframe>
-    </div>
-
-
-    
-        </div>
-    </main>
-
-
-    <footer class="footer">
+        <footer class="footer">
             <div class="footer-links">
                 <a href="pp.html" class="footer-link">privacy policy</a>
                 <a href="#" class="footer-link">update log</a>
@@ -793,13 +892,17 @@ textarea {
                 <a href="https://docs.google.com/forms/d/1t52FBl9fUIm6ftWzFQTSw4dutoIOP1rTe8AnQ4cg1pY/viewform?edit_requested=true" target="_blank" class="footer-link">support</a>
             </div>
         </footer>
-    
-    <script>
-        /* =========================
-           GLOBAL UI FUNCTIONS
-           ========================= */
+    </div>
 
-        // Silent revoke used when closing the settings menu so admin controls are removed
+    <script>
+      
+      function closeSettings(e) {
+    if (e.target.id === 'settings-menu') {
+        toggleSettings();
+    }
+}
+      
+       // Silent revoke used when closing the settings menu so admin controls are removed
         function revokeAdminLocal() {
             try {
                 localStorage.removeItem('isAdmin');
@@ -810,7 +913,7 @@ textarea {
         function toggleSettings() {
             const menu = document.getElementById('settings-menu');
             // Use computed style to reliably detect visibility
-            const isOpen = window.getComputedStyle(menu).display === 'flex';
+            const isOpen = menu.style.display === 'flex';
             if (isOpen) {
                 menu.style.display = 'none';
                 // When leaving settings, remove admin controls so re-entering requires login
@@ -837,8 +940,11 @@ textarea {
         }
 
         function play(url) {
-
     const container = document.getElementById("game-container");
+    if (!container) {
+        console.error("game-container missing");
+        return;
+    }
 
     container.style.display = "block";
     document.body.style.overflow = "hidden";
@@ -847,12 +953,7 @@ textarea {
         <span class="close-btn" onclick="closeGame()">&times;</span>
         <iframe src="${url}" allowfullscreen></iframe>
     `;
-
-    // try to lock landscape for mobile
-    screen.orientation?.lock?.("landscape").catch(()=>{});
-
 }
-
         function closeGame() {
 
     const container = document.getElementById("game-container");
@@ -969,7 +1070,8 @@ function saveAdminGames(games) {
 
 
 function addGameCard({ title, url, image }, adminIndex = null) {
-    const grid = document.getElementById('game-grid');
+    const grid = document.getElementById('gamesGrid');
+    if (!grid) return;
 
     const card = document.createElement('div');
     card.className = 'game-card';
@@ -1031,7 +1133,7 @@ function addGameCard({ title, url, image }, adminIndex = null) {
     games.pop();
     saveAdminGames(games);
 
-    const grid = document.getElementById('game-grid');
+    const grid = document.getElementById('gamesGrid');
     const cards = document.querySelectorAll('.game-card[data-admin-index]');
 const last = cards[cards.length - 1];
 if (last) last.remove();
@@ -1200,40 +1302,69 @@ savedGames.forEach((game, index) => addGameCard(game, index));
     if (puInput) puInput.value = localStorage.getItem("panicURL") || '';
 
     updateAdminButtonLock();
+      
+        // Get elements
+        const searchInput = document.getElementById('searchInput');
+        const gridSelect = document.getElementById('gridSelect');
+        const gamesGrid = document.getElementById('gamesGrid');
+        const gameCards = document.querySelectorAll('.game-card');
 
-   // 🔍 Live game search + no results message
-const searchInput = document.getElementById('game-search');
-const noResults = document.getElementById('no-results');
+        // Search functionality
+        searchInput.addEventListener('input', filterGames);
+        gridSelect.addEventListener('change', changeGrid);
 
-if (searchInput) {
-    searchInput.addEventListener('input', function () {
-        const query = this.value.toLowerCase().trim();
-        const cards = document.querySelectorAll('.game-card');
-        let visibleCount = 0;
+        function filterGames() {
+    const searchTerm = searchInput.value.toLowerCase();
 
-        cards.forEach(card => {
-            const title = card.querySelector('p')?.textContent.toLowerCase() || '';
-            const match = title.includes(query);
-            card.style.display = match ? 'block' : 'none';
-            if (match) visibleCount++;
-        });
+    gameCards.forEach(card => {
+        const gameName = card.querySelector('.game-name').textContent.toLowerCase();
 
-        if (noResults) {
-            noResults.style.display =
-                visibleCount === 0 && query !== '' ? 'block' : 'none';
-        }
+        if (gameName.includes(searchTerm)) {
+    card.style.display = "";
+} else {
+    card.style.display = "none";
+}
     });
 }
 
+        function changeGrid() {
+            const gridType = gridSelect.value;
+            
+            // Remove all grid classes
+            gamesGrid.classList.remove('grid-mobile', 'grid-tablet', 'grid-desktop');
+            
+            // Add appropriate grid class
+            if (gridType === 'auto') {
+                gamesGrid.classList.add('grid-desktop'); // default to desktop
+            } else {
+                gamesGrid.classList.add(`grid-${gridType}`);
+            }
+        }
 
+        // Auto grid functionality (responsive)
+        function handleAutoGrid() {
+            if (gridSelect.value === 'auto') {
+                const width = window.innerWidth;
+                gamesGrid.classList.remove('grid-mobile', 'grid-tablet', 'grid-desktop');
+                
+                if (width <= 768) {
+                    gamesGrid.classList.add('grid-mobile');
+                } else if (width <= 1024) {
+                    gamesGrid.classList.add('grid-tablet');
+                } else {
+                    gamesGrid.classList.add('grid-desktop');
+                }
+            }
+        }
 
-   
-});
-
-document.addEventListener("keydown", e => {
-    if (e.key === "Escape") closeGame();
-});
-
+        // Listen for window resize for auto grid
+        window.addEventListener('resize', handleAutoGrid);
+        
+        // Initial auto grid setup
+        handleAutoGrid();
+        });
+    </script>
+   <script>
 function openBlank() {
     const newTab = window.open('about:blank', '_blank');
 
@@ -1250,7 +1381,10 @@ function openBlank() {
 
     newTab.document.close();
 }
-    </script>
-
+</script>
+<div id="game-container">
+    <span class="close-btn" onclick="closeGame()">&times;</span>
+    <iframe id="game-iframe"></iframe>
+</div>
 </body>
 </html>
