@@ -8,502 +8,183 @@
     <link id="favicon" rel="icon" type="image/x-icon" href="https://files.catbox.moe/j364dj.png">
     <style>
         * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
-        body {
-             font-family: 'Orbitron', monospace;
-            background:linear-gradient(-45deg,#0f0c29,#302b63,#24243e,#111);
-            background-size:400% 400%;
-            animation:gradient 15s ease infinite;
-            color:white;
-            text-align:center;
-            min-height:100vh;
-            overflow-x:hidden;
-            overflow-x: hidden;
-        }
-        
-        @keyframes gradient{
-        0%{background-position:0% 50%}
-        50%{background-position:100% 50%}
-        100%{background-position:0% 50%}
-        }
-        
-        /* 2. MECHANICAL GEAR SETTINGS ICON */
-        .settings-icon {
-            position: fixed; top: 25px; right: 25px;
-            width: 50px; height: 50px;
-            background: rgba(255, 255, 255, 0.1);
-            backdrop-filter: blur(10px);
-            border: 1px solid rgba(255, 255, 255, 0.2);
-            border-radius: 14px;
-            display: flex; justify-content: center; align-items: center;
-            cursor: pointer; z-index: 2000;
-            transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
-        }
-        .settings-icon:hover { transform: scale(1.1); border-color: #007bff; box-shadow: 0 0 20px rgba(0, 123, 255, 0.5); }
-        .gear-shape { width: 24px; height: 24px; background: #fff; border-radius: 50%; position: relative; animation: gear-rotate 8s linear infinite; }
-        .gear-shape::before, .gear-shape::after { content: ""; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); width: 32px; height: 8px; background: #fff; border-radius: 2px; }
-        .gear-shape::after { transform: translate(-50%, -50%) rotate(90deg); }
-        .gear-inner { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); width: 10px; height: 10px; background: #1a1a2e; border-radius: 50%; z-index: 2; }
-        .gear-teeth-extra { position: absolute; width: 100%; height: 100%; transform: rotate(45deg); }
-        .gear-teeth-extra::before, .gear-teeth-extra::after { content: ""; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); width: 32px; height: 8px; background: #fff; border-radius: 2px; }
-        .gear-teeth-extra::after { transform: translate(-50%, -50%) rotate(90deg); }
-        @keyframes gear-rotate { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
-
-        /* 3. CLOAK MENU */
-        #settings-menu {
-            display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(0, 0, 0, 0.6); backdrop-filter: blur(20px);
-            z-index: 2001; justify-content: center; align-items: center;
-        }
-        .settings-content {
-            background: rgba(255, 255, 255, 0.05); padding: 40px; border-radius: 40px;
-            border: 1px solid rgba(255, 255, 255, 0.15); width: 380px; text-align: left;
-            box-shadow: 0 25px 50px rgba(0,0,0,0.5);
-
-            /* Make settings content scrollable when tall */
-            max-height: calc(100vh - 80px);
-            overflow-y: auto;
-            -webkit-overflow-scrolling: touch;
-        }
-        .settings-content h2 { margin: 0 0 10px 0; font-size: 28px; color: #007bff; }
-        .cloak-option {
-            display: flex; align-items: center; width: 100%; padding: 15px; margin: 12px 0;
-            border: 1px solid rgba(255, 255, 255, 0.1); border-radius: 18px;
-            background: rgba(255, 255, 255, 0.03); color: white;
-            cursor: pointer; transition: 0.3s; font-size: 16px; font-weight: 500;
-        }
-        .cloak-option:hover { background: rgba(0, 123, 255, 0.2); border-color: #007bff; transform: translateX(10px); }
-        .cloak-option img { width: 24px; height: 24px; margin-right: 15px; border-radius: 4px; }
-        .close-settings { margin-top: 20px; width: 100%; padding: 15px; border-radius: 18px; border: none; background: #333; color: white; cursor: pointer; }
-
-        /* Scrollbar polish for settings-content */
-        .settings-content::-webkit-scrollbar { width: 10px; }
-        .settings-content::-webkit-scrollbar-track { background: transparent; }
-        .settings-content::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.08); border-radius: 8px; border: 2px solid transparent; background-clip: padding-box; }
-        .settings-content::-webkit-scrollbar-thumb:hover { background: rgba(255,255,255,0.12); }
-
-        /* Admin modal and controls */
-        #admin-modal {
-            display: none; position: fixed; z-index: 4000; left: 0; top: 0; width: 100%; height: 100%;
-            background: rgba(0,0,0,0.6); backdrop-filter: blur(6px);
-            justify-content: center; align-items: center;
-        }
-        .admin-box {
-            width: 360px; background: rgba(10,10,20,0.95); padding: 20px; border-radius: 14px; color: white;
-            border: 1px solid rgba(255,255,255,0.06); box-shadow: 0 10px 30px rgba(0,0,0,0.6);
-        }
-        .admin-box h3 { margin-top: 0; color: #ffd166; }
-        .admin-input { width: 100%; padding: 12px; margin-top: 10px; border-radius: 10px; border: 1px solid rgba(255,255,255,0.14); background: rgba(255,255,255,0.02); color: white; }
-        .admin-actions { display:flex; gap:10px; margin-top: 12px; justify-content:flex-end; }
-        .btn { padding: 10px 14px; border-radius: 10px; border: none; cursor: pointer; font-weight: 600; }
-        .btn-primary { background: #007bff; color: white; }
-        .btn-ghost { background: rgba(255,255,255,0.04); color: white; border: 1px solid rgba(255,255,255,0.06); }
-
-        #admin-controls { display: none; margin-top: 18px; padding: 12px; border-radius: 12px; background: rgba(255,255,255,0.02); border: 1px solid rgba(255,255,255,0.04); }
-        #admin-controls h4 { margin: 6px 0 12px 0; color: #ffd166; }
-        .admin-btn { display:block; width:100%; text-align:left; padding:10px; margin:8px 0; border-radius:10px; background: rgba(0,0,0,0.35); border:1px solid rgba(255,255,255,0.04); color:white; cursor:pointer; }
-
-        /* 4. CONTENT GRID */
-        h1 { font-size: 85px; margin: 60px 0 20px 0; letter-spacing: 10px; text-transform: uppercase; font-weight: 900; text-shadow: 0 0 10px rgba(0, 123, 255, 0.7); }
-        .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); gap: 30px; padding: 40px; max-width: 1200px; margin: 0 auto; }
-        .game-card {
-            cursor: pointer; background: rgba(255, 255, 255, 0.05); backdrop-filter: blur(10px);
-            border: 1px solid rgba(255, 255, 255, 0.1); border-radius: 20px;
-            overflow: hidden; transition: 0.4s; position: relative;
-        }
-        .img-container {
-            width: 100%; height: 180px;
-            background: linear-gradient(45deg, #1e1e2f, #2a2a40);
-            display: flex; justify-content: center; align-items: center; position: relative;
-        }
-        .img-container::after { content: "🎮"; font-size: 50px; opacity: 0.2; }
-        .game-card img { width: 100%; height: 100%; object-fit: cover; position: absolute; top: 0; left: 0; z-index: 2; }
-        .game-card:hover { transform: translateY(-10px); border-color: #007bff; box-shadow: 0 0 20px rgba(0,123,255,0.6); }
-        .game-card p { padding: 15px; margin: 0; font-weight: 600; background: rgba(0,0,0,0.3); position: relative; z-index: 3; }
-
-        /* 5. GAME IFRAME OVERLAY */
-        #game-container { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: black; z-index: 3000; }
-        iframe { width: 100%; height: 100%; border: none; }
-        .close-btn { position: absolute; top: 20px; right: 30px; font-size: 50px; color: rgba(255,255,255,0.7); cursor: pointer; z-index: 3001; }
-        opacity: 0;
-        transition: 0.3s;
-
-        /* PANIC KEY & URL INPUT POLISH */
-        #panic-key-input,
-        #panic-url-input {
-            width: 100%;
-            padding: 12px 15px;
-            margin-top: 5px;
-            margin-bottom: 15px;
-            border-radius: 12px;
-            border: 1px solid rgba(255,255,255,0.3);
-            background: rgba(255,255,255,0.05);
-            color: white;
-            font-size: 16px;
-            font-weight: 500;
-            outline: none;
-            transition: 0.3s;
-        }
-
-        #panic-key-input:focus,
-        #panic-url-input:focus {
-            border-color: #007bff;
-            background: rgba(0,123,255,0.1);
-            box-shadow: 0 0 8px rgba(0,123,255,0.4);
-        }
-        
-@media (max-width: 768px) {
-
-        .container {
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 0 20px;
-            position: relative;
-            z-index: 10;
-        }
-
-        /* Background Effects */
-        .background {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            z-index: 1;
-        }
-
-        .glow-ring {
-            position: absolute;
-            border-radius: 50%;
-            filter: blur(80px);
-        }
-
-        .glow-1 {
-top: 25%;
-left: 25%;
-width: 400px;
-height: 400px;
-background: rgba(212, 175, 55, 0.1);
-animation: float 12s ease-in-out infinite, pulseGlow 6s ease-in-out infinite;
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
 }
 
-.glow-2 {
-bottom: 25%;
-right: 25%;
-width: 400px;
-height: 400px;
-background: rgba(212, 175, 55, 0.08);
-animation: float 16s ease-in-out infinite reverse, pulseGlow 8s ease-in-out infinite;
+body {
+    font-family: 'Orbitron', monospace;
+    background: linear-gradient(-45deg,#0f0c29,#302b63,#24243e,#111);
+    background-size: 400% 400%;
+    animation: gradient 15s ease infinite;
+    color: white;
+    text-align: center;
+    min-height: 100vh;
+    overflow-x: hidden;
 }
 
-.glow-3 {
-top: 50%;
-left: 50%;
-transform: translate(-50%, -50%);
-width: 800px;
-height: 800px;
-background: rgba(212, 175, 55, 0.05);
-filter: blur(120px);
-animation: float 20s ease-in-out infinite, pulseGlow 10s ease-in-out infinite;
+@keyframes gradient {
+    0%{background-position:0% 50%}
+    50%{background-position:100% 50%}
+    100%{background-position:0% 50%}
 }
 
-        /* Header */
-        .header {
-            text-align: center;
-            padding: 2rem 0;
-        }
-
-        .back-btn {
-            display: inline-flex;
-            align-items: center;
-            gap: 0.5rem;
-            padding: 0.75rem 1.5rem;
-            background: rgba(212, 175, 55, 0.1);
-            border: 1px solid rgba(255,255,255,0.3);
-            border-radius: 0.75rem;
-            color: #ffffff;
-            text-decoration: none;
-            transition: all 0.3s ease;
-            margin-bottom: 2rem;
-        }
-
-        .back-btn:hover {
-            background: rgba(212, 175, 55, 0.2);
-            border-color: #ffffff;
-        }
-
-        .title {
-            font-size: 4rem;
-            font-weight: 900;
-            color: white;
-            text-shadow:0 0 10px rgba(0,123,255,0.7);
-            letter-spacing: 0.2em;
-            margin-bottom: 2rem;
-            animation: glow-pulse 2s ease-in-out infinite alternate;
-        }
-
-        .typewriter {
-            border-right: 2px solid #ffffff;
-            animation: typewriter 4s steps(5) 1s infinite, blink 1s step-end infinite;
-            white-space: nowrap;
-            overflow: hidden;
-            width: 5ch;
-            margin: 0 auto;
-        }
-
-        /* Controls */
-        .controls {
-            display: flex;
-            justify-content: center;
-            gap: 1.5rem;
-            margin-bottom: 3rem;
-            flex-wrap: wrap;
-        }
-
-        .search-container {
-            position: relative;
-        }
-
-        .search-input {
-            width: 300px;
-            height: 3.5rem;
-            padding: 0 1rem 0 3rem;
-            background: rgba(212, 175, 55, 0.1);
-            border: 1px solid rgba(255,255,255,0.3);
-            border-radius: 0.75rem;
-            color: #ffffff;
-            font-size: 1rem;
-            font-family: 'Orbitron', monospace;
-        }
-
-        .search-input:focus {
-            outline: none;
-            border-color: #ffffff;
-              box-shadow: 0 0 25px rgba(255,255,255,0.4);
-        }
-
-        .search-icon {
-            position: absolute;
-            left: 1rem;
-            top: 50%;
-            transform: translateY(-50%);
-            color: rgba(255,255,255,0.4);
-        }
-
-        .select-container {
-            position: relative;
-        }
-
-        .select {
-            height: 3.5rem;
-            padding: 0 2.5rem 0 1rem;
-            background: rgba(212, 175, 55, 0.1);
-            border: 1px solid rgba(255,255,255,0.3);
-            border-radius: 0.75rem;
-            color: #ffffff;
-            font-size: 1rem;
-            font-family: 'Orbitron', monospace;
-            cursor: pointer;
-            appearance: none;
-        }
-        
-        .select option {
-            color: #000000;
-            background: #ffffff;
-        }
-
-        .select:focus {
-            outline: none;
-            border-color: #ffffff;
-            box-shadow: 0 0 25px rgba(255,255,255,0.4);
-        }
-
-        /* Games Grid */
-        .games-grid {
-            display: grid;
-            gap: 1.5rem;
-            margin-bottom: 4rem;
-        }
-
-        .grid-mobile { grid-template-columns: 1fr; }
-        .grid-tablet { grid-template-columns: repeat(2, 1fr); }
-        .grid-desktop { grid-template-columns: repeat(3, 1fr); }
-
-        .game-card{
-cursor:pointer;
-background:rgba(0,0,0,0.3);
-backdrop-filter:blur(10px);
-border:1px solid rgba(0,0,0,0.3);
-border-radius:20px;
-overflow:hidden;
-transition:0.4s;
+/* SETTINGS ICON */
+.settings-icon {
+    position: fixed;
+    top: 25px;
+    right: 25px;
+    width: 50px;
+    height: 50px;
+    background: rgba(255,255,255,0.1);
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255,255,255,0.2);
+    border-radius: 14px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+    z-index: 2000;
+    transition: 0.3s;
 }
 
-.img-container{
-width:100%;
-height:180px;
-background:linear-gradient(45deg,#1e1e2f,#2a2a40);
-display:flex;
-justify-content:center;
-align-items:center;
-position:relative;
+.settings-icon:hover {
+    transform: scale(1.1);
+    border-color: #007bff;
+    box-shadow: 0 0 20px rgba(0,123,255,0.5);
+}
+
+/* GRID */
+h1 {
+    font-size: 85px;
+    margin: 60px 0 20px;
+    letter-spacing: 10px;
+    font-weight: 900;
+    text-shadow: 0 0 10px rgba(0,123,255,0.7);
+}
+
+.games-grid {
+    display: grid;
+    gap: 30px;
+    padding: 40px;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.grid-mobile { grid-template-columns: 1fr; }
+.grid-tablet { grid-template-columns: repeat(2, 1fr); }
+.grid-desktop { grid-template-columns: repeat(3, 1fr); }
+
+.game-card {
+    cursor: pointer;
+    background: rgba(255,255,255,0.05);
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255,255,255,0.1);
+    border-radius: 20px;
+    overflow: hidden;
+    transition: 0.4s;
+}
+
+.game-card:hover {
+    transform: translateY(-10px);
+    border-color: #007bff;
+    box-shadow: 0 0 20px rgba(0,123,255,0.6);
+}
+
+.img-container {
+    width: 100%;
+    height: 180px;
+    background: linear-gradient(45deg,#1e1e2f,#2a2a40);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: relative;
 }
 
 .img-container img {
-    width:100%;
-    height:100%;
-    object-fit:cover;
-    position:absolute;
-    top:0;
-    left:0;
-    z-index:2;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    position: absolute;
+    top: 0;
+    left: 0;
 }
 
-.img-container::after{
-    content:"📂";
-    font-size:50px;
-    opacity:0.2;
-    position:absolute;
-    z-index:1;
+.img-container::after {
+    content: "🎮";
+    font-size: 50px;
+    opacity: 0.2;
 }
 
-.game-card img{
-width:100%;
-height:100%;
-object-fit:cover;
-position:absolute;
-top:0;
-left:0;
+.game-name {
+    padding: 15px;
+    font-weight: 600;
+    background: rgba(0,0,0,0.3);
 }
 
-.game-card:hover{
-transform:translateY(-10px);
-border-color:#007bff;
-box-shadow:0 0 20px rgba(0,123,255,0.6);
+/* GAME OVERLAY */
+#game-container {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: black;
+    z-index: 3000;
 }
 
-.game-card p{
-padding:15px;
-margin:0;
-font-weight:600;
-background:rgba(0,0,0,0.3);
+iframe {
+    width: 100%;
+    height: 100%;
+    border: none;
 }
 
-        .game-name {
-            padding: 0.75rem;
-            background: rgba(0, 0, 0, 0.3);
-            border-top: 1px solid rgba(212, 175, 55, 0.2);
-            height: 50px;
-            display: flex;
-            align-items: center;
-            font-size: 0.9rem;
-            font-weight: bold;
-            color: #ffffff;
-            text-transform: lowercase;
-        }
-        
-        .games-grid{
-            transition:all 0.3s ease;
-        }
-
-
-        /* Footer */
-        .footer {
-            text-align: center;
-            padding: 2rem 0;
-            border-top: 1px solid rgba(255,255,255,0.2);
-            margin-top: 2rem;
-        }
-
-        .footer-links {
-            display: flex;
-            justify-content: center;
-            gap: 2rem;
-            flex-wrap: wrap;
-        }
-
-        .footer-link {
-            color: #ffffff;
-            text-decoration: none;
-            position: relative;
-            font-size: 0.9rem;
-            transition: all 0.3s ease;
-        }
-
-        .footer-link::after {
-            content: '';
-            position: absolute;
-            width: 100%;
-            height: 1px;
-            bottom: -2px;
-            left: 0;
-            background-color: #ffffff;
-            transform: scaleX(0);
-            transform-origin: bottom right;
-            transition: transform 0.3s ease;
-        }
-
-        .footer-link:hover::after {
-            transform: scaleX(1);
-            transform-origin: bottom left;
-        }
-
-        .footer-link:hover {
-            text-shadow: 0 0 10px #ffffff;
-        }
-
-        /* Animations */
-       @keyframes glow-pulse {
-0% { text-shadow:0 0 10px rgba(0,123,255,0.7); }
-
-100% { 
-text-shadow:
-0 0 20px rgba(0,123,255,0.9),
-0 0 40px rgba(0,123,255,0.8),
-0 0 70px rgba(0,123,255,0.7);
-}
+.close-btn {
+    position: absolute;
+    top: 20px;
+    right: 30px;
+    font-size: 50px;
+    color: rgba(255,255,255,0.7);
+    cursor: pointer;
+    transition: 0.3s;
 }
 
-        @keyframes typewriter {
-            from { width: 0; }
-            to { width: 5ch; }
-        }
-
-        @keyframes blink {
-            from, to { border-color: transparent; }
-            50% { border-color: #ffffff; }
-        }
-
-        @keyframes float {
-0% {
-transform: translate(0px, 0px) scale(1);
-}
-50% {
-transform: translate(40px, -30px) scale(1.1);
-}
-100% {
-transform: translate(0px, 0px) scale(1);
-}
+.close-btn:hover {
+    color: white;
 }
 
-@keyframes pulseGlow {
-0% { opacity: 0.3; }
-50% { opacity: 0.6; }
-100% { opacity: 0.3; }
+/* INPUTS */
+#panic-key-input,
+#panic-url-input {
+    width: 100%;
+    padding: 12px;
+    border-radius: 12px;
+    border: 1px solid rgba(255,255,255,0.3);
+    background: rgba(255,255,255,0.05);
+    color: white;
 }
 
-        /* Responsive */
-        @media (max-width: 768px) {
-            .title { font-size: 2.5rem; }
-            .search-input { width: 250px; }
-            .controls { gap: 1rem; }
-            .footer-links { gap: 1rem; }
-        }
+/* MOBILE */
+@media (max-width: 768px) {
+
+    h1 {
+        font-size: 2.5rem;
+        letter-spacing: 4px;
+    }
+
+    .games-grid {
+        padding: 20px;
+        gap: 20px;
+    }
+
+    .grid-desktop {
+        grid-template-columns: 1fr;
+    }
+
+    .search-input {
+        width: 250px;
+    }
+
+}
         
         
         
