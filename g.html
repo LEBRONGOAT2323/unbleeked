@@ -84,6 +84,8 @@ h1 {
     border-radius: 20px;
     overflow: hidden;
     transition: 0.4s;
+    display: flex;
+    flex-direction: column;
 }
 
 .game-card:hover {
@@ -100,6 +102,7 @@ h1 {
     justify-content: center;
     align-items: center;
     position: relative;
+    overflow: hidden;
 }
 
 .img-container img {
@@ -186,17 +189,63 @@ iframe {
 
 }
         
+.container {
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 20px;
+}
+
+.header {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 20px;
+}
+
+.controls {
+    display: flex;
+    gap: 15px;
+    align-items: center;
+    justify-content: center;
+    flex-wrap: wrap;
+}
+
+.search-container {
+    position: relative;
+}
+
+.search-input {
+    padding: 10px 15px 10px 40px;
+    border-radius: 10px;
+    border: none;
+    outline: none;
+    width: 250px;
+}
+
+.search-icon {
+    position: absolute;
+    left: 10px;
+    top: 50%;
+    transform: translateY(-50%);
+    opacity: 0.6;
+}
+
+.select {
+    padding: 10px;
+    border-radius: 10px;
+    border: none;
+}
         
+.footer {
+    margin-top: 50px;
+    padding: 20px;
+    opacity: 0.7;
+}     
         
         
     </style>
 </head>
 <body>
-    <div class="background">
-        <div class="glow-ring glow-1"></div>
-        <div class="glow-ring glow-2"></div>
-        <div class="glow-ring glow-3"></div>
-    </div>
 
     <div class="container">
         <header class="header">
@@ -311,7 +360,7 @@ iframe {
             
         </header>
         <main>
-            <div class="games-grid grid-desktop" id="gamesGrid">
+            <div class="games-grid" id="gamesGrid">
                 <!-- Manual game cards - add each game here -->
                 
                 <!-- Game cards -->
@@ -996,15 +1045,12 @@ savedGames.forEach((game, index) => addGameCard(game, index));
 
         function filterGames() {
     const searchTerm = searchInput.value.toLowerCase();
+    const cards = document.querySelectorAll('.game-card'); // LIVE QUERY
 
-    gameCards.forEach(card => {
-        const gameName = card.querySelector('.game-name').textContent.toLowerCase();
+    cards.forEach(card => {
+        const gameName = card.querySelector('.game-name')?.textContent.toLowerCase() || '';
 
-        if (gameName.includes(searchTerm)) {
-    card.style.display = "";
-} else {
-    card.style.display = "none";
-}
+        card.style.display = gameName.includes(searchTerm) ? "" : "none";
     });
 }
 
