@@ -182,10 +182,20 @@ let games = []; // 1. Initialize an empty array globally
 fetch("./games.json")
     .then(res => res.json())
     .then(data => {
-        games = data; // 2. Assign the fetched data to the global variable
-        render(games); // 3. Initial render once data arrives
+        // FILTER: This keeps only games that have a name and a URL.
+        // It also hides any that start with the word "Game " followed by a number.
+        games = data.filter(game => {
+            const hasName = game.name && game.name.trim() !== "";
+            const hasUrl = game.url && game.url.trim() !== "";
+            const isNotFiller = !game.name.toLowerCase().startsWith("game "); 
+            
+            return hasName && hasUrl && isNotFiller;
+        });
+
+        render(games); 
     })
     .catch(err => console.error("Error loading games:", err));
+
 
 /* ========================= RENDER SYSTEM ========================= */
 function render(list) {
