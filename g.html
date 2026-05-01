@@ -1,13 +1,14 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>GAMES | UNBLEEKED</title>
-    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&display=swap" rel="stylesheet">
-    <link id="favicon" rel="icon" type="image/x-icon" href="https://files.catbox.moe/j364dj.png">
-    <style>
-        * {
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>GAMES | UNBLEEKED</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&display=swap" rel="stylesheet">
+
+<style>
+* {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
@@ -19,7 +20,6 @@ body {
     background-size: 400% 400%;
     animation: gradient 15s ease infinite;
     color: white;
-    text-align: center;
     min-height: 100vh;
     overflow-x: hidden;
 }
@@ -30,1088 +30,216 @@ body {
     100%{background-position:0% 50%}
 }
 
-/* SETTINGS ICON */
-.settings-icon {
+/* BACKGROUND */
+.background {
     position: fixed;
-    top: 25px;
-    right: 25px;
-    width: 50px;
-    height: 50px;
-    background: rgba(255,255,255,0.1);
-    backdrop-filter: blur(10px);
-    border: 1px solid rgba(255,255,255,0.2);
-    border-radius: 14px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    cursor: pointer;
-    z-index: 2000;
-    transition: 0.3s;
+    width: 100%;
+    height: 100%;
+    z-index: 0;
 }
 
-.settings-icon:hover {
-    transform: scale(1.1);
-    border-color: #007bff;
-    box-shadow: 0 0 20px rgba(0,123,255,0.5);
+.glow-ring {
+    position: absolute;
+    border-radius: 50%;
+    filter: blur(90px);
+}
+
+.glow-1 {
+    top: 20%;
+    left: 20%;
+    width: 400px;
+    height: 400px;
+    background: rgba(0,123,255,0.15);
+}
+
+.glow-2 {
+    bottom: 20%;
+    right: 20%;
+    width: 400px;
+    height: 400px;
+    background: rgba(255,255,255,0.05);
+}
+
+/* LAYOUT */
+.container {
+    position: relative;
+    z-index: 2;
+    max-width: 1200px;
+    margin: auto;
+    padding: 20px;
+}
+
+/* HEADER */
+.title {
+    text-align: center;
+    font-size: 3rem;
+    font-weight: 900;
+    margin-bottom: 20px;
+    text-shadow: 0 0 20px rgba(0,123,255,0.6);
+}
+
+.controls {
+    display: flex;
+    justify-content: center;
+    gap: 15px;
+    flex-wrap: wrap;
+    margin-bottom: 30px;
+}
+
+.search-input, .select {
+    padding: 12px 15px;
+    border-radius: 10px;
+    border: 1px solid rgba(255,255,255,0.2);
+    background: rgba(0,0,0,0.3);
+    color: white;
+    font-family: Orbitron;
+}
+
+.search-input {
+    width: 250px;
 }
 
 /* GRID */
-h1 {
-    font-size: 85px;
-    margin: 60px 0 20px;
-    letter-spacing: 10px;
-    font-weight: 900;
-    text-shadow: 0 0 10px rgba(0,123,255,0.7);
-}
-
 .games-grid {
     display: grid;
-    gap: 30px;
-    padding: 40px;
-    max-width: 1200px;
-    margin: 0 auto;
+    gap: 15px;
+    transition: 0.3s;
 }
 
 .grid-mobile { grid-template-columns: 1fr; }
 .grid-tablet { grid-template-columns: repeat(2, 1fr); }
 .grid-desktop { grid-template-columns: repeat(3, 1fr); }
 
+/* CARD */
 .game-card {
-    cursor: pointer;
-    background: rgba(255,255,255,0.05);
-    backdrop-filter: blur(10px);
-    border: 1px solid rgba(255,255,255,0.1);
-    border-radius: 20px;
+    background: rgba(0,0,0,0.3);
+    border-radius: 15px;
     overflow: hidden;
-    transition: 0.4s;
-    display: flex;
-    flex-direction: column;
+    cursor: pointer;
+    transition: 0.3s;
+    border: 1px solid rgba(255,255,255,0.1);
 }
 
 .game-card:hover {
-    transform: translateY(-10px);
-    border-color: #007bff;
-    box-shadow: 0 0 20px rgba(0,123,255,0.6);
+    transform: translateY(-8px);
+    border-color: rgba(0,123,255,0.7);
+    box-shadow: 0 0 20px rgba(0,123,255,0.4);
 }
 
 .img-container {
-    width: 100%;
-    height: 180px;
-    background: linear-gradient(45deg,#1e1e2f,#2a2a40);
-    display: flex;
-    justify-content: center;
-    align-items: center;
+    height: 160px;
     position: relative;
-    overflow: hidden;
 }
 
 .img-container img {
     width: 100%;
     height: 100%;
     object-fit: cover;
-    position: absolute;
-    top: 0;
-    left: 0;
-}
-
-.img-container::after {
-    content: "🎮";
-    font-size: 50px;
-    opacity: 0.2;
 }
 
 .game-name {
-    padding: 15px;
-    font-weight: 600;
-    background: rgba(0,0,0,0.3);
-}
-
-/* GAME OVERLAY */
-#game-container {
-    display: none;
-    position: fixed;
-    inset: 0;
-    background: black;
-    z-index: 3000;
-}
-
-iframe {
-    width: 100%;
-    height: 100%;
-    border: none;
-}
-
-.close-btn {
-    position: absolute;
-    top: 20px;
-    right: 30px;
-    font-size: 50px;
-    color: rgba(255,255,255,0.7);
-    cursor: pointer;
-    transition: 0.3s;
-}
-
-.close-btn:hover {
-    color: white;
-}
-
-/* INPUTS */
-#panic-key-input,
-#panic-url-input {
-    width: 100%;
     padding: 12px;
-    border-radius: 12px;
-    border: 1px solid rgba(255,255,255,0.3);
-    background: rgba(255,255,255,0.05);
-    color: white;
+    font-size: 0.9rem;
+    text-transform: lowercase;
+    background: rgba(0,0,0,0.4);
 }
-
-/* MOBILE */
-@media (max-width: 768px) {
-
-    h1 {
-        font-size: 2.5rem;
-        letter-spacing: 4px;
-    }
-
-    .games-grid {
-        padding: 20px;
-        gap: 20px;
-    }
-
-    .grid-desktop {
-        grid-template-columns: 1fr;
-    }
-
-    .search-input {
-        width: 250px;
-    }
-
-}
-        
-.container {
-    max-width: 1400px;
-    margin: 0 auto;
-    padding: 20px;
-}
-
-.header {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 20px;
-}
-
-.controls {
-    display: flex;
-    gap: 15px;
-    align-items: center;
-    justify-content: center;
-    flex-wrap: wrap;
-}
-
-.search-container {
-    position: relative;
-}
-
-.search-input {
-    padding: 10px 15px 10px 40px;
-    border-radius: 10px;
-    border: none;
-    outline: none;
-    width: 250px;
-}
-
-.search-icon {
-    position: absolute;
-    left: 10px;
-    top: 50%;
-    transform: translateY(-50%);
-    opacity: 0.6;
-}
-
-.select {
-    padding: 10px;
-    border-radius: 10px;
-    border: none;
-}
-        
-.footer {
-    margin-top: 50px;
-    padding: 20px;
-    opacity: 0.7;
-}     
-        
-        
-    </style>
+</style>
 </head>
+
 <body>
 
-    <div class="container">
-        <header class="header">
-            <a href="main.html" class="back-btn">
-                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                    <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/>
-                    <polyline points="9,22 9,12 15,12 15,22"/>
-                </svg>
-                Back to Homepage
-            </a>
-            
-            <h1 class="title" onclick="location.href='/main.html'" style="cursor:pointer;">
-                <span class="typewriter">GAMES</span>
-            </h1>
-
-            <div class="controls">
-                <div class="search-container">
-                    <svg class="search-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                        <circle cx="11" cy="11" r="8"/>
-                        <path d="M21 21l-4.35-4.35"/>
-                    </svg>
-                    <input type="text" class="search-input" placeholder="Search games..." id="searchInput">
-                </div>
-
-                <div class="select-container">
-                    <select class="select" id="gridSelect">
-                        <option value="auto">Auto Grid</option>
-                        <option value="mobile">Mobile (1 col)</option>
-                        <option value="tablet">Tablet (2 col)</option>
-                        <option value="desktop">Desktop (3 col)</option>
-                    </select>
-                </div>
-            </div>
-            
-             <!-- SETTINGS ICON -->
-    <div class="settings-icon" onclick="toggleSettings()">
-        <div class="gear-shape">
-            <div class="gear-inner"></div>
-            <div class="gear-teeth-extra"></div>
-        </div>
-    </div>
-
-    <!-- CLOAK MENU -->
-    <div id="settings-menu" onclick="closeSettings(event)">
-        <div class="settings-content" onclick="event.stopPropagation()">
-            
-             <!-- ADMIN LOGIN BUTTON -->
-            <button class="cloak-option" onclick="openAdminLogin()">
-                <img src="images/Lock.png" alt="admin"> Admin Login
-            </button>
-
-            <hr style="opacity:0.2; margin:20px 0;">
-            
-            <h2>Tab Cloak</h2>
-            <p style="opacity:0.7; margin-bottom: 20px;">Hide this tab in your browser bar.</p>
-
-            <button class="cloak-option" onclick="setCloak('Google Drive', 'https://drive.google.com/favicon.ico')">
-                <img src="images/Google_Drive_icon.png" alt=""> Google Drive
-            </button>
-            <button class="cloak-option" onclick="setCloak('Google Classroom', 'https://edu.google.com/images/svg/gsuite-icons/classroom.svg')">
-                <img src="https://edu.google.com/images/svg/gsuite-icons/classroom.svg" alt=""> Google Classroom
-            </button>
-            <button class="cloak-option" onclick="setCloak('Desmos | Graphing Calculator', 'https://www.desmos.com/favicon.ico')">
-                <img src="images/DesmosIcon.png" alt=""> Desmos
-            </button>
-            <button class="cloak-option" onclick="setCloak('ELANCO Gateway', 'https://resources.finalsite.net/images/f_auto,q_auto,t_image_size_1/v1627325122/elancok12paus/wwvhvbwalfumgihhoafl/ELANCO-Logo-286c.png')">
-                <img src="images/ELANCO.png" alt=""> ELANCO Gateway
-            </button>
-            <button class="cloak-option" onclick="setCloak('UNBLEEKED', 'https://files.catbox.moe/j364dj.png')">
-                <img src="https://files.catbox.moe/j364dj.png" alt=""> Reset to Default
-            </button>
-
-            
-
-            <hr style="opacity:0.2; margin:20px 0;">
-
-            <!-- 🔴 PANIC KEY SETTINGS -->
-            <h3>Panic Key</h3>
-
-            <label>Key (single character)</label>
-            <input id="panic-key-input" maxlength="1" placeholder="`">
-
-            <label style="margin-top:10px;">Redirect URL</label>
-            <input id="panic-url-input" placeholder="https://drive.google.com">
-
-            <button class="cloak-option" onclick="toggleSettings()">Save & Close</button>
-
-            <!-- ADMIN CONTROLS (hidden until admin) -->
-            <div id="admin-controls" aria-hidden="true">
-                <h4>Admin Controls</h4>
-                <button class="admin-btn" onclick="adminAddGame()">➕ Add Game</button>
-                <button class="admin-btn" onclick="adminRemoveLastGame()">🗑️ Remove Last Game</button>
-                <button class="admin-btn" onclick="revokeAdmin()">🔒 Revoke Admin</button>
-                <button class="admin-btn" onclick="adminEditGame()">✏️ Edit Admin Game</button>
-            </div>
-        </div>
-    </div>
-
-    <!-- ADMIN PASSWORD MODAL -->
-    <div id="admin-modal" onclick="closeAdminModal()">
-        <div class="admin-box" onclick="event.stopPropagation()">
-            <h3>Admin Login</h3>
-            <p style="opacity:0.8; margin-top:6px;">Enter admin password to unlock controls.</p>
-            <input id="admin-password" class="admin-input" type="password" placeholder="Password">
-            <div class="admin-actions">
-                <button class="btn btn-ghost" onclick="closeAdminModal()">Cancel</button>
-                <button class="btn btn-primary" onclick="verifyAdminPassword()">Unlock</button>
-            </div>
-            <p id="admin-error" style="color:#ff6b6b; opacity:0.9; margin-top:10px; display:none;">Incorrect password.</p>
-        </div>
-    </div>
-            
-        </header>
-        <main>
-            <div class="games-grid" id="gamesGrid">
-                <!-- Manual game cards - add each game here -->
-                
-                <!-- Game cards -->
-                <div class="game-card">
-                    <div class="img-container" data-category="placeholder" onclick="window.location.href='/subwaysurfers.html'">
-                        <img src="images/SubwaySurfersLogoRemastered.jpg" alt="Subway Surfers"> 
-                    </div>
-                        <div class="game-name">Subway Surfers</div>
-                </div>
-                
-                <div class="game-card">
-                    <div class="img-container" data-category="placeholder" onclick="play('https://bi6zone.vercel.app/g/minecraft.html')">
-                        <img src="images/MinecraftLogo.jpg" alt="Minecraft">
-                    </div>
-                        <div class="game-name">Minecraft</div>
-                </div>
-
-                <div class="game-card">
-                    <div class="img-container" data-category="placeholder" onclick="play('https://bi6zone.vercel.app/g/block-blast.html')">
-                        <img src="images/BlockBlastappicon.jpg" alt="Block Blast">
-                    </div>
-                        <div class="game-name">Block Blast</div>
-                </div>
-
-                <div class="game-card">
-                    <div class="img-container" data-category="placeholder" onclick="window.location.href='/g/Crossy%20Road.html'">
-                        <img src="https://files.catbox.moe/h00vy5" alt="Crossy Road">
-                    </div>
-                        <div class="game-name">Crossy Road</div>
-                </div>
-
-                <div class="game-card">
-                    <div class="img-container" data-category="placeholder" onclick="play('https://bi6zone.vercel.app/g/retro-bowl.html')">
-                        <img src="images/Retro-Bowl.jpg" alt="Retro Bowl">
-                    </div>
-                        <div class="game-name">Retro Bowl</div>
-                </div>
-
-                <div class="game-card">
-                    <div class="img-container" data-category="placeholder" onclick="play('https://bi6zone.vercel.app/g/1v1-lol.html')">
-                        <img src="images/1v1.lol.jpeg" alt="1v1 lol">
-                    </div>
-                         <div class="game-name">1v1 lol</div>
-                </div>
-
-                <div class="game-card">
-                    <div class="img-container" data-category="placeholder" onclick="play('https://bi6zone.vercel.app/g/run3.html')">
-                        <img src="images/Run3Logo.jpg" alt="Run 3">
-                    </div>
-                        <div class="game-name">Run 3</div>
-                </div>
-
-                <div class="game-card">
-                    <div class="img-container" data-category="placeholder" onclick="play('https://bi6zone.vercel.app/g/tiny-fishing.html')">
-                        <img src="https://files.catbox.moe/i3anhd.webp" alt="Tiny Fishing">
-                    </div>
-                        <div class="game-name">Tiny Fishing</div>
-                </div>
-
-                <div class="game-card">
-                    <div class="img-container" data-category="placeholder" onclick="play('https://bi6zone.vercel.app/g/fruit-ninja.html')">
-                        <img src="images/FruitNinja.jpg" alt="Fruit Ninja">
-                    </div>
-                        <div class="game-name">Fruit Ninja</div>
-                </div>
-
-                <div class="game-card">
-                    <div class="img-container" data-category="placeholder" onclick="play('https://bi6zone.vercel.app/g/paper-io-2.html')">
-                        <img src="https://files.catbox.moe/fhhv3d" alt="Paper.io 2">
-                    </div>
-                        <div class="game-name">Paper.io 2</div>
-                </div> 
-                
-                <div class="game-card">
-                    <div class="img-container" data-category="placeholder" onclick="play('https://bi6zone.vercel.app/g/basket-random.html')">
-                        <img src="https://files.catbox.moe/xq62ka" alt="Basket Random">
-                    </div>
-                        <div class="game-name">Basket Random</div>
-                </div> 
-                
-                <div class="game-card">
-                    <div class="img-container" data-category="placeholder" onclick="play('https://soccerrandom.netlify.app/')">
-                        <img src="https://files.catbox.moe/lnk6go" alt="Soccer Random">
-                    </div>
-                        <div class="game-name">Soccer Random</div>
-                </div> 
-                
-                <div class="game-card">
-                    <div class="img-container" data-category="placeholder" onclick="play('https://volleyrandom.netlify.app/')">
-                        <img src="https://files.catbox.moe/nrxxgo" alt="Volley Random">
-                    </div>
-                        <div class="game-name">Volley Random</div>
-                </div> 
-                
-                <div class="game-card">
-                    <div class="img-container" data-category="placeholder" onclick="play('https://boxingrandom.netlify.app/')">
-                        <img src="https://files.catbox.moe/0nb7uh" alt="Boxing Random">
-                    </div>
-                        <div class="game-name">Boxing Random</div>
-                </div> 
-                
-                <div class="game-card">
-                    <div class="img-container" data-category="placeholder" onclick="window.location.href='/g/clbloonsTD1.html'">
-                        <img src="images/BTD1.webp" alt="BTD1">
-                    </div>
-                        <div class="game-name">BTD 1</div>
-                </div>
-                
-                <div class="game-card">
-                    <div class="img-container" data-category="placeholder" onclick="window.location.href='/g/clbloonsTD2.html'">
-                        <img src="images/BTD2.webp" alt="BTD2">
-                    </div>
-                        <div class="game-name">BTD 2</div>
-                </div>
-                
-                <div class="game-card">
-                    <div class="img-container" data-category="placeholder" onclick="window.location.href='/g/clbloonsTD3.html'">
-                        <img src="https://files.catbox.moe/z5azm0" alt="BTD3">
-                    </div>
-                        <div class="game-name">BTD 3</div>
-                </div>
-                
-                <div class="game-card">
-                    <div class="img-container" data-category="placeholder" onclick="window.location.href='/g/clbloonsTD4.html'">
-                        <img src="https://files.catbox.moe/mel29y.jpg" alt="BTD4">
-                    </div>
-                        <div class="game-name">BTD 4</div>
-                </div>
-                
-                <div class="game-card">
-                    <div class="img-container" data-category="placeholder" onclick="window.location.href='/g/clbloonsTD5.html'">
-                        <img src="https://files.catbox.moe/bxp2jl" alt="BTD5">
-                    </div>
-                        <div class="game-name">BTD 5</div>
-                </div>
-                
-                <div class="game-card">
-                    <div class="img-container" data-category="placeholder" onclick="play('https://shrimplab.vercel.app/projects/tetris/index.html')">
-                        <img src="https://files.catbox.moe/l4nobo.jpg" alt="Tetris">
-                    </div>
-                        <div class="game-name">TETRIS</div>
-                </div> 
-                
-                 <div class="game-card">
-                    <div class="img-container" data-category="placeholder" onclick="play('https://trollpulse.vercel.app/')">
-                        <img src="images/TrollPulseLogo.png" alt="Troll Pulse">
-                    </div>
-                        <div class="game-name">TrollPulse</div>
-                </div> 
-                
-                <div class="game-card">
-                    <div class="img-container" data-category="placeholder" onclick="play('https://bi6zone.vercel.app/g/drift-boss.html')">
-                        <img src="https://files.catbox.moe/h0awau" alt="Drift Boss">
-                    </div>
-                        <div class="game-name">DRIFT BOSS</div>
-                </div> 
-                
-                 <div class="game-card">
-                    <div class="img-container" data-category="placeholder" onclick="play('https://bi6zone.vercel.app/g/drive-mad.html')">
-                        <img src="https://files.catbox.moe/kiihxw.png" alt="Drive Mad">
-                    </div>
-                        <div class="game-name">DRIVE MAD</div>
-                </div>
-                
-                 <div class="game-card">
-                    <div class="img-container" data-category="placeholder" onclick="play('https://bi6zone.vercel.app/g/geometry-dash.html')">
-                        <img src="https://files.catbox.moe/kbi3pv" alt="Geometry Dash">
-                    </div>
-                        <div class="game-name">Geometry Dash</div>
-                </div>
-                
-                <div class="game-card">
-                    <div class="img-container" data-category="placeholder" onclick="play('https://bi6zone.vercel.app/g/hole-io.html')">
-                        <img src="https://files.catbox.moe/at1v0h.png" alt="hole.io">
-                    </div>
-                        <div class="game-name">Hole.io</div>
-                </div>
-                
-                <div class="game-card">
-                    <div class="img-container" data-category="placeholder" onclick="play('https://bi6zone.vercel.app/g/slither-io.html')">
-                        <img src="https://files.catbox.moe/6sgjfa.png" alt="slither.io">
-                    </div>
-                        <div class="game-name">Slither.io</div>
-                </div>
-                
-                <div class="game-card">
-                    <div class="img-container" data-category="placeholder" onclick="play('https://bi6zone.vercel.app/g/snowball-io.html')">
-                        <img src="https://files.catbox.moe/y8dlxd" alt="snowball.io">
-                    </div>
-                        <div class="game-name">Snowball.io</div>
-                </div>
-                
-                <div class="game-card">
-                    <div class="img-container" data-category="placeholder" onclick="play('https://bi6zone.vercel.app/g/just-fall-io.html')">
-                        <img src="images/JustFalllol.png" alt="justfall.lol">
-                    </div>
-                        <div class="game-name">Justfall.lol</div>
-                </div>
-                
-                 <div class="game-card">
-                    <div class="img-container" data-category="placeholder" onclick="play('https://truecookieclicker.netlify.app/')">
-                        <img src="https://files.catbox.moe/hmfydt.png" alt="Cookie Clicker">
-                    </div>
-                        <div class="game-name">Cookie Clicker</div>
-                </div>
-                
-                <div class="game-card">
-                    <div class="img-container" data-category="placeholder" onclick="window.location.href='/g/Escape%20Road.html'">
-                        <img src="https://files.catbox.moe/2xbfwd" alt="Escape Road">
-                    </div>
-                        <div class="game-name">Escape Road</div>
-                </div>
-                
-                <div class="game-card">
-                    <div class="img-container" data-category="placeholder" onclick="window.location.href='/g/Escape%20Road%202.html'">
-                        <img src="https://files.catbox.moe/wmy3g4.png" alt="Escape Road 2">
-                    </div>
-                        <div class="game-name">Escape Road 2</div>
-                </div>
-                
-                <div class="game-card">
-                    <div class="img-container" data-category="placeholder" onclick="window.location.href='/g/Snow%20Rider%203D.html'">
-                        <img src="https://files.catbox.moe/q2uyb1.png" alt="Snow Rider 3D">
-                    </div>
-                        <div class="game-name">Snow Rider 3D</div>
-                </div>
-                
-                <div class="game-card">
-                    <div class="img-container" data-category="placeholder" onclick="play('https://neonwarp.vercel.app/')">
-                        <img src="Lebron-lowkey-goated" alt="Neon Warp">
-                    </div>
-                        <div class="game-name">Neon Warp</div>
-                </div>
-                
-                <div class="game-card">
-                    <div class="img-container" data-category="placeholder" onclick="play('https://pixel-idk.vercel.app/')">
-                        <img src="https://files.catbox.moe/mvua0h" alt="Pixel Panic">
-                    </div>
-                        <div class="game-name">Pixel Panic</div>
-                </div>
-                
-                 <div class="game-card">
-                    <div class="img-container" data-category="placeholder" onclick="alert('Coming soon!')">
-                        <img src="images/MissingImage.jpg" alt="Future Game">
-                    </div>
-                        <div class="game-name">Coming Soon</div>
-                </div>
-                
-            </div>
-        </main>
-
-        <footer class="footer">
-            <div class="footer-links">
-                <a href="pp.html" class="footer-link">privacy policy</a>
-                <a href="#" class="footer-link">update log</a>
-                <a href="faq.html" class="footer-link">faq</a>
-                <a href="#" class="footer-link" onclick="openBlank(); return false;">open blank</a>
-                <a href="https://github.com/LEBRONGOAT2323" target="_blank" class="footer-link">github</a>
-                <a href="https://docs.google.com/forms/d/1t52FBl9fUIm6ftWzFQTSw4dutoIOP1rTe8AnQ4cg1pY/viewform?edit_requested=true" target="_blank" class="footer-link">support</a>
-            </div>
-        </footer>
-    </div>
-
-    <script>
-      
-      function closeSettings(e) {
-    if (e.target.id === 'settings-menu') {
-        toggleSettings();
-    }
-}
-      
-       // Silent revoke used when closing the settings menu so admin controls are removed
-        function revokeAdminLocal() {
-            try {
-                localStorage.removeItem('isAdmin');
-            } catch (e) {}
-            showAdminControls(false);
-        }
-
-        function toggleSettings() {
-            const menu = document.getElementById('settings-menu');
-            // Use computed style to reliably detect visibility
-            const isOpen = menu.style.display === 'flex';
-            if (isOpen) {
-                menu.style.display = 'none';
-                // When leaving settings, remove admin controls so re-entering requires login
-                revokeAdminLocal();
-            } else {
-                menu.style.display = 'flex';
-            }
-        }
-
-        function setCloak(title, iconUrl) {
-            document.title = title;
-            const existingIcons = document.querySelectorAll('link[rel*="icon"]');
-            existingIcons.forEach(icon => icon.remove());
-
-            const newIcon = document.createElement('link');
-            newIcon.id = 'favicon';
-            newIcon.rel = 'icon';
-            newIcon.type = 'image/x-icon';
-            newIcon.href = iconUrl + '?v=' + new Date().getTime();
-            document.getElementsByTagName('head')[0].appendChild(newIcon);
-
-            localStorage.setItem('cloakTitle', title);
-            localStorage.setItem('cloakIcon', iconUrl);
-        }
-
-        function play(url) {
-    const container = document.getElementById("game-container");
-    if (!container) {
-        console.error("game-container missing");
-        return;
-    }
-
-    container.style.display = "block";
-    document.body.style.overflow = "hidden";
-
-    container.innerHTML = `
-        <span class="close-btn" onclick="closeGame()">&times;</span>
-        <iframe src="${url}" allowfullscreen></iframe>
-    `;
-}
-        function closeGame() {
-
-    const container = document.getElementById("game-container");
-
-    container.style.display = "none";
-
-    container.innerHTML = `
-        <span class="close-btn" onclick="closeGame()">&times;</span>
-        <iframe id="game-iframe"></iframe>
-    `;
-
-    document.body.style.overflow = "auto";
-
-    screen.orientation?.unlock?.();
-
-}
-
-        /* =========================
-           ADMIN LOGIN & CONTROLS
-           ========================= */
-
-        const MAX_ADMIN_ATTEMPTS = 3;
-const ADMIN_LOCK_TIME = 60 * 1000; // 1 minute
-
-
-        async function verifyAdminPassword() {
-    const passwordEl = document.getElementById('admin-password');
-    const err = document.getElementById('admin-error');
-    const password = passwordEl.value;
-    const now = Date.now();
-
-    const lockUntil = Number(localStorage.getItem('adminLockUntil')) || 0;
-    if (now < lockUntil) {
-        alert('Admin login is locked. Please wait.');
-        return;
-    }
-
-    const ADMIN_HASH = '216a2fef5d1dcaf6d4d167c07783a037c048598402bc6dc90e8a3f2ae0353fa2';
-
-    const enc = new TextEncoder().encode(password);
-    const buf = await crypto.subtle.digest('SHA-256', enc);
-    const hash = [...new Uint8Array(buf)]
-        .map(b => b.toString(16).padStart(2, '0'))
-        .join('');
-
-    // ✅ SUCCESS
-    if (hash === ADMIN_HASH) {
-        localStorage.removeItem('adminFailCount');
-        localStorage.removeItem('adminLockUntil');
-        localStorage.setItem('isAdmin', 'true');
-        updateAdminButtonLock();
-        showAdminControls(true);
-        closeAdminModal();
-        alert('Admin access granted.');
-        return;
-    }
-
-    // ❌ FAILURE
-    let fails = Number(localStorage.getItem('adminFailCount')) || 0;
-    fails++;
-    localStorage.setItem('adminFailCount', fails);
-    passwordEl.value = '';
-
-    if (err) err.style.display = 'block';
-
-    // shake animation
-    const box = document.querySelector('.admin-box');
-    if (box) {
-        box.style.transform = 'translateX(-6px)';
-        setTimeout(() => box.style.transform = 'translateX(6px)', 60);
-        setTimeout(() => box.style.transform = 'translateX(0px)', 120);
-    }
-
-    // 🔒 LOCK AFTER 3 FAILS
-    if (fails >= MAX_ADMIN_ATTEMPTS) {
-        localStorage.setItem('adminLockUntil', now + ADMIN_LOCK_TIME);
-        localStorage.removeItem('adminFailCount');
-        alert('Too many failed attempts.\nLocked for 1 minute.');
-        updateAdminButtonLock();
-        closeAdminModal();
-    }
-}
-
-
-
-
-
-
-        function showAdminControls(show) {
-            const admin = document.getElementById('admin-controls');
-            if (!admin) return;
-            if (show) {
-                admin.style.display = 'block';
-                admin.setAttribute('aria-hidden', 'false');
-            } else {
-                admin.style.display = 'none';
-                admin.setAttribute('aria-hidden', 'true');
-            }
-        }
-
-        const ADMIN_GAMES_KEY = 'adminGames';
-
-function getAdminGames() {
-    try {
-        return JSON.parse(localStorage.getItem(ADMIN_GAMES_KEY)) || [];
-    } catch {
-        return [];
-    }
-}
-
-function saveAdminGames(games) {
-    localStorage.setItem(ADMIN_GAMES_KEY, JSON.stringify(games));
-}
-
-
-function addGameCard({ title, url, image }, adminIndex = null) {
-    const grid = document.getElementById('gamesGrid');
-    if (!grid) return;
-
-    const card = document.createElement('div');
-    card.className = 'game-card';
-    card.onclick = () => play(url);
-
-    if (adminIndex !== null) {
-        card.dataset.adminIndex = adminIndex;
-    }
-
-    const imgContainer = document.createElement('div');
-    imgContainer.className = 'img-container';
-
-    if (image) {
-        const img = document.createElement('img');
-        img.src = image;
-        img.alt = title;
-        img.onerror = () => img.style.display = 'none';
-        imgContainer.appendChild(img);
-    }
-
-    const p = document.createElement('p');
-    p.textContent = title;
-
-    card.appendChild(imgContainer);
-    card.appendChild(p);
-    grid.appendChild(card);
-}
-
-
-
-        function adminAddGame() {
-    const title = prompt('Game title:');
-    if (!title) return;
-
-    const url = prompt('Game URL (iframe-compatible):');
-    if (!url) return;
-
-    const image = prompt('Preview image URL (optional):', '');
-
-    const games = getAdminGames();
-    games.push({ title, url, image });
-    saveAdminGames(games);
-
-    addGameCard({ title, url, image }, games.length - 1);
-
-
-}
-
-
-        function adminRemoveLastGame() {
-    const games = getAdminGames();
-    if (games.length === 0) {
-        alert('No admin-added games to remove.');
-        return;
-    }
-
-    if (!confirm('Remove last admin-added game?')) return;
-
-    games.pop();
-    saveAdminGames(games);
-
-    const grid = document.getElementById('gamesGrid');
-    const cards = document.querySelectorAll('.game-card[data-admin-index]');
-const last = cards[cards.length - 1];
-if (last) last.remove();
-
-}
-
-        function adminEditGame() {
-    const games = getAdminGames();
-    if (games.length === 0) {
-        alert('No admin-added games to edit.');
-        return;
-    }
-
-    let list = games
-        .map((g, i) => `${i + 1}. ${g.title}`)
-        .join('\n');
-
-    const choice = prompt(
-        `Select a game to edit (number):\n\n${list}`
-    );
-
-    const index = Number(choice) - 1;
-    if (isNaN(index) || !games[index]) return;
-
-    const game = games[index];
-
-    const newTitle = prompt('Edit title:', game.title);
-    if (!newTitle) return;
-
-    const newUrl = prompt('Edit URL:', game.url);
-    if (!newUrl) return;
-
-    const newImage = prompt(
-        'Edit image URL (leave blank for none):',
-        game.image || ''
-    );
-
-    games[index] = {
-        title: newTitle,
-        url: newUrl,
-        image: newImage
-    };
-
-    saveAdminGames(games);
-
-    // Rebuild grid admin games
-    document
-        .querySelectorAll('.game-card[data-admin-index]')
-        .forEach(e => e.remove());
-
-    games.forEach((g, i) => addGameCard(g, i));
-
-    alert('Game updated.');
-}
-
-
-
-        // Interactive revoke with confirmation (keeps existing behavior)
-        function revokeAdmin() {
-            if (!confirm('Revoke admin privileges?')) return;
-            localStorage.removeItem('isAdmin');
-            showAdminControls(false);
-            alert('Admin revoked.');
-        }
-
-        function escapeHtmlAttr(str) {
-            if (!str) return '';
-            return str.replace(/'/g, "\\'");
-        }
-
-function openAdminLogin() {
-    const modal = document.getElementById('admin-modal');
-    const err = document.getElementById('admin-error');
-    if (err) err.style.display = 'none';
-    if (modal) modal.style.display = 'flex';
-}
-
-function closeAdminModal() {
-    const modal = document.getElementById('admin-modal');
-    if (modal) modal.style.display = 'none';
-}
-
-function updateAdminButtonLock() {
-    const btn = document.querySelector('.cloak-option[onclick*="openAdminLogin"]');
-    if (!btn) return;
-
-    const now = Date.now();
-    const lockUntil = Number(localStorage.getItem('adminLockUntil')) || 0;
-
-    if (now < lockUntil) {
-        const remaining = Math.ceil((lockUntil - now) / 1000);
-        btn.classList.add('locked');
-        btn.textContent = `🔒 Admin Locked (${remaining}s)`;
-        btn.style.pointerEvents = 'none';   // Disable clicks
-        btn.style.cursor = 'not-allowed';   // Change cursor to not-allowed
-        setTimeout(updateAdminButtonLock, 1000);
-    } else {
-        btn.classList.remove('locked');
-        btn.textContent = '🔒 Admin Login';
-        btn.style.pointerEvents = 'auto';   // Enable clicks
-        btn.style.cursor = 'pointer';       // Normal pointer cursor
-        localStorage.removeItem('adminLockUntil');
-    }
-}
-
-
-
-
-        /* =========================
-           INITIALIZATION (safe after DOM ready)
-           ========================= */
-
-        document.addEventListener('DOMContentLoaded', function() {
-    // Panic key & URL saving
-    const pkInput = document.getElementById("panic-key-input");
-    const puInput = document.getElementById("panic-url-input");
-
-    if (pkInput) {
-        pkInput.addEventListener("input", e => {
-            localStorage.setItem("panicKey", (e.target.value || '').toLowerCase());
-        });
-    }
-
-    if (puInput) {
-        puInput.addEventListener("change", e => {
-            localStorage.setItem("panicURL", e.target.value || '');
-        });
-    }
-
-    // Keyboard panic trigger
-    document.addEventListener("keydown", function(e) {
-        const panicKey = localStorage.getItem("panicKey");
-        const panicURL = localStorage.getItem("panicURL");
-        if (!panicKey || !panicURL) return;
-
-        if (e.key && e.key.toLowerCase() === panicKey) {
-            localStorage.setItem("panicReturn", location.href);
-            location.replace(panicURL);
-        }
-    });
-
-    // Attach Enter handler for admin password
-    const adminPwd = document.getElementById('admin-password');
-    if (adminPwd) {
-        adminPwd.addEventListener('keydown', function(e){
-            if (e.key === 'Enter') {
-                verifyAdminPassword();
-            }
-        });
-    }
-
-
-    // Load admin-added games
-const savedGames = getAdminGames();
-savedGames.forEach((game, index) => addGameCard(game, index));
-
-
-
-    // Load saved cloak
-    const savedTitle = localStorage.getItem('cloakTitle');
-    const savedIcon = localStorage.getItem('cloakIcon');
-    if (savedTitle && savedIcon) setCloak(savedTitle, savedIcon);
-
-    // Load panic values
-    if (pkInput) pkInput.value = localStorage.getItem("panicKey") || '';
-    if (puInput) puInput.value = localStorage.getItem("panicURL") || '';
-
-    updateAdminButtonLock();
-      
-        // Get elements
-        const searchInput = document.getElementById('searchInput');
-        const gridSelect = document.getElementById('gridSelect');
-        const gamesGrid = document.getElementById('gamesGrid');
-        const gameCards = document.querySelectorAll('.game-card');
-
-        // Search functionality
-        searchInput.addEventListener('input', filterGames);
-        gridSelect.addEventListener('change', changeGrid);
-
-        function filterGames() {
-    const searchTerm = searchInput.value.toLowerCase();
-    const cards = document.querySelectorAll('.game-card'); // LIVE QUERY
-
-    cards.forEach(card => {
-        const gameName = card.querySelector('.game-name')?.textContent.toLowerCase() || '';
-
-        card.style.display = gameName.includes(searchTerm) ? "" : "none";
-    });
-}
-
-        function changeGrid() {
-            const gridType = gridSelect.value;
-            
-            // Remove all grid classes
-            gamesGrid.classList.remove('grid-mobile', 'grid-tablet', 'grid-desktop');
-            
-            // Add appropriate grid class
-            if (gridType === 'auto') {
-                gamesGrid.classList.add('grid-desktop'); // default to desktop
-            } else {
-                gamesGrid.classList.add(`grid-${gridType}`);
-            }
-        }
-
-        // Auto grid functionality (responsive)
-        function handleAutoGrid() {
-            if (gridSelect.value === 'auto') {
-                const width = window.innerWidth;
-                gamesGrid.classList.remove('grid-mobile', 'grid-tablet', 'grid-desktop');
-                
-                if (width <= 768) {
-                    gamesGrid.classList.add('grid-mobile');
-                } else if (width <= 1024) {
-                    gamesGrid.classList.add('grid-tablet');
-                } else {
-                    gamesGrid.classList.add('grid-desktop');
-                }
-            }
-        }
-
-        // Listen for window resize for auto grid
-        window.addEventListener('resize', handleAutoGrid);
-        
-        // Initial auto grid setup
-        handleAutoGrid();
-        });
-    </script>
-   <script>
-function openBlank() {
-    const newTab = window.open('about:blank', '_blank');
-
-    if (!newTab) {
-        alert("Popup blocked");
-        return;
-    }
-
-    newTab.document.write(`
-        <iframe src="${window.location.href}" 
-        style="position:fixed;top:0;left:0;width:100vw;height:100vh;border:none;"
-        </iframe>
-    `);
-
-    newTab.document.close();
-}
-</script>
-<div id="game-container">
-    <span class="close-btn" onclick="closeGame()">&times;</span>
-    <iframe id="game-iframe"></iframe>
+<div class="background">
+    <div class="glow-ring glow-1"></div>
+    <div class="glow-ring glow-2"></div>
 </div>
+
+<div class="container">
+
+    <div class="title">GAMES</div>
+
+    <div class="controls">
+        <input id="searchInput" class="search-input" placeholder="Search games...">
+        <select id="gridSelect" class="select">
+            <option value="auto">Auto Grid</option>
+            <option value="mobile">Mobile</option>
+            <option value="tablet">Tablet</option>
+            <option value="desktop">Desktop</option>
+        </select>
+    </div>
+
+    <div class="games-grid grid-desktop" id="gamesGrid"></div>
+
+</div>
+
+<script>
+const gamesGrid = document.getElementById("gamesGrid");
+const searchInput = document.getElementById("searchInput");
+const gridSelect = document.getElementById("gridSelect");
+
+let games = []; // 1. Initialize an empty array globally
+
+/* ========================= 500+ GAME DATA SYSTEM ========================= */
+fetch("./games.json")
+    .then(res => res.json())
+    .then(data => {
+        games = data; // 2. Assign the fetched data to the global variable
+        render(games); // 3. Initial render once data arrives
+    })
+    .catch(err => console.error("Error loading games:", err));
+
+/* ========================= RENDER SYSTEM ========================= */
+function render(list) {
+    gamesGrid.innerHTML = "";
+    list.forEach(game => {
+        const card = document.createElement("div");
+        card.className = "game-card";
+        card.innerHTML = `
+            <div class="img-container" onclick="location.href='${game.url}'">
+                <img src="${game.img}" loading="lazy">
+            </div>
+            <div class="game-name">${game.name}</div>
+        `;
+        gamesGrid.appendChild(card);
+    });
+}
+
+// Remove the standalone render(games) call that was here
+
+
+/* =========================
+   SEARCH
+========================= */
+
+searchInput.addEventListener("input", () => {
+    const value = searchInput.value.toLowerCase();
+    render(games.filter(g => g.name.toLowerCase().includes(value)));
+});
+
+/* =========================
+   GRID CONTROL
+========================= */
+
+function updateGrid() {
+    const val = gridSelect.value;
+
+    gamesGrid.classList.remove("grid-mobile","grid-tablet","grid-desktop");
+
+    if (val === "auto") {
+        const w = window.innerWidth;
+        if (w < 768) gamesGrid.classList.add("grid-mobile");
+        else if (w < 1024) gamesGrid.classList.add("grid-tablet");
+        else gamesGrid.classList.add("grid-desktop");
+    } else {
+        gamesGrid.classList.add(`grid-${val}`);
+    }
+}
+
+gridSelect.addEventListener("change", updateGrid);
+window.addEventListener("resize", updateGrid);
+
+updateGrid();
+
+</script>
+
 </body>
 </html>
