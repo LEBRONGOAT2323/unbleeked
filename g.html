@@ -69,13 +69,23 @@ body {
     padding: 20px;
 }
 
- /* This forces everything inside the header to the center */
-.header {
+.header-section {
     display: flex;
     flex-direction: column;
     align-items: center;
     width: 100%;
+    padding-top: 2rem; 
+    margin-bottom: 0px; 
 }
+
+/* Ensure the grid stays left-aligned or standard grid layout */
+.games-grid {
+    display: grid;
+    gap: 15px;
+    width: 100%;
+    justify-items: stretch; /* Keeps cards from bunching in the middle */
+}
+
 
 .back-btn {
     display: inline-flex;
@@ -101,11 +111,12 @@ body {
     
 /* HEADER */
 .title {
-    text-align: center;
-    font-size: 3rem;
+    font-size: 5rem;
     font-weight: 900;
-    margin-bottom: 20px;
-    text-shadow: 0 0 20px rgba(0,123,255,0.6);
+    color: white;
+    letter-spacing: 0.3em;
+    margin-bottom: 0.5rem; /* Reduced from 2rem to 0.5rem */
+    animation: title-glow-pulse 2s ease-in-out infinite alternate;
 }
 
 .typewriter {
@@ -120,30 +131,56 @@ body {
 .controls {
     display: flex;
     justify-content: center;
-    gap: 15px;
+    gap: 1.5rem;
+    margin-bottom: 3rem;
     flex-wrap: wrap;
-    margin-bottom: 30px;
 }
 
 .search-input, .select {
-    padding: 12px 15px;
-    border-radius: 10px;
-    border: 1px solid rgba(255,255,255,0.2);
-    background: rgba(0,0,0,0.3);
-    color: white;
-    font-family: Orbitron;
+    height: 3.5rem; /* Taller inputs */
+    padding: 0 1.5rem;
+    background: rgba(212, 175, 55, 0.1); /* Gold tint from Exploits */
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    border-radius: 0.75rem;
+    color: #ffffff;
+    font-size: 1rem;
+    font-family: 'Orbitron', monospace;
+    transition: all 0.3s ease;
 }
 
-.search-input {
-    width: 250px;
+.search-input:focus, .select:focus {
+    outline: none;
+    border-color: #ffffff;
+    box-shadow: 0 0 25px rgba(255, 255, 255, 0.4);
 }
 
-/* GRID */
-.games-grid {
-    display: grid;
-    gap: 15px;
-    transition: 0.3s;
+.search-input { width: 350px; } /* Slightly wider search */
+
+/* The Intense Glow Animation */
+@keyframes title-glow-pulse {
+    0% {
+        text-shadow: 
+            0 0 10px rgba(0, 123, 255, 0.5),
+            0 0 20px rgba(0, 123, 255, 0.3);
+        transform: scale(1);
+    }
+    100% {
+        text-shadow: 
+            0 0 20px rgba(0, 123, 255, 0.9),
+            0 0 40px rgba(0, 123, 255, 0.7),
+            0 0 60px rgba(0, 123, 255, 0.5);
+        transform: scale(1.02); /* Slight pulse in size */
+    }
 }
+
+/* Responsive adjustment for Mobile so it doesn't break the screen */
+@media (max-width: 768px) {
+    .title {
+        font-size: 2.5rem;
+        letter-spacing: 0.1em;
+    }
+}
+
 
 .grid-mobile { grid-template-columns: 1fr; }
 .grid-tablet { grid-template-columns: repeat(2, 1fr); }
