@@ -25,7 +25,7 @@
     "url": "/g/run3.html"
   },
   {
-    "name": "1v1.lol",
+    "name": "1v1 Lol",
     "img": "images/1v1.lol.jpeg",
     "url": "/g/1v1.html"
   },
@@ -48,11 +48,6 @@
     "name": "Retro Bowl",
     "img": "images/Retro-Bowl.jpg",
     "url": "/g/retro-bowl.html"
-  },
-  {
-    "name": "1v1 Lol",
-    "img": "images/1v1.lol.jpeg",
-    "url": "/g/1v1-lol.html"
   },
   {
     "name": "Tiny Fishing",
@@ -81,6 +76,11 @@
   },
   {
     "name": "Volley Random",
+    "img": "https://files.catbox.moe/0nb7uh",
+    "url": "/g/volleyrandom.html"
+  },
+  {
+    "name": "Boxing Random",
     "img": "https://files.catbox.moe/0nb7uh",
     "url": "/g/boxingrandom.html"
   },
