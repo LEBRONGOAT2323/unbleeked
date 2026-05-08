@@ -228,6 +228,52 @@ body {
     background: rgba(0,0,0,0.4);
 }
 
+/* Footer */
+        .footer {
+            text-align: center;
+            padding: 2rem 0;
+            border-top: 1px solid rgba(255,255,255,0.2);
+            margin-top: 2rem;
+        }
+
+        .footer-links {
+            display: flex;
+            justify-content: center;
+            gap: 2rem;
+            flex-wrap: wrap;
+        }
+
+        .footer-link {
+            color: #ffffff;
+            text-decoration: none;
+            position: relative;
+            font-size: 0.9rem;
+            transition: all 0.3s ease;
+        }
+
+        .footer-link::after {
+            content: '';
+            position: absolute;
+            width: 100%;
+            height: 1px;
+            bottom: -2px;
+            left: 0;
+            background-color: #ffffff;
+            transform: scaleX(0);
+            transform-origin: bottom right;
+            transition: transform 0.3s ease;
+        }
+
+        .footer-link:hover::after {
+            transform: scaleX(1);
+            transform-origin: bottom left;
+        }
+
+        .footer-link:hover {
+            text-shadow: 0 0 10px #ffffff;
+        }
+
+
 /* Animations */
        @keyframes glow-pulse {
 0% { text-shadow:0 0 10px rgba(0,123,255,0.7); }
@@ -314,6 +360,17 @@ transform: translate(0px, 0px) scale(1);
 
     <div class="games-grid grid-desktop" id="gamesGrid"></div>
 
+    <footer class="footer">
+            <div class="footer-links">
+                <a href="pp.html" class="footer-link">privacy policy</a>
+                <a href="#" class="footer-link">update log</a>
+                <a href="faq.html" class="footer-link">faq</a>
+                <a href="#" class="footer-link" onclick="openBlank(); return false;">open blank</a>
+                <a href="https://github.com/LEBRONGOAT2323" target="_blank" class="footer-link">github</a>
+                <a href="https://docs.google.com/forms/d/1t52FBl9fUIm6ftWzFQTSw4dutoIOP1rTe8AnQ4cg1pY/viewform?edit_requested=true" target="_blank" class="footer-link">support</a>
+            </div>
+        </footer>
+    
 </div>
 
 <script>
