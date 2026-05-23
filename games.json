@@ -130,6 +130,11 @@
     "url": "/g/Escape Road 2.html"
   },
   {
+    "name": "Escape Road 3",
+    "img": "https://idolsash.io/data/image/game/escape-road-3.png",
+    "url": "/g/escaperoad3.html"
+  },
+  {
     "name": "Snow Rider",
     "img": "https://files.catbox.moe/rr7apg.png",
     "url": "/g/Snow Rider 3D.html"
@@ -268,11 +273,6 @@
     "name": "Magic Tiles 3",
     "img": "https://files.catbox.moe/rkwe59.png",
     "url": "/g/Magic_Tiles_3.html"
-  },
-  {
-    "name": "Game 55",
-    "img": "https://files.catbox.moe/yk2vau.webp",
-    "url": "/g/game-55.html"
   },
   {
     "name": "Game 56",
