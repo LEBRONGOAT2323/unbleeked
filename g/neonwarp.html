@@ -1,0 +1,676 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Neon Warp</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            overflow: hidden;
+            background-color: #050010;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            color: white;
+            user-select: none;
+            touch-action: none;
+        }
+
+        #game-container {
+            position: relative;
+            width: 100vw;
+            height: 100vh;
+        }
+
+        #ui-layer {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            pointer-events: none;
+            z-index: 10;
+        }
+
+        .menu-panel {
+            background: rgba(10, 0, 30, 0.9);
+            border: 2px solid #00f2ff;
+            box-shadow: 0 0 20px #00f2ff, inset 0 0 10px #00f2ff;
+            padding: 2rem;
+            border-radius: 15px;
+            text-align: center;
+            pointer-events: auto;
+            max-width: 80%;
+            overflow-y: auto;
+            max-height: 90vh;
+        }
+
+        h1 {
+            font-size: 2.5rem;
+            margin-top: 0;
+            text-transform: uppercase;
+            letter-spacing: 5px;
+            color: #fff;
+            text-shadow: 0 0 10px #00f2ff, 0 0 20px #7000ff;
+        }
+
+        .score-display {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: #00f2ff;
+            text-shadow: 0 0 5px #000;
+        }
+
+        .selection-group {
+            margin: 15px 0;
+        }
+
+        .selection-title {
+            font-size: 0.9rem;
+            letter-spacing: 2px;
+            color: #00f2ff;
+            margin-bottom: 10px;
+            text-transform: uppercase;
+        }
+
+        .selection-row {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+        }
+
+        .option-box {
+            border: 2px solid #333;
+            padding: 10px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 8px;
+            min-width: 100px;
+        }
+
+        .option-box.selected {
+            border-color: #00f2ff;
+            background: rgba(0, 242, 255, 0.2);
+            box-shadow: 0 0 15px #00f2ff;
+        }
+
+        .option-box:hover {
+            border-color: #ff00ff;
+        }
+
+        .perk-text {
+            font-size: 0.7rem;
+            color: #aaa;
+            margin-top: 4px;
+        }
+
+        .selected .perk-text { color: #fff; }
+
+        button {
+            background: transparent;
+            border: 2px solid #ff00ff;
+            color: #ff00ff;
+            padding: 12px 30px;
+            font-size: 1.1rem;
+            text-transform: uppercase;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin: 5px;
+            font-weight: bold;
+            letter-spacing: 2px;
+        }
+
+        button:hover {
+            background: #ff00ff;
+            color: white;
+            box-shadow: 0 0 20px #ff00ff;
+        }
+
+        #warning-box {
+            display: none;
+            position: absolute;
+            top: 25%;
+            padding: 15px 40px;
+            background: rgba(255, 0, 0, 0.3);
+            border: 2px solid #ff0000;
+            color: #ff0000;
+            font-size: 1.5rem;
+            font-weight: bold;
+            text-transform: uppercase;
+            letter-spacing: 5px;
+            animation: blink 0.5s infinite;
+        }
+
+        #message-box {
+            display: none;
+            position: absolute;
+            bottom: 15%;
+            padding: 10px 20px;
+            background: rgba(255, 200, 0, 0.2);
+            border: 2px solid #ffcc00;
+            color: #ffcc00;
+            font-weight: bold;
+            text-transform: uppercase;
+            animation: pulse 1s infinite;
+        }
+
+        #level-up-menu {
+            display: none;
+            z-index: 100;
+        }
+
+        @keyframes blink {
+            0% { opacity: 0; } 50% { opacity: 1; } 100% { opacity: 0; }
+        }
+
+        @keyframes pulse {
+            0% { transform: scale(1); } 50% { transform: scale(1.05); } 100% { transform: scale(1); }
+        }
+
+        .hidden { display: none !important; }
+
+        .credit {
+            position: fixed;
+            bottom: 10px;
+            right: 10px;
+            font-size: 12px;
+        }
+
+        .credit a {
+            color: white;
+            text-decoration: none;
+            opacity: 0.6;
+            transition: opacity 0.2s ease;
+        }
+
+        .credit a:hover {
+            opacity: 1;
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+
+<div id="game-container">
+    <div id="ui-layer">
+        <!-- Start Menu -->
+        <div id="start-menu" class="menu-panel">
+            <h1>Neon Warp</h1>
+            
+            <div class="selection-group">
+                <div class="selection-title">Select Vessel</div>
+                <div class="selection-row">
+                    <div class="option-box ship-opt selected" data-ship="stinger">
+                        <div>STINGER</div>
+                        <div class="perk-text">Agile Control</div>
+                    </div>
+                    <div class="option-box ship-opt" data-ship="vanguard">
+                        <div>VANGUARD</div>
+                        <div class="perk-text">Shielded Hull</div>
+                    </div>
+                    <div class="option-box ship-opt" data-ship="spectre">
+                        <div>SPECTRE</div>
+                        <div class="perk-text">Long Overdrive</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="selection-group">
+                <div class="selection-title">Select Theme</div>
+                <div class="selection-row">
+                    <div class="option-box theme-opt selected" data-theme="neon">NEON NIGHTS</div>
+                    <div class="option-box theme-opt" data-theme="cyber">EMERALD GRID</div>
+                    <div class="option-box theme-opt" data-theme="solar">SOLAR FLARE</div>
+                </div>
+            </div>
+
+            <p style="font-size: 0.8rem; color: #00f2ff;">Auto-Cannons engage during Boss Encounters.</p>
+
+            <button id="start-btn">Initiate Warp</button>
+            <br>
+            <button id="music-toggle" style="font-size:0.8rem; padding:8px 15px; border-color:#00f2ff; color:#00f2ff;">Audio: ON</button>
+        </div>
+
+        <!-- Level Up Menu -->
+        <div id="level-up-menu" class="menu-panel">
+            <h1 style="color: #ffcc00; text-shadow: 0 0 10px #ffcc00;">Level Up!</h1>
+            <p>Guardian Destroyed. Select a permanent ship upgrade:</p>
+            <div class="selection-row">
+                <button id="upgrade-fire-rate">Upgrade Cannons<br><span style="font-size:0.6rem; opacity:0.7;">+20% Fire Rate</span></button>
+                <button id="upgrade-speed" style="border-color:#00f2ff; color:#00f2ff;">Upgrade Engines<br><span style="font-size:0.6rem; opacity:0.7;">+15% Base Speed</span></button>
+            </div>
+        </div>
+
+        <!-- Game Over Menu -->
+        <div id="game-over-menu" class="menu-panel hidden">
+            <h1>Warp Failure</h1>
+            <p>Score: <span id="final-score">0</span></p>
+            <p style="color:#00f2ff">Best: <span id="high-score">0</span></p>
+            <button id="restart-btn">Try Again</button>
+        </div>
+
+        <!-- In-Game UI -->
+        <div id="score-card" class="score-display hidden">SCORE: <span id="current-score">0</span></div>
+        <div id="warning-box">BOSS DETECTED</div>
+        <div id="message-box">BOOST ACTIVE</div>
+    </div>
+</div>
+
+<div class="credit">
+    <a href="https://github.com/LEBRONGOAT2323" target="_blank">
+        External game by me (LEBRONGOAT2323)
+    </a>
+</div>
+
+<script>
+    // --- Global State ---
+    let scene, camera, renderer, tunnel, player;
+    let obstacles = [];
+    let powerUps = [];
+    let bosses = [];
+    let bullets = [];
+    let gameActive = false;
+    let isPaused = false;
+    let score = 0;
+    let nextBossScore = 5000;
+    let speed = 0.5;
+    let targetX = 0, targetY = 0;
+    
+    // Upgrades
+    let upgradeFireRateCount = 0;
+    let upgradeSpeedMult = 1.0;
+
+    // Customization
+    let selectedShipType = 'stinger';
+    let selectedTheme = 'neon';
+    const themes = {
+        neon: { tunnel: 0x7000ff, fog: 0x050010, player: 0x00f2ff, bullet: 0x00f2ff },
+        cyber: { tunnel: 0x00ff44, fog: 0x000800, player: 0x00ffcc, bullet: 0x00ffcc },
+        solar: { tunnel: 0xffaa00, fog: 0x100500, player: 0xffff00, bullet: 0xffff00 }
+    };
+
+    // Abilities & Power-ups
+    let hasShield = false;
+    let shipAgility = 0.3;
+    let boostDurationMod = 1.0;
+    let boostActive = false;
+    let boostTimer = 0;
+    let fireTimer = 0;
+
+    // Audio
+    let audioCtx = null, audioEnabled = true, synthInterval = null, beatStep = 0;
+
+    const TUNNEL_RADIUS = 10;
+    const TUNNEL_LENGTH = 100;
+    const mousePos = new THREE.Vector3();
+    const rayTarget = new THREE.Vector3();
+
+    // UI Hooks
+    const startMenu = document.getElementById('start-menu');
+    const gameOverMenu = document.getElementById('game-over-menu');
+    const levelUpMenu = document.getElementById('level-up-menu');
+    const scoreCard = document.getElementById('score-card');
+    const warningBox = document.getElementById('warning-box');
+    const messageBox = document.getElementById('message-box');
+
+    function init() {
+        scene = new THREE.Scene();
+        applyTheme();
+
+        camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+        camera.position.z = 5;
+
+        renderer = new THREE.WebGLRenderer({ antialias: true });
+        renderer.setSize(window.innerWidth, window.innerHeight);
+        renderer.setPixelRatio(window.devicePixelRatio);
+        document.getElementById('game-container').appendChild(renderer.domElement);
+
+        scene.add(new THREE.AmbientLight(0x606060));
+
+        createTunnel();
+        updatePlayerModel();
+
+        window.addEventListener('resize', onWindowResize);
+        document.addEventListener('mousemove', e => updateInput((e.clientX/window.innerWidth)*2-1, -(e.clientY/window.innerHeight)*2+1));
+        document.addEventListener('touchmove', e => {
+            e.preventDefault();
+            updateInput((e.touches[0].clientX/window.innerWidth)*2-1, -(e.touches[0].clientY/window.innerHeight)*2+1);
+        }, {passive: false});
+
+        document.getElementById('start-btn').onclick = startGame;
+        document.getElementById('restart-btn').onclick = startGame;
+        document.getElementById('music-toggle').onclick = toggleAudio;
+
+        // Ship Selection
+        document.querySelectorAll('.ship-opt').forEach(opt => {
+            opt.onclick = () => {
+                document.querySelectorAll('.ship-opt').forEach(o => o.classList.remove('selected'));
+                opt.classList.add('selected');
+                selectedShipType = opt.dataset.ship;
+                updatePlayerModel();
+            };
+        });
+
+        // Theme Selection
+        document.querySelectorAll('.theme-opt').forEach(opt => {
+            opt.onclick = () => {
+                document.querySelectorAll('.theme-opt').forEach(o => o.classList.remove('selected'));
+                opt.classList.add('selected');
+                selectedTheme = opt.dataset.theme;
+                applyTheme();
+            };
+        });
+
+        // Level Up Selection
+        document.getElementById('upgrade-fire-rate').onclick = () => applyUpgrade('fireRate');
+        document.getElementById('upgrade-speed').onclick = () => applyUpgrade('speed');
+
+        animate();
+    }
+
+    function applyTheme() {
+        const t = themes[selectedTheme];
+        scene.fog = new THREE.FogExp2(t.fog, 0.015);
+        if (tunnel) tunnel.material.emissive.setHex(t.tunnel);
+        if (player) setShipGlow(t.player);
+    }
+
+    // --- Audio Logic ---
+    function toggleAudio() {
+        audioEnabled = !audioEnabled;
+        document.getElementById('music-toggle').innerText = `Audio: ${audioEnabled ? 'ON' : 'OFF'}`;
+        if (!audioEnabled && audioCtx) stopMusic();
+        else if (audioEnabled && gameActive) startMusic();
+    }
+
+    function startMusic() {
+        if (!audioEnabled) return;
+        if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+        if (synthInterval) clearInterval(synthInterval);
+        synthInterval = setInterval(() => {
+            if (!audioCtx || isPaused) return;
+            const time = audioCtx.currentTime;
+            const osc = audioCtx.createOscillator();
+            const gain = audioCtx.createGain();
+            osc.type = 'sawtooth';
+            osc.frequency.setValueAtTime(beatStep % 8 === 0 ? 40 : 55, time);
+            gain.gain.setValueAtTime(0.05, time);
+            gain.gain.exponentialRampToValueAtTime(0.001, time + 0.1);
+            osc.connect(gain); gain.connect(audioCtx.destination);
+            osc.start(); osc.stop(time + 0.1);
+            beatStep++;
+        }, 150);
+    }
+
+    function stopMusic() { clearInterval(synthInterval); synthInterval = null; }
+
+    function playLaserSFX() {
+        if (!audioEnabled || !audioCtx || isPaused) return;
+        const time = audioCtx.currentTime;
+        const osc = audioCtx.createOscillator();
+        const gain = audioCtx.createGain();
+        osc.type = 'sine';
+        osc.frequency.setValueAtTime(800, time);
+        osc.frequency.exponentialRampToValueAtTime(100, time + 0.1);
+        gain.gain.setValueAtTime(0.05, time);
+        gain.gain.exponentialRampToValueAtTime(0.001, time + 0.1);
+        osc.connect(gain); gain.connect(audioCtx.destination);
+        osc.start(); osc.stop(time + 0.1);
+    }
+
+    function playLevelUpSFX() {
+        if (!audioEnabled || !audioCtx) return;
+        const time = audioCtx.currentTime;
+        const osc = audioCtx.createOscillator();
+        const gain = audioCtx.createGain();
+        osc.type = 'square';
+        osc.frequency.setValueAtTime(220, time);
+        osc.frequency.linearRampToValueAtTime(880, time + 0.4);
+        gain.gain.setValueAtTime(0.1, time);
+        gain.gain.linearRampToValueAtTime(0.001, time + 0.4);
+        osc.connect(gain); gain.connect(audioCtx.destination);
+        osc.start(); osc.stop(time + 0.4);
+    }
+
+    // --- Core Scene Construction ---
+    function createTunnel() {
+        const geo = new THREE.CylinderGeometry(TUNNEL_RADIUS, TUNNEL_RADIUS, TUNNEL_LENGTH * 4, 32, 100, true);
+        const mat = new THREE.MeshPhongMaterial({ color: 0x0a0a15, wireframe: true, side: THREE.BackSide, emissiveIntensity: 0.3 });
+        tunnel = new THREE.Mesh(geo, mat);
+        tunnel.rotation.x = Math.PI / 2;
+        scene.add(tunnel);
+        applyTheme();
+    }
+
+    function updatePlayerModel() {
+        if (player) scene.remove(player);
+        const group = new THREE.Group();
+        const mat = new THREE.MeshPhongMaterial({ emissiveIntensity: 0.8 });
+        
+        hasShield = false; shipAgility = 0.3; boostDurationMod = 1.0;
+
+        if (selectedShipType === 'stinger') {
+            const b = new THREE.Mesh(new THREE.ConeGeometry(0.4, 1, 3), mat);
+            b.rotation.x = Math.PI / 2; group.add(b);
+            shipAgility = 0.45;
+        } else if (selectedShipType === 'vanguard') {
+            const b = new THREE.Mesh(new THREE.BoxGeometry(0.6, 0.2, 1.2), mat);
+            const w1 = new THREE.Mesh(new THREE.BoxGeometry(1.2, 0.05, 0.4), mat); w1.position.set(0.4, 0, 0.2);
+            const w2 = new THREE.Mesh(new THREE.BoxGeometry(1.2, 0.05, 0.4), mat); w2.position.set(-0.4, 0, 0.2);
+            group.add(b, w1, w2);
+            hasShield = true;
+        } else {
+            const b = new THREE.Mesh(new THREE.CylinderGeometry(0, 0.3, 1.2, 4), mat); b.rotation.x = Math.PI/2;
+            const w = new THREE.Mesh(new THREE.BoxGeometry(1.5, 0.1, 0.5), mat); w.position.z = 0.3;
+            group.add(b, w);
+            boostDurationMod = 1.5;
+        }
+        player = group; player.position.set(0, 0, 2); scene.add(player);
+        applyTheme();
+    }
+
+    function setShipGlow(color) {
+        player.children.forEach(c => { if(c.material) { c.material.color.setHex(color); c.material.emissive.setHex(color); }});
+    }
+
+    function spawnBullet() {
+        const geo = new THREE.CylinderGeometry(0.05, 0.05, 1, 8);
+        const mat = new THREE.MeshPhongMaterial({ 
+            color: themes[selectedTheme].bullet, 
+            emissive: themes[selectedTheme].bullet, 
+            emissiveIntensity: 2 
+        });
+        const bullet = new THREE.Mesh(geo, mat);
+        bullet.rotation.x = Math.PI / 2;
+        bullet.position.set(player.position.x, player.position.y, player.position.z - 1);
+        scene.add(bullet);
+        bullets.push(bullet);
+        playLaserSFX();
+    }
+
+    function spawnBoss() {
+        const group = new THREE.Group();
+        const coreGeo = new THREE.IcosahedronGeometry(3, 1);
+        const coreMat = new THREE.MeshPhongMaterial({ color: 0xff0000, emissive: 0xff0000, wireframe: true });
+        const core = new THREE.Mesh(coreGeo, coreMat);
+        group.add(core);
+
+        for (let i = 0; i < 4; i++) {
+            const ringGeo = new THREE.TorusGeometry(5, 0.2, 8, 32);
+            const ring = new THREE.Mesh(ringGeo, coreMat);
+            ring.rotation.set(Math.random(), Math.random(), Math.random());
+            group.add(ring);
+        }
+
+        group.position.z = -150;
+        scene.add(group);
+        bosses.push({ mesh: group, rotSpeed: 0.05, health: 50 });
+        warningBox.style.display = 'block';
+        setTimeout(() => warningBox.style.display = 'none', 3000);
+    }
+
+    function updateInput(x, y) {
+        if (!gameActive || isPaused) return;
+        mousePos.set(x, y, 0.5);
+        mousePos.unproject(camera);
+        mousePos.sub(camera.position).normalize();
+        const dist = (player.position.z - camera.position.z) / mousePos.z;
+        rayTarget.copy(camera.position).add(mousePos.multiplyScalar(dist));
+        const lim = TUNNEL_RADIUS - 2.5;
+        targetX = Math.max(-lim, Math.min(lim, rayTarget.x));
+        targetY = Math.max(-lim, Math.min(lim, rayTarget.y));
+    }
+
+    // --- Progression Logic ---
+    function triggerLevelUp() {
+        isPaused = true;
+        levelUpMenu.style.display = 'block';
+        playLevelUpSFX();
+    }
+
+    function applyUpgrade(type) {
+        if (type === 'fireRate') {
+            upgradeFireRateCount++;
+        } else if (type === 'speed') {
+            upgradeSpeedMult += 0.15;
+        }
+        levelUpMenu.style.display = 'none';
+        isPaused = false;
+    }
+
+    function startGame() {
+        gameActive = true; isPaused = false; score = 0; speed = 0.5; nextBossScore = 5000;
+        boostActive = false; fireTimer = 0;
+        upgradeFireRateCount = 0; upgradeSpeedMult = 1.0;
+        startMenu.classList.add('hidden'); gameOverMenu.classList.add('hidden'); scoreCard.classList.remove('hidden');
+        obstacles.forEach(o => scene.remove(o)); powerUps.forEach(p => scene.remove(p)); 
+        bosses.forEach(b => scene.remove(b.mesh)); bullets.forEach(b => scene.remove(b));
+        obstacles = []; powerUps = []; bosses = []; bullets = [];
+        updatePlayerModel();
+        startMusic();
+    }
+
+    function gameOver() {
+        gameActive = false;
+        document.getElementById('final-score').innerText = Math.floor(score);
+        let high = localStorage.getItem('neonWarpHighScore') || 0;
+        if (score > high) localStorage.setItem('neonWarpHighScore', Math.floor(score));
+        document.getElementById('high-score').innerText = localStorage.getItem('neonWarpHighScore');
+        scoreCard.classList.add('hidden'); gameOverMenu.classList.remove('hidden');
+        stopMusic();
+    }
+
+    function onWindowResize() { camera.aspect = window.innerWidth / window.innerHeight; camera.updateProjectionMatrix(); renderer.setSize(window.innerWidth, window.innerHeight); }
+
+    // --- Main Loop ---
+    function animate() {
+        requestAnimationFrame(animate);
+        if (gameActive && !isPaused) {
+            let curSpeed = (boostActive ? speed * 2 : speed) * upgradeSpeedMult;
+            speed += 0.0001; score += curSpeed;
+            document.getElementById('current-score').innerText = Math.floor(score);
+            tunnel.rotation.y += 0.002;
+
+            player.position.x += (targetX - player.position.x) * shipAgility;
+            player.position.y += (targetY - player.position.y) * shipAgility;
+            player.rotation.z = -(targetX - player.position.x) * 0.5;
+
+            if (score >= nextBossScore) { spawnBoss(); nextBossScore += 5000; }
+
+            // Dynamic Fire Rate
+            if (bosses.length > 0) {
+                fireTimer++;
+                const fireDelay = 10 / (1 + (upgradeFireRateCount * 0.2));
+                if (fireTimer > fireDelay) {
+                    spawnBullet();
+                    fireTimer = 0;
+                }
+            }
+
+            if (boostActive) { boostTimer--; if(boostTimer <= 0) { boostActive = false; applyTheme(); messageBox.style.display = 'none'; }}
+
+            if (Math.random() < 0.04) {
+                const obsGeo = new THREE.BoxGeometry(1, 1, 1);
+                const obsMat = new THREE.MeshPhongMaterial({ color: 0xff0044, emissive: 0xff0044 });
+                const obs = new THREE.Mesh(obsGeo, obsMat);
+                const a = Math.random()*Math.PI*2; const r = Math.random()*(TUNNEL_RADIUS-3);
+                obs.position.set(Math.cos(a)*r, Math.sin(a)*r, -120);
+                scene.add(obs); obstacles.push(obs);
+            }
+
+            if (Math.random() < 0.005) {
+                const pGeo = new THREE.SphereGeometry(0.5, 8, 8);
+                const pMat = new THREE.MeshPhongMaterial({ color: 0xffcc00, emissive: 0xffcc00 });
+                const pup = new THREE.Mesh(pGeo, pMat);
+                const a = Math.random()*Math.PI*2; const r = Math.random()*(TUNNEL_RADIUS-3);
+                pup.position.set(Math.cos(a)*r, Math.sin(a)*r, -120);
+                scene.add(pup); powerUps.push(pup);
+            }
+
+            bullets.forEach((b, i) => {
+                b.position.z -= 2;
+                bosses.forEach(boss => {
+                    if (b.position.distanceTo(boss.mesh.position) < 4) {
+                        boss.health--;
+                        scene.remove(b);
+                        bullets.splice(i, 1);
+                        boss.mesh.scale.set(1.1, 1.1, 1.1);
+                        setTimeout(() => { if(boss.mesh) boss.mesh.scale.set(1, 1, 1); }, 50);
+                    }
+                });
+                if (b.position.z < -150) { scene.remove(b); bullets.splice(i, 1); }
+            });
+
+            obstacles.forEach((o, i) => {
+                o.position.z += curSpeed; o.rotation.x += 0.02;
+                if (player.position.distanceTo(o.position) < 1.1) {
+                    if (boostActive) { scene.remove(o); obstacles.splice(i, 1); }
+                    else if (hasShield) { hasShield = false; scene.remove(o); obstacles.splice(i, 1); }
+                    else gameOver();
+                }
+                if (o.position.z > 5) { scene.remove(o); obstacles.splice(i, 1); }
+            });
+
+            powerUps.forEach((p, i) => {
+                p.position.z += curSpeed;
+                if (player.position.distanceTo(p.position) < 1.2) {
+                    boostActive = true; boostTimer = 300 * boostDurationMod;
+                    setShipGlow(0xffcc00); messageBox.style.display = 'block';
+                    scene.remove(p); powerUps.splice(i, 1);
+                }
+                if (p.position.z > 5) { scene.remove(p); powerUps.splice(i, 1); }
+            });
+
+            bosses.forEach((b, i) => {
+                b.mesh.position.z += curSpeed * 0.5;
+                b.mesh.rotation.y += b.rotSpeed;
+                if (player.position.distanceTo(b.mesh.position) < 4) {
+                    if (!boostActive) gameOver();
+                }
+                if (b.health <= 0 || b.mesh.position.z > 10) { 
+                    if (b.health <= 0) {
+                        score += 2000;
+                        triggerLevelUp();
+                    }
+                    scene.remove(b.mesh); 
+                    bosses.splice(i, 1); 
+                }
+            });
+        }
+        renderer.render(scene, camera);
+    }
+    init();
+</script>
+</body>
+</html>

@@ -45,6 +45,16 @@
     "url": "/g/block-blast.html"
   },
   {
+    "name": "Pixel Panic",
+    "img": "images/pixel-panic.png",
+    "url": "/g/pixel-panic.html"
+  },
+  {
+    "name": "Neon Warp",
+    "img": "images/NEON-WARP.png",
+    "url": "/g/neonwarp.html"
+  },
+  {
     "name": "Crossy Road",
     "img": "https://files.catbox.moe/h00vy5",
     "url": "/g/Crossy%20Road.html"
