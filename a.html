@@ -1,61 +1,220 @@
 <!DOCTYPE html>
-
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>UNBLEEKED | APPS</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>APPS | UNBLEEKED </title>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&display=swap" rel="stylesheet">
 
-<link id="favicon" rel="icon" type="image/x-icon" href="https://files.catbox.moe/j364dj.png">
+     <link rel="icon" href="https://files.catbox.moe/j364dj.png">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
 
-<style>
+        body {
+             font-family: 'Orbitron', monospace;
+            background:linear-gradient(-45deg,#0f0c29,#302b63,#24243e,#111);
+            background-size:400% 400%;
+            animation:gradient 15s ease infinite;
+            color:white;
+            text-align:center;
+            min-height:100vh;
+            overflow-x:hidden;
+            overflow-x: hidden;
+        }
+        
+        @keyframes gradient{
+        0%{background-position:0% 50%}
+        50%{background-position:100% 50%}
+        100%{background-position:0% 50%}
+        }
+        
+        
 
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+            position: relative;
+            z-index: 10;
+        }
 
-body{
-font-family:'Segoe UI',system-ui,-apple-system,sans-serif;
-margin:0;
-padding:0;
-background:linear-gradient(-45deg,#0f0c29,#302b63,#24243e,#111);
-background-size:400% 400%;
-animation:gradient 15s ease infinite;
-color:white;
-text-align:center;
-min-height:100vh;
-overflow-x:hidden;
+        /* Background Effects */
+        .background {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 1;
+        }
+
+        .glow-ring {
+            position: absolute;
+            border-radius: 50%;
+            filter: blur(80px);
+        }
+
+        .glow-1 {
+top: 25%;
+left: 25%;
+width: 400px;
+height: 400px;
+background: rgba(212, 175, 55, 0.1);
+animation: float 12s ease-in-out infinite, pulseGlow 6s ease-in-out infinite;
 }
 
-@keyframes gradient{
-0%{background-position:0% 50%}
-50%{background-position:100% 50%}
-100%{background-position:0% 50%}
+.glow-2 {
+bottom: 25%;
+right: 25%;
+width: 400px;
+height: 400px;
+background: rgba(212, 175, 55, 0.08);
+animation: float 16s ease-in-out infinite reverse, pulseGlow 8s ease-in-out infinite;
 }
 
-h1{
-font-size:85px;
-margin:60px 0 20px 0;
-letter-spacing:10px;
-text-transform:uppercase;
-font-weight:900;
-text-shadow:0 0 10px rgba(0,123,255,0.7);
+.glow-3 {
+top: 50%;
+left: 50%;
+transform: translate(-50%, -50%);
+width: 800px;
+height: 800px;
+background: rgba(212, 175, 55, 0.05);
+filter: blur(120px);
+animation: float 20s ease-in-out infinite, pulseGlow 10s ease-in-out infinite;
 }
 
-/* GRID (same as games page) */
+        /* Header */
+        .header {
+            text-align: center;
+            padding: 2rem 0;
+        }
 
-.grid{
-display:grid;
-grid-template-columns:repeat(auto-fill,minmax(250px,1fr));
-gap:30px;
-padding:40px;
-max-width:1200px;
-margin:0 auto;
-}
+        .back-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.75rem 1.5rem;
+            background: rgba(212, 175, 55, 0.1);
+            border: 1px solid rgba(255,255,255,0.3);
+            border-radius: 0.75rem;
+            color: #ffffff;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            margin-bottom: 2rem;
+        }
 
-/* CARDS */
+        .back-btn:hover {
+            background: rgba(212, 175, 55, 0.2);
+            border-color: #ffffff;
+        }
 
-.game-card{
+        .title {
+            font-size: 4rem;
+            font-weight: 900;
+            color: white;
+            text-shadow:0 0 10px rgba(0,123,255,0.7);
+            letter-spacing: 0.2em;
+            margin-bottom: 2rem;
+            animation: glow-pulse 2s ease-in-out infinite alternate;
+        }
+
+        .typewriter {
+            border-right: 2px solid #ffffff;
+            animation: typewriter 4s steps(5) 1s infinite, blink 1s step-end infinite;
+            white-space: nowrap;
+            overflow: hidden;
+            width: 5ch;
+            margin: 0 auto;
+        }
+
+        /* Controls */
+        .controls {
+            display: flex;
+            justify-content: center;
+            gap: 1.5rem;
+            margin-bottom: 3rem;
+            flex-wrap: wrap;
+        }
+
+        .search-container {
+            position: relative;
+        }
+
+        .search-input {
+            width: 300px;
+            height: 3.5rem;
+            padding: 0 1rem 0 3rem;
+            background: rgba(212, 175, 55, 0.1);
+            border: 1px solid rgba(255,255,255,0.3);
+            border-radius: 0.75rem;
+            color: #ffffff;
+            font-size: 1rem;
+            font-family: 'Orbitron', monospace;
+        }
+
+        .search-input:focus {
+            outline: none;
+            border-color: #ffffff;
+              box-shadow: 0 0 25px rgba(255,255,255,0.4);
+        }
+
+        .search-icon {
+            position: absolute;
+            left: 1rem;
+            top: 50%;
+            transform: translateY(-50%);
+            color: rgba(255,255,255,0.4);
+        }
+
+        .select-container {
+            position: relative;
+        }
+
+        .select {
+            height: 3.5rem;
+            padding: 0 2.5rem 0 1rem;
+            background: rgba(212, 175, 55, 0.1);
+            border: 1px solid rgba(255,255,255,0.3);
+            border-radius: 0.75rem;
+            color: #ffffff;
+            font-size: 1rem;
+            font-family: 'Orbitron', monospace;
+            cursor: pointer;
+            appearance: none;
+        }
+        
+        .select option {
+            color: #000000;
+            background: #ffffff;
+        }
+
+        .select:focus {
+            outline: none;
+            border-color: #ffffff;
+            box-shadow: 0 0 25px rgba(255,255,255,0.4);
+        }
+
+        /* Games Grid */
+        .games-grid {
+            display: grid;
+            gap: 1.5rem;
+            margin-bottom: 4rem;
+        }
+
+        .grid-mobile { grid-template-columns: 1fr; }
+        .grid-tablet { grid-template-columns: repeat(2, 1fr); }
+        .grid-desktop { grid-template-columns: repeat(4, 1fr); }
+        .grid-big-desktop { grid-template-columns: repeat(3, 1fr); }
+
+        .game-card{
 cursor:pointer;
-background:rgba(255,255,255,0.05);
+background:rgba(0,0,0,0.3);
 backdrop-filter:blur(10px);
+border:1px solid rgba(0,0,0,0.3);
 border:1px solid rgba(255,255,255,0.1);
 border-radius:20px;
 overflow:hidden;
@@ -72,10 +231,22 @@ align-items:center;
 position:relative;
 }
 
+.img-container img {
+    width:100%;
+    height:100%;
+    object-fit:cover;
+    position:absolute;
+    top:0;
+    left:0;
+    z-index:2;
+}
+
 .img-container::after{
-content:"📂";
-font-size:50px;
-opacity:0.2;
+    content:"📂";
+    font-size:50px;
+    opacity:0.2;
+    position:absolute;
+    z-index:1;
 }
 
 .game-card img{
@@ -100,52 +271,336 @@ font-weight:600;
 background:rgba(0,0,0,0.3);
 }
 
-.footer{
-text-align:center;
-padding:30px;
-color:#aaa;
+        .game-name {
+            padding: 0.75rem;
+            background: rgba(0, 0, 0, 0.3);
+            border-top: 1px solid rgba(212, 175, 55, 0.2);
+            height: 50px;
+            display: flex;
+            align-items: center;
+            font-size: 0.9rem;
+            font-weight: bold;
+            color: #ffffff;
+            text-transform: lowercase;
+            background:linear-gradient(45deg,#1e1e2f,#2a2a40);
+        }
+        
+        .games-grid{
+            transition:all 0.3s ease;
+        }
+
+
+        /* Footer */
+        .footer {
+            text-align: center;
+            padding: 2rem 0;
+            border-top: 1px solid rgba(255,255,255,0.2);
+            margin-top: 2rem;
+        }
+
+        .footer-links {
+            display: flex;
+            justify-content: center;
+            gap: 2rem;
+            flex-wrap: wrap;
+        }
+
+        .footer-link {
+            color: #ffffff;
+            text-decoration: none;
+            position: relative;
+            font-size: 0.9rem;
+            transition: all 0.3s ease;
+        }
+
+        .footer-link::after {
+            content: '';
+            position: absolute;
+            width: 100%;
+            height: 1px;
+            bottom: -2px;
+            left: 0;
+            background-color: #ffffff;
+            transform: scaleX(0);
+            transform-origin: bottom right;
+            transition: transform 0.3s ease;
+        }
+
+        .footer-link:hover::after {
+            transform: scaleX(1);
+            transform-origin: bottom left;
+        }
+
+        .footer-link:hover {
+            text-shadow: 0 0 10px #ffffff;
+        }
+
+        /* Animations */
+       @keyframes glow-pulse {
+0% { text-shadow:0 0 10px rgba(0,123,255,0.7); }
+
+100% { 
+text-shadow:
+0 0 20px rgba(0,123,255,0.9),
+0 0 40px rgba(0,123,255,0.8),
+0 0 70px rgba(0,123,255,0.7);
+}
 }
 
-</style>
+        @keyframes typewriter {
+            from { width: 0; }
+            to { width: 5ch; }
+        }
 
+        @keyframes blink {
+            from, to { border-color: transparent; }
+            50% { border-color: #ffffff; }
+        }
+
+        @keyframes float {
+0% {
+transform: translate(0px, 0px) scale(1);
+}
+50% {
+transform: translate(40px, -30px) scale(1.1);
+}
+100% {
+transform: translate(0px, 0px) scale(1);
+}
+}
+
+@keyframes pulseGlow {
+0% { opacity: 0.3; }
+50% { opacity: 0.6; }
+100% { opacity: 0.3; }
+}
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .title { font-size: 2.5rem; }
+            .search-input { width: 250px; }
+            .controls { gap: 1rem; }
+            .footer-links { gap: 1rem; }
+        }
+        
+        .game-card{
+transition:transform .3s ease, box-shadow .3s ease, border-color .3s ease;
+}
+        
+    </style>
 </head>
-
 <body>
+    <div class="background">
+        <div class="glow-ring glow-1"></div>
+        <div class="glow-ring glow-2"></div>
+        <div class="glow-ring glow-3"></div>
+    </div>
 
-<h1 onclick="location.href='/main.html'" style="cursor:pointer;">APPS</h1>
+    <div class="container">
+        <header class="header">
+            <a href="g.html" class="back-btn">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/>
+                    <polyline points="9,22 9,12 15,12 15,22"/>
+                </svg>
+                Back to Games Page
+            </a>
+            
+             <h1 class="title" onclick="location.href='/main.html'" style="cursor:pointer;">
+                <span id="typewriter"></span><span class="cursor">|</span>
+            </h1>
 
-<div class="grid">
+            <div class="controls">
+                <div class="search-container">
+                    <svg class="search-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <circle cx="11" cy="11" r="8"/>
+                        <path d="M21 21l-4.35-4.35"/>
+                    </svg>
+                    <input type="text" class="search-input" placeholder="Search games..." id="searchInput">
+                </div>
 
-<div class="game-card" onclick="window.open('a/Etch-a-sketch.html', '_blank')">
-  <div class="img-container">
-    <img src="/images/etchasketch.png">
-  </div>
-  <p>Etch-a-Sketch</p>
-</div>
+                <div class="select-container">
+                    <select class="select" id="categorySelect">
+                        <option value="all">All</option>
+                        <option value="pc">PC</option>
+                        <option value="mobile">Mobile</option>
+                    </select>
+                </div>
 
-<div class="game-card" onclick="window.open('a/fluidsimulator.html', '_blank')">
-<div class="img-container">
-<img src="/images/fluidsimulator.png">
-</div>
-<p>FluidSimulator</p>
-</div>
+                <div class="select-container">
+                    <select class="select" id="gridSelect">
+                        <option value="auto">Auto Grid</option>
+                        <option value="mobile">Mobile (1 col)</option>
+                        <option value="tablet">Tablet (2 col)</option>
+                        <option value="desktop">Desktop (4 col)</option>
+                        <option value="big-desktop">Large Cards (3 col)</option>
+                    </select>
+                </div>
+            </div>
+        </header>
 
-<div class="game-card" onclick="window.location.href='/a/godoblocks/index.html'">
-<div class="img-container">
-<img src="/images/godoblocks.png">
-</div>
-<p>GoDoBlocks</p>
-</div>
+        <main>
+            <div class="games-grid grid-desktop" id="gamesGrid">
+                <!-- Manual game cards - add each game here -->
+                
+                <!-- Game cards -->
+                <div class="game-card" data-category="pc">
+                      <div class="img-container" onclick="window.location.href='/a/Etch-a-sketch.html'">
+                          <img src="/images/etchasketch.png" alt="Etch-a-Sketch">
+                      </div>
+                      <div class="game-name">Etch-a-Sketch</div>
+                </div>
 
-<div class="game-card" onclick="location.href='/e.html'">
-<div class="img-container">
-<img src="/images/exploits.png">
-</div>
-<p>Exploits</p>
-</div>
+              <div class="game-card" data-category="pc">
+                    <div class="img-container" onclick="window.location.href='/a/fluidsimulator.html'">
+                        <img src="/images/fluidsimulator.png" alt="Fluidsimulator">
+                    </div>
+                    <div class="game-name">FluidSimulator</div>
+              </div>
 
-</div>
+              <div class="game-card" data-category="pc">
+                    <div class="img-container" data-category="pc" onclick="window.location.href='/a/godoblocks.html'">
+                        <img src="/images/godoblocks.png" alt="GoDoBlocks">
+                    </div>
+                    <div class="game-name">GoDoBlocks</div>
+                </div>
 
+              <div class="game-card" data-category="pc">
+                    <div class="img-container" onclick="window.location.href='/e.html'">
+                        <img src="/images/exploits.png" alt="Exploits">
+                    </div>
+                    <div class="game-name">Exploits</div>
+                </div>
+                
+            </div>
+        </main>
 
+        <footer class="footer">
+            <div class="footer-links">
+                <a href="pp.html" class="footer-link">privacy policy</a>
+                <a href="ul.html" class="footer-link">update log</a>
+                <a href="faq.html" class="footer-link">faq</a>
+                <a href="#" class="footer-link" onclick="openBlank(); return false;">open blank</a>
+                <a href="https://github.com/LEBRONGOAT2323" target="_blank" class="footer-link">github</a>
+                <a href="#" target="_blank" class="footer-link">support</a>
+            </div>
+        </footer>
+    </div>
+
+    <script>
+        // Get elements
+        const searchInput = document.getElementById('searchInput');
+        const categorySelect = document.getElementById('categorySelect');
+        const gridSelect = document.getElementById('gridSelect');
+        const gamesGrid = document.getElementById('gamesGrid');
+        const gameCards = document.querySelectorAll('.game-card');
+
+        // Search functionality
+        searchInput.addEventListener('input', filterGames);
+        categorySelect.addEventListener('change', filterGames);
+        gridSelect.addEventListener('change', changeGrid);
+
+        function filterGames() {
+    const searchTerm = searchInput.value.toLowerCase();
+    const category = categorySelect.value;
+
+    gameCards.forEach(card => {
+        const gameName = card.querySelector('.game-name').textContent.toLowerCase();
+        const gameCategory = card.dataset.category || 'pc';
+
+        const matchesSearch = gameName.includes(searchTerm);
+        const matchesCategory = category === 'all' || gameCategory === category;
+
+        if (matchesSearch && matchesCategory) {
+            card.style.display = "";
+        } else {
+            card.style.display = "none";
+        }
+    });
+}
+
+        function changeGrid() {
+            const gridType = gridSelect.value;
+            
+            // Remove all grid classes
+            gamesGrid.classList.remove('grid-mobile', 'grid-tablet', 'grid-desktop', 'grid-big-desktop');
+            
+            // Add appropriate grid class
+            if (gridType === 'auto') {
+                gamesGrid.classList.add('grid-big-desktop'); // default to desktop
+            } else {
+                gamesGrid.classList.add(`grid-${gridType}`);
+            }
+        }
+
+        // Auto grid functionality (responsive)
+        function handleAutoGrid() {
+            if (gridSelect.value === 'auto') {
+                const width = window.innerWidth;
+                gamesGrid.classList.remove('grid-mobile', 'grid-tablet', 'grid-desktop', 'grid-big-desktop');
+                
+                if (width <= 768) {
+                    gamesGrid.classList.add('grid-mobile');
+                } else if (width <= 1024) {
+                    gamesGrid.classList.add('grid-tablet');
+                } else if (width <= 1024) {
+                    gamesGrid.classList.add('grid-tablet');
+                } else {
+                    gamesGrid.classList.add('grid-big-desktop');
+                }
+            }
+        }
+
+        // Listen for window resize for auto grid
+        window.addEventListener('resize', handleAutoGrid);
+        
+        // Initial auto grid setup
+        handleAutoGrid();
+    </script>
+    <script>
+        function openBlank() {
+    const newTab = window.open('about:blank', '_blank');
+
+    if (!newTab) {
+        alert("Popup blocked");
+        return;
+    }
+
+    newTab.document.write(`
+    <iframe src="${window.location.href}" 
+    style="position:fixed;top:0;left:0;width:100vw;height:100vh;border:none;">
+    </iframe>
+`);
+
+    newTab.document.close();
+}
+        
+        const glow1 = document.querySelector(".glow-1");
+const glow2 = document.querySelector(".glow-2");
+const glow3 = document.querySelector(".glow-3");
+
+document.addEventListener("mousemove", (e) => {
+    const x = e.clientX / window.innerWidth - 0.5;
+    const y = e.clientY / window.innerHeight - 0.5;
+
+    glow1.style.transform = `translate(${x*40}px, ${y*40}px)`;
+    glow2.style.transform = `translate(${x*60}px, ${y*60}px)`;
+    glow3.style.transform = `translate(${x*20}px, ${y*20}px)`;
+});
+        const typewriter = document.getElementById('typewriter');
+        const text = 'APPS';
+        let i = 0;
+
+        function typeEffect() {
+            if (i < text.length) {
+                typewriter.textContent += text.charAt(i);
+                i++;
+                setTimeout(typeEffect, 150);
+            }
+        }
+
+        // Start typewriter effect when page loads
+        window.addEventListener('load', typeEffect);
+        </script>
 </body>
 </html>
