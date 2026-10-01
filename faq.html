@@ -4,297 +4,427 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>FAQ | UNBLEEKED</title>
-<link id="favicon" rel="icon" type="image/x-icon" href="https://files.catbox.moe/j364dj.png">
+<link id="favicon" rel="icon" type="image/x-icon" href="https://catbox.moe">
 <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&display=swap" rel="stylesheet">
 
 <style>
-*{
-margin:0;
-padding:0;
-box-sizing:border-box;
-}
+    * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+    }
 
-body{
-font-family:'Orbitron', monospace;
-background:linear-gradient(-45deg,#0f0c29,#302b63,#24243e,#111);
-background-size:400% 400%;
-animation:gradient 15s ease infinite;
-color:white;
-min-height:100vh;
-overflow-x:hidden;
-}
+    :root {
+        --bg: #070707;
+        --bg-soft: #0d0d0d;
+        --card: rgba(18, 18, 18, 0.72);
+        --card-hover: rgba(25, 25, 25, 0.9);
+        --border: rgba(255, 255, 255, 0.09);
+        --border-hover: rgba(255, 255, 255, 0.28);
+        --text: #ffffff;
+        --muted: rgba(255, 255, 255, 0.55);
+        --highlight: #ffffff;
+    }
 
-@keyframes gradient{
-0%{background-position:0% 50%}
-50%{background-position:100% 50%}
-100%{background-position:0% 50%}
-}
+    body {
+        font-family: "Orbitron", monospace;
+        background:
+            radial-gradient(circle at 15% 20%, rgba(255,255,255,0.035), transparent 30%),
+            radial-gradient(circle at 85% 75%, rgba(255,255,255,0.025), transparent 30%),
+            #070707;
+        color: var(--text);
+        min-height: 100vh;
+        overflow-x: hidden;
+    }
 
-/* BACKGROUND GLOW */
-.background{
-position:fixed;
-top:0;
-left:0;
-width:100%;
-height:100%;
-z-index:1;
-}
+    /* Subtle background grid */
+    body::before {
+        content: "";
+        position: fixed;
+        inset: 0;
+        z-index: 0;
+        pointer-events: none;
+        opacity: 0.18;
+        background-image:
+            linear-gradient(rgba(255,255,255,0.025) 1px, transparent 1px),
+            linear-gradient(90deg, rgba(255,255,255,0.025) 1px, transparent 1px);
+        background-size: 45px 45px;
+        mask-image: linear-gradient(to bottom, black, transparent 85%);
+    }
 
-.glow-ring{
-position:absolute;
-border-radius:50%;
-filter:blur(80px);
-}
+    /* BACKGROUND ANIMATION ELEMENTS */
+    .background {
+        position: fixed;
+        inset: 0;
+        z-index: 0;
+        pointer-events: none;
+        overflow: hidden;
+    }
 
-.glow-1{
-top:25%;
-left:25%;
-width:400px;
-height:400px;
-background:rgba(0,123,255,0.15);
-animation:float 12s ease-in-out infinite;
-}
+    .glow-ring {
+        position: absolute;
+        border-radius: 50%;
+        filter: blur(120px);
+    }
 
-.glow-2{
-bottom:25%;
-right:25%;
-width:400px;
-height:400px;
-background:rgba(0,123,255,0.1);
-animation:float 16s ease-in-out infinite reverse;
-}
+    .glow-1 {
+        top: 5%;
+        left: 5%;
+        width: 350px;
+        height: 350px;
+        background: rgba(255,255,255,0.025);
+        animation: floatOne 14s ease-in-out infinite;
+    }
 
-.glow-3{
-top:50%;
-left:50%;
-transform:translate(-50%,-50%);
-width:800px;
-height:800px;
-background:rgba(0,123,255,0.05);
-filter:blur(120px);
-animation:float 20s ease-in-out infinite;
-}
+    .glow-2 {
+        bottom: 5%;
+        right: 5%;
+        width: 400px;
+        height: 400px;
+        background: rgba(255,255,255,0.02);
+        animation: floatTwo 18s ease-in-out infinite;
+    }
 
-@keyframes float{
-0%{transform:translate(0,0) scale(1);}
-50%{transform:translate(40px,-30px) scale(1.1);}
-100%{transform:translate(0,0) scale(1);}
-}
+    .glow-3 {
+        top: 45%;
+        left: 50%;
+        transform: translateX(-50%);
+        width: 700px;
+        height: 700px;
+        background: rgba(255,255,255,0.012);
+        filter: blur(150px);
+    }
 
-/* LAYOUT */
-.container{
-max-width:900px;
-margin:auto;
-padding:2rem;
-position:relative;
-z-index:10;
-}
+    @keyframes floatOne {
+        0%, 100% { transform: translate(0, 0); }
+        50% { transform: translate(45px, -30px); }
+    }
 
-/* HEADER */
-.header{
-text-align:center;
-margin-bottom:3rem;
-}
+    @keyframes floatTwo {
+        0%, 100% { transform: translate(0, 0); }
+        50% { transform: translate(-35px, 30px); }
+    }
 
-.title{
-font-size:4rem;
-font-weight:900;
-letter-spacing:0.2em;
-text-shadow:0 0 15px rgba(0,123,255,0.7);
-animation:glow-pulse 2s ease-in-out infinite alternate;
-}
+    /* LAYOUT CONTAINER */
+    .container {
+        position: relative;
+        z-index: 5;
+        max-width: 900px;
+        margin: 0 auto;
+        padding: 40px 20px 80px;
+    }
 
-@keyframes glow-pulse{
-0%{text-shadow:0 0 10px rgba(0,123,255,0.7);}
-100%{
-text-shadow:
-0 0 20px rgba(0,123,255,0.9),
-0 0 40px rgba(0,123,255,0.8),
-0 0 70px rgba(0,123,255,0.7);
-}
-}
+    /* HEADER */
+    .header {
+        text-align: center;
+        padding: 42px 0 50px;
+    }
 
-.subtitle{
-opacity:0.7;
-}
+    .back-btn {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: 9px;
+        padding: 12px 20px;
+        margin-bottom: 35px;
+        background: rgba(255,255,255,0.035);
+        border: 1px solid var(--border);
+        border-radius: 10px;
+        color: #fff;
+        text-decoration: none;
+        font-family: "Orbitron", monospace;
+        font-size: 11px;
+        font-weight: 600;
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+        backdrop-filter: blur(12px);
+        transition: background 0.25s ease, border-color 0.25s ease, transform 0.25s ease;
+    }
 
-/* FAQ */
-.faq-item{
-background:rgba(0,0,0,0.3);
-backdrop-filter:blur(10px);
-border:1px solid rgba(255,255,255,0.2);
-border-radius:15px;
-margin-bottom:1.5rem;
-overflow:hidden;
-transition:0.3s;
-}
+    .back-btn:hover {
+        background: rgba(255,255,255,0.08);
+        border-color: var(--border-hover);
+        transform: translateY(-2px);
+    }
 
-.faq-item:hover{
-border-color:#007bff;
-box-shadow:0 0 20px rgba(0,123,255,0.5);
-transform:translateY(-3px);
-}
+    .back-btn svg {
+        opacity: 0.8;
+        transition: transform 0.25s ease;
+    }
 
-.faq-question{
-padding:1.5rem;
-cursor:pointer;
-display:flex;
-justify-content:space-between;
-align-items:center;
-font-weight:600;
-}
+    .back-btn:hover svg {
+        transform: translateX(-2px);
+    }
 
-.faq-question::after{
-content:'+';
-font-size:1.5rem;
-transition:0.3s;
-}
+    /* TITLE */
+    .title {
+        font-size: clamp(2.5rem, 6vw, 4rem);
+        font-weight: 900;
+        letter-spacing: 0.25em;
+        text-transform: uppercase;
+        color: #fff;
+        text-shadow: 0 0 18px rgba(255,255,255,0.12);
+        animation: titlePulse 3s ease-in-out infinite alternate;
+        margin-bottom: 8px;
+    }
 
-.faq-question.active::after{
-transform:rotate(45deg);
-}
+    .subtitle {
+        font-size: 12px;
+        font-weight: 500;
+        letter-spacing: 0.15em;
+        text-transform: uppercase;
+        color: var(--muted);
+    }
 
-.faq-answer{
-max-height:0;
-overflow:hidden;
-transition:0.3s;
-}
+    @keyframes titlePulse {
+        from { text-shadow: 0 0 12px rgba(255,255,255,0.08); }
+        to {
+            text-shadow:
+                0 0 20px rgba(255,255,255,0.18),
+                0 0 45px rgba(255,255,255,0.07);
+        }
+    }
 
-.faq-answer.active{
-max-height:400px;
-padding:0 1.5rem 1.5rem;
-}
+    /* FAQ ACCORDION INTERFACE */
+    .faq-container {
+        display: flex;
+        flex-direction: column;
+        gap: 16px;
+    }
 
-.faq-answer p{
-opacity:0.8;
-margin-bottom:10px;
-}
+    .faq-item {
+        position: relative;
+        background: var(--card);
+        border: 1px solid var(--border);
+        border-radius: 14px;
+        overflow: hidden;
+        backdrop-filter: blur(14px);
+        -webkit-backdrop-filter: blur(14px);
+        transition: transform 0.3s cubic-bezier(.2,.8,.2,1), border-color 0.3s ease, box-shadow 0.3s ease, background 0.3s ease;
+    }
 
-.highlight{
-color:#00bfff;
-}
+    .faq-item::before {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        height: 1px;
+        background: linear-gradient(90deg, transparent, rgba(255,255,255,0.15), transparent);
+        opacity: 0;
+        transition: opacity 0.3s ease;
+        z-index: 4;
+    }
 
-/* FOOTER */
-.footer{
-text-align:center;
-margin-top:3rem;
-}
+    .faq-item:hover {
+        background: var(--card-hover);
+        border-color: var(--border-hover);
+        box-shadow: 0 10px 30px rgba(0,0,0,0.5), 0 0 20px rgba(255,255,255,0.02);
+        transform: translateY(-2px);
+    }
 
-.back-btn{
-display:inline-flex;
-gap:0.5rem;
-padding:0.75rem 1.5rem;
-background:rgba(0,0,0,0.3);
-border:1px solid rgba(255,255,255,0.3);
-border-radius:0.75rem;
-color:white;
-text-decoration:none;
-transition:0.3s;
-}
+    .faq-item:hover::before {
+        opacity: 1;
+    }
 
-.back-btn:hover{
-border-color:#007bff;
-box-shadow:0 0 15px rgba(0,123,255,0.6);
-}
+    .faq-question {
+        padding: 22px 28px;
+        cursor: pointer;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        font-weight: 700;
+        font-size: 13px;
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+        user-select: none;
+        color: var(--text);
+        transition: color 0.25s ease;
+    }
 
-/* MOBILE */
-@media(max-width:768px){
-.title{font-size:2.5rem;}
-}
+    .faq-question::after {
+        content: "+";
+        font-size: 20px;
+        font-weight: 400;
+        color: var(--muted);
+        transition: transform 0.3s cubic-bezier(.2,.8,.2,1), color 0.25s ease;
+    }
+
+    .faq-question.active {
+        color: var(--highlight);
+    }
+
+    .faq-question.active::after {
+        transform: rotate(45deg);
+        color: var(--text);
+    }
+
+    .faq-answer {
+        max-height: 0;
+        overflow: hidden;
+        transition: all 0.35s cubic-bezier(.2,.8,.2,1);
+        opacity: 0;
+    }
+
+    .faq-answer.active {
+        opacity: 1;
+    }
+
+    .faq-answer-content {
+        padding: 0 28px 24px;
+        font-size: 12px;
+        line-height: 1.7;
+        letter-spacing: 0.04em;
+        color: var(--muted);
+    }
+
+    .highlight {
+        color: var(--text);
+        font-weight: 700;
+        text-shadow: 0 0 8px rgba(255,255,255,0.2);
+    }
+
+    /* FOOTER */
+    .footer {
+        text-align: center;
+        margin-top: 50px;
+    }
+
+    /* MOBILE MODES */
+    @media (max-width: 768px) {
+        .container {
+            padding: 20px 16px;
+        }
+        .header {
+            padding: 20px 0 35px;
+        }
+        .faq-question {
+            padding: 18px 20px;
+            font-size: 12px;
+        }
+        .faq-answer-content {
+            padding: 0 20px 20px;
+            font-size: 11px;
+        }
+    }
 </style>
 </head>
 
 <body>
 
 <div class="background">
-<div class="glow-ring glow-1"></div>
-<div class="glow-ring glow-2"></div>
-<div class="glow-ring glow-3"></div>
+    <div class="glow-ring glow-1"></div>
+    <div class="glow-ring glow-2"></div>
+    <div class="glow-ring glow-3"></div>
 </div>
 
 <div class="container">
 
-<div class="header">
-<h1 class="title">FAQ</h1>
-<p class="subtitle">UNBLEEKED Help Center</p>
+    <div class="header">
+        <a href="/index.html" class="back-btn">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                <line x1="19" y1="12" x2="5" y2="12"></line>
+                <polyline points="12 19 5 12 12 5"></polyline>
+            </svg>
+            Return
+        </a>
+        <h1 class="title">FAQ</h1>
+        <p class="subtitle">UNBLEEKED Terminal Hub</p>
+    </div>
+
+    <!-- FAQ LIST SYSTEM -->
+    <div class="faq-container">
+        
+        <div class="faq-item">
+            <div class="faq-question">What is UNBLEEKED?</div>
+            <div class="faq-answer">
+                <div class="faq-answer-content">
+                    <p>UNBLEEKED is a custom-curated digital platform hosting exclusive web applications, developer utilities, and browser sandbox experiences optimized for network environments running strict constraint protocols.</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="faq-item">
+            <div class="faq-question">Is it safe?</div>
+            <div class="faq-answer">
+                <div class="faq-answer-content">
+                    <p><span class="highlight">Affirmative.</span> Systems run contextually decoupled architectures. Zero executable files require localized disk storage or device system-level privileges; workflows execute completely client-side via native sandbox containers.</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="faq-item">
+            <div class="faq-question">What is Open Blank?</div>
+            <div class="faq-answer">
+                <div class="faq-answer-content">
+                    <p>An integrated engine utility designed to dynamic-inject runtime viewports straight inside native ephemeral <span class="highlight">about:blank</span> document branches, shielding structural activity components away from history log pipelines.</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="faq-item">
+            <div class="faq-question">Can I request new games or features?</div>
+            <div class="faq-answer">
+                <div class="faq-answer-content">
+                    <p>Yes. Feature request tokens can be logged by interfacing directly, establishing remote communications via the base domain landing array, or generating structural payload reviews on our repository terminal form.</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="faq-item">
+            <div class="faq-question">Does it work on mobile?</div>
+            <div class="faq-answer">
+                <div class="faq-answer-content">
+                    <p>Confirmed. Elements are wired into standard responsive viewports configured to instantly calculate fluid matrices, ensuring perfect interactive structural scales regardless of mobile screen boundaries.</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="faq-item">
+            <div class="faq-question">Something broke?</div>
+            <div class="faq-answer">
+                <div class="faq-answer-content">
+                    <p>Perform a hard data stack purge (Ctrl+F5), switch into temporary sandboxed instances (Incognito window mode), or rotate underlying browser modules. Persistent bugs should be reported through central hub lines.</p>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
 </div>
 
-<!-- FAQ ITEMS -->
-
-<div class="faq-item">
-<div class="faq-question">What is UNBLEEKED?</div>
-<div class="faq-answer">
-<p>UNBLEEKED is a platform for games, tools, and utilities designed to work in restricted environments.</p>
-</div>
-</div>
-
-<div class="faq-item">
-<div class="faq-question">Is it safe?</div>
-<div class="faq-answer">
-<p><span class="highlight">Yes.</span> No downloads, just browser-based content.</p>
-</div>
-</div>
-
-<div class="faq-item">
-<div class="faq-question">What is Open Blank?</div>
-<div class="faq-answer">
-<p>It opens the site inside an <span class="highlight">about:blank</span> tab for cleaner and more hidden browsing.</p>
-</div>
-</div>
-
-<div class="faq-item">
-<div class="faq-question">Can I reqeust new games or features?</div>
-<div class="faq-answer">
-<p>Yes, you can either talk to me in person, contact me through my website or fill out the form</p>
-</div>
-</div>
-
-<div class="faq-item">
-<div class="faq-question">Does it work on mobile?</div>
-<div class="faq-answer">
-<p>Yes, it's fully responsive on all mobile devices.</p>
-</div>
-</div>
-
-<div class="faq-item">
-<div class="faq-question">Something broke?</div>
-<div class="faq-answer">
-<p>Refresh, try incognito, or switch browser. If non of these work contact me through my website.</p>
-</div>
-</div>
-
-<!-- FOOTER -->
-<div class="footer">
-<a href="/main.html" class="back-btn">⬅ Back</a>
-</div>
-
-</div>
-
- <script>
-        // FAQ accordion functionality
-        document.addEventListener('DOMContentLoaded', function() {
-            const faqQuestions = document.querySelectorAll('.faq-question');
-            
-            faqQuestions.forEach(question => {
-                question.addEventListener('click', function() {
-                    const answer = this.nextElementSibling;
-                    const isActive = this.classList.contains('active');
-                    
-                    // Close all other FAQ items
-                    faqQuestions.forEach(q => {
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const faqQuestions = document.querySelectorAll('.faq-question');
+        
+        faqQuestions.forEach(question => {
+            question.addEventListener('click', function() {
+                const answer = this.nextElementSibling;
+                const isActive = this.classList.contains('active');
+                
+                // Clear state on active modules to ensure structural clean accordions
+                faqQuestions.forEach(q => {
+                    if (q !== question) {
                         q.classList.remove('active');
                         q.nextElementSibling.classList.remove('active');
-                    });
-                    
-                    // Toggle current item
-                    if (!isActive) {
-                        this.classList.add('active');
-                        answer.classList.add('active');
+                        q.nextElementSibling.style.maxHeight = null;
                     }
                 });
+                
+                // Toggle clicked object with active max-height calculations
+                if (!isActive) {
+                    this.classList.add('active');
+                    answer.classList.add('active');
+                    answer.style.maxHeight = answer.scrollHeight + "px";
+                } else {
+                    this.classList.remove('active');
+                    answer.classList.remove('active');
+                    answer.style.maxHeight = null;
+                }
             });
         });
-    </script>
+    });
+</script>
 
 </body>
 </html>

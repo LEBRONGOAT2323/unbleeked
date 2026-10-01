@@ -1,185 +1,163 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Redirecting | UNBLEEKED</title>
+<!DOCTYPE html> <html lang="en"> <head> <meta charset="UTF-8"> <meta name="viewport" content="width=device-width, initial-scale=1.0"> <title>UNBLEEKED | Main</title> <link id="favicon" rel="icon" type="image/x-icon" href="https://files.catbox.moe/j364dj.png"> <link rel="preconnect" href="https://fonts.googleapis.com"> <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin> <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Orbitron:wght@500;600;700;800;900&display=swap" rel="stylesheet"> <style> * { box-sizing: border-box; } html { scroll-behavior: smooth; } body { font-family: 'Inter', sans-serif; margin: 0; padding: 0; color: #ffffff; text-align: center; min-height: 100vh; overflow-x: hidden; background: radial-gradient( circle at 50% -10%, rgba(255,255,255,0.07), transparent 35% ), linear-gradient( 135deg, #050505 0%, #0a0a0a 35%, #111111 65%, #050505 100% ); background-size: 200% 200%; animation: backgroundShift 18s ease infinite; } @keyframes backgroundShift { 0% { background-position: 0% 50%; } 50% { background-position: 100% 50%; } 100% { background-position: 0% 50%; } } body::before { content: ""; position: fixed; inset: 0; pointer-events: none; z-index: -3; opacity: 0.16; background-image: linear-gradient( rgba(255,255,255,0.035) 1px, transparent 1px ), linear-gradient( 90deg, rgba(255,255,255,0.035) 1px, transparent 1px ); background-size: 50px 50px; mask-image: linear-gradient( to bottom, black, transparent 85% ); } body::after { content: ""; position: fixed; inset: 0; pointer-events: none; z-index: -2; background: radial-gradient( circle, transparent 30%, rgba(0,0,0,0.55) 100% ); } .background { position: fixed; inset: 0; width: 100%; height: 100%; z-index: -1; pointer-events: none; overflow: hidden; } .glow-1, .glow-2, .glow-3 { position: absolute; border-radius: 50%; filter: blur(120px); transition: transform 0.25s ease-out; opacity: 0.3; } .glow-1 { top: 5%; left: 5%; width: 450px; height: 450px; background: rgba(255,255,255,0.055); animation: pulseGlow 8s ease-in-out infinite, float 14s ease-in-out infinite; } .glow-2 { right: 5%; bottom: 5%; width: 500px; height: 500px; background: rgba(200,200,200,0.045); animation: pulseGlow 10s ease-in-out infinite, float 16s ease-in-out infinite reverse; } .glow-3 { top: 50%; left: 50%; width: 900px; height: 900px; transform: translate(-50%, -50%); background: rgba(255,255,255,0.025); filter: blur(150px); animation: pulseGlow 12s ease-in-out infinite; } @keyframes pulseGlow { 0% { opacity: 0.2; } 50% { opacity: 0.55; } 100% { opacity: 0.2; } } @keyframes float { 0% { transform: translate(0, 0) scale(1); } 50% { transform: translate(35px, -25px) scale(1.08); } 100% { transform: translate(0, 0) scale(1); } } .settings-icon { position: fixed; top: 20px; right: 20px; width: 54px; height: 54px; display: flex; justify-content: center; align-items: center; cursor: pointer; z-index: 2000; background: rgba(255,255,255,0.045); backdrop-filter: blur(18px); -webkit-backdrop-filter: blur(18px); border: 1px solid rgba(255,255,255,0.13); border-radius: 16px; box-shadow: 0 10px 35px rgba(0,0,0,0.45), inset 0 1px 0 rgba(255,255,255,0.08); transition: transform 0.35s cubic-bezier(.175,.885,.32,1.275), border-color 0.3s ease, box-shadow 0.3s ease; } .settings-icon:hover { transform: scale(1.08) rotate(5deg); border-color: rgba(255,255,255,0.4); box-shadow: 0 12px 40px rgba(0,0,0,0.55), 0 0 25px rgba(255,255,255,0.08), inset 0 1px 0 rgba(255,255,255,0.12); } .gear-shape { width: 24px; height: 24px; position: relative; background: #ffffff; border-radius: 50%; box-shadow: 0 0 12px rgba(255,255,255,0.35); animation: gear-rotate 8s linear infinite; } .gear-shape::before, .gear-shape::after { content: ""; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); width: 32px; height: 8px; background: #ffffff; border-radius: 2px; } .gear-shape::after { transform: translate(-50%, -50%) rotate(90deg); } .gear-inner { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); width: 10px; height: 10px; background: #090909; border-radius: 50%; z-index: 2; } .gear-teeth-extra { position: absolute; width: 100%; height: 100%; transform: rotate(45deg); } .gear-teeth-extra::before, .gear-teeth-extra::after { content: ""; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); width: 32px; height: 8px; background: #ffffff; border-radius: 2px; } .gear-teeth-extra::after { transform: translate(-50%, -50%) rotate(90deg); } @keyframes gear-rotate { from { transform: rotate(0deg); } to { transform: rotate(360deg); } } #settings-menu { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: 2001; justify-content: center; align-items: center; background: rgba(0,0,0,0.78); backdrop-filter: blur(25px); -webkit-backdrop-filter: blur(25px); } .settings-content { width: 380px; max-height: calc(100vh - 80px); overflow-y: auto; padding: 38px; text-align: left; background: linear-gradient( 145deg, rgba(255,255,255,0.075), rgba(255,255,255,0.025) ); border: 1px solid rgba(255,255,255,0.13); border-radius: 30px; box-shadow: 0 30px 100px rgba(0,0,0,0.75), inset 0 1px 0 rgba(255,255,255,0.08); } .settings-content h2 { margin: 0 0 10px; font-family: 'Orbitron', sans-serif; font-size: 25px; font-weight: 800; letter-spacing: 1px; color: #ffffff; } .settings-content h3 { font-family: 'Orbitron', sans-serif; font-size: 17px; letter-spacing: 1px; } .settings-content h4 { font-family: 'Orbitron', sans-serif; letter-spacing: 1px; } .cloak-option { display: flex; align-items: center; width: 100%; padding: 15px; margin: 12px 0; border-radius: 16px; border: 1px solid rgba(255,255,255,0.09); background: rgba(255,255,255,0.035); color: #ffffff; cursor: pointer; font-family: 'Inter', sans-serif; font-size: 15px; font-weight: 600; transition: transform 0.3s ease, background 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease; } .cloak-option:hover { transform: translateX(7px); background: rgba(255,255,255,0.08); border-color: rgba(255,255,255,0.28); box-shadow: 0 8px 25px rgba(0,0,0,0.25), inset 0 1px 0 rgba(255,255,255,0.06); } .cloak-option img { width: 24px; height: 24px; margin-right: 15px; border-radius: 5px; } .settings-content::-webkit-scrollbar { width: 8px; } .settings-content::-webkit-scrollbar-track { background: transparent; } .settings-content::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.12); border-radius: 10px; } .settings-content::-webkit-scrollbar-thumb:hover { background: rgba(255,255,255,0.2); } #admin-modal { display: none; position: fixed; z-index: 4000; top: 0; left: 0; width: 100%; height: 100%; justify-content: center; align-items: center; background: rgba(0,0,0,0.78); backdrop-filter: blur(12px); } .admin-box { width: 360px; padding: 26px; color: white; background: rgba(12,12,12,0.96); border: 1px solid rgba(255,255,255,0.1); border-radius: 20px; box-shadow: 0 30px 80px rgba(0,0,0,0.7); } .admin-box h3 { margin-top: 0; font-family: 'Orbitron', sans-serif; color: #ffffff; } .admin-input { width: 100%; padding: 13px; margin-top: 10px; border-radius: 11px; border: 1px solid rgba(255,255,255,0.14); background: rgba(255,255,255,0.035); color: white; font-family: 'Inter', sans-serif; } .admin-input:focus { outline: none; border-color: rgba(255,255,255,0.4); box-shadow: 0 0 20px rgba(255,255,255,0.06); } .admin-actions { display: flex; gap: 10px; margin-top: 14px; justify-content: flex-end; } .btn { padding: 10px 14px; border-radius: 10px; border: none; cursor: pointer; font-family: 'Inter', sans-serif; font-weight: 700; } .btn-primary { background: #ffffff; color: #050505; box-shadow: 0 0 20px rgba(255,255,255,0.12); } .btn-ghost { background: rgba(255,255,255,0.04); color: white; border: 1px solid rgba(255,255,255,0.08); } #admin-controls { display: none; margin-top: 18px; padding: 12px; border-radius: 12px; background: rgba(255,255,255,0.02); border: 1px solid rgba(255,255,255,0.05); } #admin-controls h4 { margin: 6px 0 12px; color: #ffffff; } .admin-btn { display: block; width: 100%; text-align: left; padding: 10px; margin: 8px 0; border-radius: 10px; background: rgba(0,0,0,0.35); border: 1px solid rgba(255,255,255,0.05); color: white; cursor: pointer; font-family: 'Inter', sans-serif; transition: .25s ease; } .admin-btn:hover { background: rgba(255,255,255,0.07); border-color: rgba(255,255,255,0.15); } .admin-btn.locked { opacity: 0.5; cursor: not-allowed; pointer-events: none; filter: grayscale(1); } .admin-btn.locked::after { content: " 🔒"; } h1 { position: relative; margin: 75px 0 30px; font-family: 'Orbitron', sans-serif; font-size: 78px; font-weight: 900; letter-spacing: 9px; line-height: 1; text-transform: uppercase; color: #ffffff; text-shadow: 0 0 10px rgba(255,255,255,0.35), 0 0 30px rgba(255,255,255,0.12); animation: titleAura 3.5s ease-in-out infinite alternate; } @keyframes titleAura { from { transform: translateY(0); text-shadow: 0 0 10px rgba(255,255,255,0.3), 0 0 30px rgba(255,255,255,0.1); } to { transform: translateY(-3px); text-shadow: 0 0 12px rgba(255,255,255,0.5), 0 0 35px rgba(255,255,255,0.16), 0 0 70px rgba(255,255,255,0.07); } } .cursor { color: #ffffff; animation: pulse 1s infinite; text-shadow: 0 0 10px rgba(255,255,255,0.7); } @keyframes pulse { 0%, 50% { opacity: 1; } 51%, 100% { opacity: 0; } } .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); gap: 28px; padding: 35px 40px 45px; max-width: 1200px; margin: 0 auto; } .game-card { cursor: pointer; position: relative; overflow: hidden; background: linear-gradient( 145deg, rgba(255,255,255,0.065), rgba(255,255,255,0.025) ); backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px); border: 1px solid rgba(255,255,255,0.1); border-radius: 22px; box-shadow: 0 15px 40px rgba(0,0,0,0.35), inset 0 1px 0 rgba(255,255,255,0.06); transition: transform .4s cubic-bezier(.175,.885,.32,1.275), box-shadow .4s ease, border-color .4s ease; } .game-card::before { content: ""; position: absolute; top: 0; left: -130%; width: 90%; height: 100%; pointer-events: none; z-index: 5; background: linear-gradient( 90deg, transparent, rgba(255,255,255,0.09), transparent ); transform: skewX(-20deg); transition: left .7s ease; } .game-card:hover::before { left: 140%; } .img-container { width: 100%; height: 180px; position: relative; display: flex; justify-content: center; align-items: center; overflow: hidden; background: linear-gradient( 135deg, #0b0b0b, #181818 ); } .img-container::before { content: ""; position: absolute; width: 200px; height: 200px; border-radius: 50%; background: rgba(255,255,255,0.045); filter: blur(55px); } .img-container::after { content: "🎮"; position: absolute; font-size: 50px; opacity: 0.1; z-index: 1; } .game-card img { width: 100%; height: 100%; object-fit: cover; position: absolute; top: 0; left: 0; z-index: 2; transition: transform .5s ease, filter .5s ease; } .game-card:hover img { transform: scale(1.055); filter: brightness(1.08) contrast(1.04); } .game-card:hover { transform: translateY(-11px) scale(1.018); border-color: rgba(255,255,255,0.28); box-shadow: 0 25px 55px rgba(0,0,0,0.5), 0 0 30px rgba(255,255,255,0.055), inset 0 1px 0 rgba(255,255,255,0.1); } .game-card p { position: relative; z-index: 4; margin: 0; padding: 17px; background: rgba(0,0,0,0.45); color: rgba(255,255,255,0.94); font-family: 'Orbitron', sans-serif; font-size: 14px; font-weight: 700; letter-spacing: 1.5px; text-transform: uppercase; } #panic-key-input, #panic-url-input { width: 100%; padding: 13px 15px; margin-top: 5px; margin-bottom: 15px; border-radius: 12px; border: 1px solid rgba(255,255,255,0.18); background: rgba(255,255,255,0.045); color: white; font-family: 'Inter', sans-serif; font-size: 15px; font-weight: 500; outline: none; transition: .3s; } #panic-key-input:focus, #panic-url-input:focus { border-color: rgba(255,255,255,0.4); background: rgba(255,255,255,0.06); box-shadow: 0 0 20px rgba(255,255,255,0.06); } .footer { text-align: center; padding: 30px; color: rgba(255,255,255,0.3); font-family: 'Orbitron', sans-serif; font-size: 10px; font-weight: 600; letter-spacing: 3px; text-transform: uppercase; } @media (max-width: 768px) { h1 { font-size: 48px; margin-top: 65px; letter-spacing: 5px; } .grid { grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); gap: 22px; padding: 25px; } .settings-icon { width: 52px; height: 52px; top: 16px; right: 16px; } .settings-content { width: calc(100% - 32px); padding: 25px; border-radius: 24px; } } </style> </head> <body> <div class="settings-icon" onclick="toggleSettings()"> <div class="gear-shape"> <div class="gear-inner"></div> <div class="gear-teeth-extra"></div> </div> </div> <div id="settings-menu" onclick="toggleSettings()">
+<div class="settings-content" onclick="event.stopPropagation()">
 
-<link id="favicon" rel="icon" type="image/x-icon" href="https://files.catbox.moe/j364dj.png">
-<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&display=swap" rel="stylesheet">
+    <button class="cloak-option" onclick="openAdminLogin()">
+        <img src="images/Lock.png" alt="admin">
+        Admin Login
+    </button>
 
-<style>
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;700;900&display=swap');
+    <hr style="opacity:0.15; margin:20px 0;">
 
-*{
-margin:0;
-padding:0;
-box-sizing:border-box;
-}
+    <h2>Tab Cloak</h2>
 
-body{
-font-family:'Orbitron', monospace;
-background:linear-gradient(-45deg,#0f0c29,#302b63,#24243e,#111);
-background-size:400% 400%;
-animation:gradient 15s ease infinite;
-color:white;
-min-height:100vh;
-display:flex;
-align-items:center;
-justify-content:center;
-text-align:center;
-overflow:hidden;
-}
+    <p style="opacity:0.6; margin-bottom:20px;">
+        Hide this tab in your browser bar.
+    </p>
 
-   /* dotted pattern */
-    body::before {
-        content: "";
-        position: absolute;
-        inset: 0;
-        background-image: radial-gradient(#ffffff09 1px, transparent 1px);
-        background-size: 18px 18px;
-        pointer-events: none;
-    }
+    <button class="cloak-option" onclick="setCloak('Google Drive', 'https://drive.google.com/favicon.ico')">
+        <img src="images/Google_Drive_icon.png" alt="">
+        Google Drive
+    </button>
 
-/* animated background */
-@keyframes gradient{
-0%{background-position:0% 50%}
-50%{background-position:100% 50%}
-100%{background-position:0% 50%}
-}
+    <button class="cloak-option" onclick="setCloak('Google Classroom', 'https://edu.google.com/images/svg/gsuite-icons/classroom.svg')">
+        <img src="https://edu.google.com/images/svg/gsuite-icons/classroom.svg" alt="">
+        Google Classroom
+    </button>
 
-/* glow background */
-.background{
-position:fixed;
-top:0;
-left:0;
-width:100%;
-height:100%;
-z-index:1;
-}
+    <button class="cloak-option" onclick="setCloak('Desmos | Graphing Calculator', 'https://www.desmos.com/favicon.ico')">
+        <img src="images/DesmosIcon.png" alt="">
+        Desmos
+    </button>
 
-.glow-ring{
-position:absolute;
-border-radius:50%;
-filter:blur(80px);
-}
+    <button class="cloak-option" onclick="setCloak('ELANCO Gateway', 'https://resources.finalsite.net/images/f_auto,q_auto,t_image_size_1/v1627325122/elancok12paus/wwvhvbwalfumgihhoafl/ELANCO-Logo-286c.png')">
+        <img src="images/ELANCO.png" alt="">
+        ELANCO Gateway
+    </button>
 
-.glow-1{
-top:25%;
-left:25%;
-width:400px;
-height:400px;
-background:rgba(0,123,255,0.15);
-animation:float 12s ease-in-out infinite;
-}
+    <button class="cloak-option" onclick="setCloak('UNBLEEKED', 'https://files.catbox.moe/j364dj.png')">
+        <img src="https://files.catbox.moe/j364dj.png" alt="">
+        Reset to Default
+    </button>
 
-.glow-2{
-bottom:25%;
-right:25%;
-width:400px;
-height:400px;
-background:rgba(0,123,255,0.1);
-animation:float 16s ease-in-out infinite reverse;
-}
+    <hr style="opacity:0.15; margin:20px 0;">
 
-.glow-3{
-top:50%;
-left:50%;
-transform:translate(-50%,-50%);
-width:800px;
-height:800px;
-background:rgba(0,123,255,0.05);
-filter:blur(120px);
-animation:float 20s ease-in-out infinite;
-}
+    <h3>Panic Key</h3>
 
-@keyframes float{
-0%{transform:translate(0,0) scale(1);}
-50%{transform:translate(40px,-30px) scale(1.1);}
-100%{transform:translate(0,0) scale(1);}
-}
+    <label>Key (single character)</label>
 
-/* container */
-.container{
-position:relative;
-z-index:10;
-padding:2rem;
-}
+    <input
+        id="panic-key-input"
+        maxlength="1"
+        placeholder="`"
+    >
 
-/* 404 title */
-.title{
-font-size:6rem;
-font-weight:900;
-letter-spacing:4px;
-text-shadow:0 0 15px rgba(0,123,255,0.7);
-animation:glow-pulse 2s ease-in-out infinite alternate;
-font-family:'Orbitron', monospace;
-}
+    <label style="margin-top:10px;">Redirect URL</label>
 
-/* glow animation */
-@keyframes glow-pulse{
-0%{text-shadow:0 0 10px rgba(0,123,255,0.7);}
-100%{
-text-shadow:
-0 0 20px rgba(0,123,255,0.9),
-0 0 40px rgba(0,123,255,0.8),
-0 0 70px rgba(0,123,255,0.7);
-}
-}
+    <input
+        id="panic-url-input"
+        placeholder="https://drive.google.com"
+    >
 
+    <button class="cloak-option" onclick="toggleSettings()">
+        Save & Close
+    </button>
 
+    <div id="admin-controls" aria-hidden="true">
 
-/* subtitle */
-.subtitle{
-margin-top:10px;
-opacity:0.7;
-font-size:1.2rem;
-}
+        <h4>Admin Controls</h4>
 
-/* button */
-.button{
-margin-top:35px;
-display:inline-block;
-padding:12px 28px;
-border-radius:12px;
-background:rgba(0,0,0,0.3);
-border:1px solid rgba(255,255,255,0.3);
-color:white;
-text-decoration:none;
-transition:0.3s;
-}
+        <button class="admin-btn" onclick="adminAddGame()">
+            ➕ Add Game
+        </button>
 
-.button:hover{
-border-color:#007bff;
-box-shadow:0 0 15px rgba(0,123,255,0.6);
-transform:translateY(-2px);
-}
+        <button class="admin-btn" onclick="adminRemoveLastGame()">
+            🗑️ Remove Last Game
+        </button>
 
-/* mobile */
-@media(max-width:768px){
-.title{font-size:3.5rem;}
-}
-</style>
-</head>
-<script>
-    window.location.href = "/main.html";
-</script>
-<body>
+        <button class="admin-btn" onclick="revokeAdmin()">
+            🔒 Revoke Admin
+        </button>
 
-<!-- background glow -->
-<div class="background">
-<div class="glow-ring glow-1"></div>
-<div class="glow-ring glow-2"></div>
-<div class="glow-ring glow-3"></div>
+        <button class="admin-btn" onclick="adminEditGame()">
+            ✏️ Edit Admin Game
+        </button>
+
+    </div>
+
+</div>
+</div> <div id="admin-modal" onclick="closeAdminModal()">
+<div class="admin-box" onclick="event.stopPropagation()">
+
+    <h3>Admin Login</h3>
+
+    <p style="opacity:0.65; margin-top:6px;">
+        Enter admin password to unlock controls.
+    </p>
+
+    <input
+        id="admin-password"
+        class="admin-input"
+        type="password"
+        placeholder="Password"
+    >
+
+    <div class="admin-actions">
+
+        <button
+            class="btn btn-ghost"
+            onclick="closeAdminModal()"
+        >
+            Cancel
+        </button>
+
+        <button
+            class="btn btn-primary"
+            onclick="verifyAdminPassword()"
+        >
+            Unlock
+        </button>
+
+    </div>
+
+    <p
+        id="admin-error"
+        style="
+            color:#ff6b6b;
+            opacity:0.9;
+            margin-top:10px;
+            display:none;
+        "
+    >
+        Incorrect password.
+    </p>
+
+</div>
+</div> <div class="background"> <div class="glow-1"></div> <div class="glow-2"></div> <div class="glow-3"></div> </div> <h1 class="title" onclick="location.href='/index.html'" style="cursor:pointer;" > <span id="typewriter"></span><span class="cursor">|</span> </h1> <div class="grid">
+<div class="game-card" onclick="location.href='/g.html'">
+    <div class="img-container">
+        <img src="/images/games.png" loading="lazy" alt="Games">
+    </div>
+    <p>Games</p>
 </div>
 
-<!-- content -->
-<div class="container">
-<div class="title">LOADING...</div>
-<div class="subtitle">We seem to be running into some trouble — If you are not redirected automatically, click below.</div>
-<a href="/main.html" class="button">⬅ Go to Home</a>
+<div class="game-card" onclick="location.href='/a.html'">
+    <div class="img-container">
+        <img src="/images/apps.png" loading="lazy" alt="Apps">
+    </div>
+    <p>Apps</p>
 </div>
 
-</body>
-</html>
+<div class="game-card" onclick="location.href='/e.html'">
+    <div class="img-container">
+        <img src="/images/exploits.png" loading="lazy" alt="Exploits">
+    </div>
+    <p>Exploits</p>
+</div>
 
+<div class="game-card" onclick="location.href='/movies.html'">
+    <div class="img-container">
+        <img src="/images/movies.png" loading="lazy" alt="Movies">
+    </div>
+    <p>Movies</p>
+</div>
+</div> <div class="footer"> Unbleeked Portal </div> <script> function revokeAdminLocal() { try { localStorage.removeItem('isAdmin'); } catch (e) {} showAdminControls(false); } function toggleSettings() { const menu = document.getElementById('settings-menu'); const isOpen = window.getComputedStyle(menu).display === 'flex'; if (isOpen) { menu.style.display = 'none'; revokeAdminLocal(); } else { menu.style.display = 'flex'; } } function setCloak(title, iconUrl) { document.title = title; const existingIcons = document.querySelectorAll('link[rel*="icon"]'); existingIcons.forEach(icon => icon.remove()); document.getElementById( "settings-menu" ).style.display = "none"; const newIcon = document.createElement('link'); newIcon.id = 'favicon'; newIcon.rel = 'icon'; newIcon.type = 'image/x-icon'; newIcon.href = iconUrl + '?v=' + new Date().getTime(); document .getElementsByTagName('head')[0] .appendChild(newIcon); localStorage.setItem( 'cloakTitle', title ); localStorage.setItem( 'cloakIcon', iconUrl ); } window.addEventListener("load", () => { const savedTitle = localStorage.getItem("cloakTitle"); const savedIcon = localStorage.getItem("cloakIcon"); if (savedTitle) { document.title = savedTitle; } if (savedIcon) { const favicon = document.getElementById("favicon"); if (favicon) { favicon.href = savedIcon; } } }); const typewriter = document.getElementById('typewriter'); const text = 'UNBLEEKED'; let i = 0; function typeEffect() { if (i < text.length) { typewriter.textContent += text.charAt(i); i++; setTimeout( typeEffect, 150 ); } } window.addEventListener( 'load', typeEffect ); const glow1 = document.querySelector(".glow-1"); const glow2 = document.querySelector(".glow-2"); const glow3 = document.querySelector(".glow-3"); document.addEventListener( "mousemove", (e) => { const x = e.clientX / window.innerWidth - 0.5; const y = e.clientY / window.innerHeight - 0.5; glow1.style.transform = `translate(${x * 40}px, ${y * 40}px)`; glow2.style.transform = `translate(${x * 60}px, ${y * 60}px)`; glow3.style.transform = `translate(${x * 20}px, ${y * 20}px)`; } ); </script> </body> </html>

@@ -1,328 +1,734 @@
 <!DOCTYPE html>
+
 <html lang="en">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
 <title>GAMES | UNBLEEKED</title>
 
-<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&display=swap" rel="stylesheet">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Orbitron:wght@500;600;700;800;900&display=swap" rel="stylesheet">
 
 <style>
+
 * {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
 }
 
+html {
+    scroll-behavior: smooth;
+}
+
 body {
-    font-family: 'Orbitron', monospace;
-    background: linear-gradient(-45deg,#0f0c29,#302b63,#24243e,#111);
-    background-size: 400% 400%;
-    animation: gradient 15s ease infinite;
-    color: white;
+    font-family: "Inter", sans-serif;
+    color: #fff;
     min-height: 100vh;
     overflow-x: hidden;
+
+    background:
+        radial-gradient(
+            circle at 50% -15%,
+            rgba(255,255,255,0.07),
+            transparent 35%
+        ),
+        linear-gradient(
+            135deg,
+            #050505,
+            #0a0a0a 45%,
+            #111 70%,
+            #050505
+        );
 }
 
-@keyframes gradient {
-    0%{background-position:0% 50%}
-    50%{background-position:100% 50%}
-    100%{background-position:0% 50%}
+/* =========================
+   BACKGROUND
+========================= */
+
+body::before {
+    content: "";
+
+    position: fixed;
+    inset: 0;
+
+    z-index: -3;
+    pointer-events: none;
+
+    opacity: 0.15;
+
+    background-image:
+        linear-gradient(
+            rgba(255,255,255,0.035) 1px,
+            transparent 1px
+        ),
+        linear-gradient(
+            90deg,
+            rgba(255,255,255,0.035) 1px,
+            transparent 1px
+        );
+
+    background-size: 55px 55px;
+
+    mask-image:
+        linear-gradient(
+            to bottom,
+            black,
+            transparent 90%
+        );
 }
 
-/* BACKGROUND */
+body::after {
+    content: "";
+
+    position: fixed;
+    inset: 0;
+
+    z-index: -2;
+    pointer-events: none;
+
+    background:
+        radial-gradient(
+            circle,
+            transparent 25%,
+            rgba(0,0,0,0.65) 100%
+        );
+}
+
 .background {
     position: fixed;
-    width: 100%;
-    height: 100%;
-    z-index: 0;
+    inset: 0;
+
+    z-index: -1;
+
+    overflow: hidden;
+    pointer-events: none;
 }
 
 .glow-ring {
     position: absolute;
+
     border-radius: 50%;
-    filter: blur(90px);
+
+    filter: blur(120px);
+
+    transition: transform 0.25s ease-out;
 }
 
 .glow-1 {
-    top: 20%;
-    left: 20%;
-    width: 400px;
-    height: 400px;
-    background: rgba(0,123,255,0.15);
+    width: 450px;
+    height: 450px;
+
+    top: 10%;
+    left: 5%;
+
+    background: rgba(255,255,255,0.045);
+
+    animation: floatOne 14s ease-in-out infinite;
 }
 
 .glow-2 {
-    bottom: 20%;
-    right: 20%;
-    width: 400px;
-    height: 400px;
-    background: rgba(255,255,255,0.05);
+    width: 500px;
+    height: 500px;
+
+    right: 0;
+    bottom: 5%;
+
+    background: rgba(255,255,255,0.035);
+
+    animation: floatTwo 17s ease-in-out infinite;
 }
 
-/* LAYOUT */
+@keyframes floatOne {
+    0%,100% {
+        transform: translate(0,0) scale(1);
+    }
+
+    50% {
+        transform: translate(45px,-30px) scale(1.1);
+    }
+}
+
+@keyframes floatTwo {
+    0%,100% {
+        transform: translate(0,0) scale(1);
+    }
+
+    50% {
+        transform: translate(-40px,25px) scale(1.08);
+    }
+}
+
+/* =========================
+   LAYOUT
+========================= */
+
 .container {
     position: relative;
     z-index: 2;
-    max-width: 1200px;
+
+    width: min(1200px, calc(100% - 40px));
+
     margin: auto;
-    padding: 20px;
+
+    padding: 20px 0 0;
 }
 
 .header-section {
     display: flex;
     flex-direction: column;
     align-items: center;
-    width: 100%;
-    padding-top: 2rem; 
-    margin-bottom: 0px; 
+
+    padding-top: 25px;
 }
 
-/* Ensure the grid stays left-aligned or standard grid layout */
-.games-grid {
-    display: grid;
-    gap: 15px;
-    width: 100%;
-    justify-items: stretch; /* Keeps cards from bunching in the middle */
-}
-
+/* =========================
+   BACK BUTTON
+========================= */
 
 .back-btn {
     display: inline-flex;
+
     align-items: center;
     justify-content: center;
-    gap: 0.5rem;
-    padding: 0.75rem 1.5rem;
-    background: rgba(212, 175, 55, 0.1);
-    border: 1px solid rgba(255,255,255,0.3);
-    border-radius: 0.75rem;
-    color: #ffffff;
+
+    gap: 9px;
+
+    padding: 12px 18px;
+
+    margin-bottom: 28px;
+
+    color: rgba(255,255,255,0.8);
+
     text-decoration: none;
-    transition: all 0.3s ease;
-    margin: 0 auto 1rem auto; /* Centers it and adds gap below */
-    width: fit-content;
+
+    font-size: 13px;
+    font-weight: 600;
+
+    letter-spacing: 0.3px;
+
+    background: rgba(255,255,255,0.045);
+
+    border: 1px solid rgba(255,255,255,0.11);
+
+    border-radius: 13px;
+
+    backdrop-filter: blur(15px);
+    -webkit-backdrop-filter: blur(15px);
+
+    box-shadow:
+        0 10px 30px rgba(0,0,0,0.25),
+        inset 0 1px 0 rgba(255,255,255,0.06);
+
+    transition:
+        transform 0.3s ease,
+        background 0.3s ease,
+        border-color 0.3s ease,
+        color 0.3s ease;
 }
 
 .back-btn:hover {
-    background: rgba(0, 123, 255, 0.2);
-    border-color: #007bff;
+    transform: translateY(-2px);
+
+    color: #fff;
+
+    background: rgba(255,255,255,0.08);
+
+    border-color: rgba(255,255,255,0.25);
+
+    box-shadow:
+        0 12px 35px rgba(0,0,0,0.4),
+        0 0 25px rgba(255,255,255,0.04);
 }
 
-    
-/* HEADER */
+/* =========================
+   TITLE
+========================= */
+
 .title {
-    font-size: 5rem;
+    font-family: "Orbitron", sans-serif;
+
+    font-size: clamp(3rem, 8vw, 5.8rem);
+
     font-weight: 900;
-    color: white;
-    letter-spacing: 0.3em;
-    margin-bottom: 0.5rem; /* Reduced from 2rem to 0.5rem */
-    animation: title-glow-pulse 2s ease-in-out infinite alternate;
+
+    letter-spacing: 0.16em;
+
+    text-transform: uppercase;
+
+    color: #fff;
+
+    line-height: 1;
+
+    cursor: pointer;
+
+    user-select: none;
+
+    margin-bottom: 38px;
+
+    text-shadow:
+        0 0 10px rgba(255,255,255,0.25),
+        0 0 30px rgba(255,255,255,0.08);
+
+    animation: titleAura 3.5s ease-in-out infinite alternate;
 }
 
-.typewriter {
-            border-right: 2px solid #ffffff;
-            animation: typewriter 4s steps(5) 1s infinite, blink 1s step-end infinite;
-            white-space: nowrap;
-            overflow: hidden;
-            width: 5ch;
-            margin: 0 auto;
-        }
-    
+@keyframes titleAura {
+
+    from {
+        transform: translateY(0);
+
+        text-shadow:
+            0 0 10px rgba(255,255,255,0.25),
+            0 0 25px rgba(255,255,255,0.07);
+    }
+
+    to {
+        transform: translateY(-3px);
+
+        text-shadow:
+            0 0 12px rgba(255,255,255,0.45),
+            0 0 35px rgba(255,255,255,0.13),
+            0 0 65px rgba(255,255,255,0.06);
+    }
+}
+
+/* =========================
+   CONTROLS
+========================= */
+
 .controls {
     display: flex;
+
     justify-content: center;
-    gap: 1.5rem;
-    margin-bottom: 3rem;
+    align-items: center;
+
+    gap: 12px;
+
+    margin-bottom: 30px;
+
     flex-wrap: wrap;
 }
 
-.search-input, .select {
-    height: 3.5rem; /* Taller inputs */
-    padding: 0 1.5rem;
-    background: rgba(212, 175, 55, 0.1); /* Gold tint from Exploits */
-    border: 1px solid rgba(255, 255, 255, 0.3);
-    border-radius: 0.75rem;
-    color: #ffffff;
-    font-size: 1rem;
-    font-family: 'Orbitron', monospace;
-    transition: all 0.3s ease;
-}
+.search-input,
+.select {
+    height: 50px;
 
-.search-input:focus, .select:focus {
+    padding: 0 17px;
+
+    color: #fff;
+
+    font-family: "Inter", sans-serif;
+
+    font-size: 14px;
+    font-weight: 500;
+
+    background: rgba(255,255,255,0.045);
+
+    border: 1px solid rgba(255,255,255,0.12);
+
+    border-radius: 13px;
+
     outline: none;
-    border-color: #ffffff;
-    box-shadow: 0 0 25px rgba(255, 255, 255, 0.4);
+
+    backdrop-filter: blur(15px);
+    -webkit-backdrop-filter: blur(15px);
+
+    box-shadow:
+        inset 0 1px 0 rgba(255,255,255,0.05),
+        0 8px 25px rgba(0,0,0,0.2);
+
+    transition:
+        border-color 0.3s ease,
+        background 0.3s ease,
+        box-shadow 0.3s ease;
 }
 
-.search-input { width: 350px; } /* Slightly wider search */
-
-/* The Intense Glow Animation */
-@keyframes title-glow-pulse {
-    0% {
-        text-shadow: 
-            0 0 10px rgba(0, 123, 255, 0.5),
-            0 0 20px rgba(0, 123, 255, 0.3);
-        transform: scale(1);
-    }
-    100% {
-        text-shadow: 
-            0 0 20px rgba(0, 123, 255, 0.9),
-            0 0 40px rgba(0, 123, 255, 0.7),
-            0 0 60px rgba(0, 123, 255, 0.5);
-        transform: scale(1.02); /* Slight pulse in size */
-    }
+.search-input {
+    width: 350px;
 }
 
-/* Responsive adjustment for Mobile so it doesn't break the screen */
-@media (max-width: 768px) {
-    .title {
-        font-size: 2.5rem;
-        letter-spacing: 0.1em;
-    }
+.search-input::placeholder {
+    color: rgba(255,255,255,0.4);
 }
 
+.search-input:focus,
+.select:focus {
+    border-color: rgba(255,255,255,0.35);
 
-.grid-mobile { grid-template-columns: 1fr; }
-.grid-tablet { grid-template-columns: repeat(2, 1fr); }
-.grid-desktop { grid-template-columns: repeat(3, 1fr); }
+    background: rgba(255,255,255,0.065);
 
-/* CARD */
-.game-card {
-    background: rgba(0,0,0,0.3);
-    border-radius: 15px;
-    overflow: hidden;
+    box-shadow:
+        0 0 25px rgba(255,255,255,0.05),
+        inset 0 1px 0 rgba(255,255,255,0.08);
+}
+
+.select {
     cursor: pointer;
-    transition: 0.3s;
+}
+
+.select option {
+    background: #111;
+    color: #fff;
+}
+
+/* =========================
+   GAME GRID
+========================= */
+
+.games-grid {
+    display: grid;
+
+    width: 100%;
+
+    gap: 20px;
+
+    justify-items: stretch;
+}
+
+.grid-mobile {
+    grid-template-columns: 1fr;
+}
+
+.grid-tablet {
+    grid-template-columns: repeat(2, 1fr);
+}
+
+.grid-desktop {
+    grid-template-columns: repeat(3, 1fr);
+}
+
+/* =========================
+   GAME CARD
+========================= */
+
+.game-card {
+    position: relative;
+
+    overflow: hidden;
+
+    cursor: pointer;
+
+    background:
+        linear-gradient(
+            145deg,
+            rgba(255,255,255,0.065),
+            rgba(255,255,255,0.025)
+        );
+
     border: 1px solid rgba(255,255,255,0.1);
+
+    border-radius: 20px;
+
+    backdrop-filter: blur(15px);
+    -webkit-backdrop-filter: blur(15px);
+
+    box-shadow:
+        0 15px 40px rgba(0,0,0,0.35),
+        inset 0 1px 0 rgba(255,255,255,0.06);
+
+    transition:
+        transform 0.4s cubic-bezier(.175,.885,.32,1.275),
+        border-color 0.35s ease,
+        box-shadow 0.35s ease;
+}
+
+.game-card::before {
+    content: "";
+
+    position: absolute;
+
+    top: 0;
+    left: -130%;
+
+    width: 80%;
+    height: 100%;
+
+    z-index: 5;
+
+    pointer-events: none;
+
+    background:
+        linear-gradient(
+            90deg,
+            transparent,
+            rgba(255,255,255,0.1),
+            transparent
+        );
+
+    transform: skewX(-20deg);
+
+    transition: left 0.7s ease;
+}
+
+.game-card:hover::before {
+    left: 140%;
 }
 
 .game-card:hover {
-    transform: translateY(-8px);
-    border-color: rgba(0,123,255,0.7);
-    box-shadow: 0 0 20px rgba(0,123,255,0.4);
+    transform:
+        translateY(-9px)
+        scale(1.012);
+
+    border-color: rgba(255,255,255,0.25);
+
+    box-shadow:
+        0 25px 55px rgba(0,0,0,0.5),
+        0 0 35px rgba(255,255,255,0.045),
+        inset 0 1px 0 rgba(255,255,255,0.1);
 }
+
+/* =========================
+   IMAGE
+========================= */
 
 .img-container {
-    height: 160px;
+    height: 175px;
+
     position: relative;
+
+    overflow: hidden;
+
+    background:
+        linear-gradient(
+            135deg,
+            #0b0b0b,
+            #181818
+        );
 }
 
-.img-container::after{
-    content:"📂";
-    font-size:50px;
-    opacity:0.2;
-    position:absolute;
-    z-index:1;
+.img-container::before {
+    content: "";
+
+    position: absolute;
+
+    width: 220px;
+    height: 220px;
+
+    top: 50%;
+    left: 50%;
+
+    transform: translate(-50%,-50%);
+
+    border-radius: 50%;
+
+    background: rgba(255,255,255,0.035);
+
+    filter: blur(60px);
+
+    z-index: 0;
 }
-    
+
+.img-container::after {
+    content: "🎮";
+
+    position: absolute;
+
+    top: 50%;
+    left: 50%;
+
+    transform: translate(-50%,-50%);
+
+    font-size: 48px;
+
+    opacity: 0.08;
+
+    z-index: 1;
+}
+
 .img-container img {
     width: 100%;
     height: 100%;
+
     object-fit: cover;
+
+    position: relative;
+
+    z-index: 2;
+
+    transition:
+        transform 0.5s ease,
+        filter 0.5s ease;
 }
+
+.game-card:hover .img-container img {
+    transform: scale(1.055);
+
+    filter:
+        brightness(1.08)
+        contrast(1.04);
+}
+
+/* =========================
+   GAME NAME
+========================= */
 
 .game-name {
-    padding: 12px;
-    font-size: 0.9rem;
-    text-transform: lowercase;
-    background: rgba(0,0,0,0.4);
+    padding: 16px 17px;
+
+    background: rgba(0,0,0,0.42);
+
+    color: rgba(255,255,255,0.92);
+
+    font-family: "Orbitron", sans-serif;
+
+    font-size: 13px;
+
+    font-weight: 700;
+
+    letter-spacing: 1px;
+
+    text-transform: uppercase;
+
+    white-space: nowrap;
+
+    overflow: hidden;
+
+    text-overflow: ellipsis;
 }
 
-/* Footer */
-        .footer {
-            text-align: center;
-            padding: 2rem 0;
-            border-top: 1px solid rgba(255,255,255,0.2);
-            margin-top: 2rem;
-        }
+/* =========================
+   FOOTER
+========================= */
 
-        .footer-links {
-            display: flex;
-            justify-content: center;
-            gap: 2rem;
-            flex-wrap: wrap;
-        }
+.footer {
+    margin-top: 55px;
 
-        .footer-link {
-            color: #ffffff;
-            text-decoration: none;
-            position: relative;
-            font-size: 0.9rem;
-            transition: all 0.3s ease;
-        }
+    padding: 30px 0 35px;
 
-        .footer-link::after {
-            content: '';
-            position: absolute;
-            width: 100%;
-            height: 1px;
-            bottom: -2px;
-            left: 0;
-            background-color: #ffffff;
-            transform: scaleX(0);
-            transform-origin: bottom right;
-            transition: transform 0.3s ease;
-        }
-
-        .footer-link:hover::after {
-            transform: scaleX(1);
-            transform-origin: bottom left;
-        }
-
-        .footer-link:hover {
-            text-shadow: 0 0 10px #ffffff;
-        }
-
-
-/* Animations */
-       @keyframes glow-pulse {
-0% { text-shadow:0 0 10px rgba(0,123,255,0.7); }
-
-100% { 
-text-shadow:
-0 0 20px rgba(0,123,255,0.9),
-0 0 40px rgba(0,123,255,0.8),
-0 0 70px rgba(0,123,255,0.7);
-}
+    border-top:
+        1px solid rgba(255,255,255,0.08);
 }
 
-        @keyframes typewriter {
-            from { width: 0; }
-            to { width: 5ch; }
-        }
+.footer-links {
+    display: flex;
 
-        @keyframes blink {
-            from, to { border-color: transparent; }
-            50% { border-color: #ffffff; }
-        }
+    justify-content: center;
 
-        @keyframes float {
-0% {
-transform: translate(0px, 0px) scale(1);
-}
-50% {
-transform: translate(40px, -30px) scale(1.1);
-}
-100% {
-transform: translate(0px, 0px) scale(1);
-}
+    align-items: center;
+
+    gap: 25px;
+
+    flex-wrap: wrap;
 }
 
-@keyframes pulseGlow {
-0% { opacity: 0.3; }
-50% { opacity: 0.6; }
-100% { opacity: 0.3; }
+.footer-link {
+    position: relative;
+
+    color: rgba(255,255,255,0.45);
+
+    text-decoration: none;
+
+    font-family: "Inter", sans-serif;
+
+    font-size: 11px;
+
+    font-weight: 600;
+
+    letter-spacing: 0.5px;
+
+    transition:
+        color 0.3s ease,
+        text-shadow 0.3s ease;
 }
 
-        /* Responsive */
-        @media (max-width: 768px) {
-            .title { font-size: 2.5rem; }
-            .search-input { width: 250px; }
-            .controls { gap: 1rem; }
-            .footer-links { gap: 1rem; }
-        }
-    
+.footer-link::after {
+    content: "";
+
+    position: absolute;
+
+    left: 0;
+    bottom: -5px;
+
+    width: 100%;
+    height: 1px;
+
+    background: #fff;
+
+    transform:
+        scaleX(0);
+
+    transform-origin: right;
+
+    transition:
+        transform 0.3s ease;
+}
+
+.footer-link:hover {
+    color: #fff;
+
+    text-shadow:
+        0 0 12px rgba(255,255,255,0.35);
+}
+
+.footer-link:hover::after {
+    transform: scaleX(1);
+
+    transform-origin: left;
+}
+
+/* =========================
+   MOBILE
+========================= */
+
+@media (max-width: 768px) {
+
+    .container {
+        width: min(100% - 28px, 1200px);
+    }
+
+    .header-section {
+        padding-top: 15px;
+    }
+
+    .back-btn {
+        margin-bottom: 24px;
+    }
+
+    .title {
+        font-size: 2.8rem;
+
+        letter-spacing: 0.09em;
+
+        margin-bottom: 30px;
+    }
+
+    .controls {
+        margin-bottom: 24px;
+    }
+
+    .search-input {
+        width: 100%;
+    }
+
+    .select {
+        width: 100%;
+    }
+
+    .games-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .img-container {
+        height: 185px;
+    }
+
+    .footer-links {
+        gap: 17px;
+    }
+}
+
+@media (min-width: 769px) and (max-width: 1050px) {
+
+    .games-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
 </style>
+
 </head>
 
 <body>
@@ -333,123 +739,362 @@ transform: translate(0px, 0px) scale(1);
 </div>
 
 <div class="container">
-    <!-- NEW WRAPPER HERE -->
-    <div class="header-section">
-        <a href="main.html" class="back-btn">
-            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/>
-                <polyline points="9,22 9,12 15,12 15,22"/>
-            </svg>
-            Back to Homepage
+
+
+<div class="header-section">
+
+    <a href="index.html" class="back-btn">
+
+        <svg
+            width="16"
+            height="16"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+        >
+            <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/>
+            <polyline points="9,22 9,12 15,12 15,22"/>
+        </svg>
+
+        Back to Homepage
+
+    </a>
+
+    <h1
+        class="title"
+        onclick="location.href='/index.html'"
+    >
+        GAMES
+    </h1>
+
+</div>
+
+<div class="controls">
+
+    <input
+        id="searchInput"
+        class="search-input"
+        type="text"
+        placeholder="Search games..."
+        autocomplete="off"
+    >
+
+    <select id="gridSelect" class="select">
+
+        <option value="auto">
+            Auto Grid
+        </option>
+
+        <option value="mobile">
+            Mobile
+        </option>
+
+        <option value="tablet">
+            Tablet
+        </option>
+
+        <option value="desktop">
+            Desktop
+        </option>
+
+    </select>
+
+</div>
+
+<div
+    class="games-grid grid-desktop"
+    id="gamesGrid"
+></div>
+
+<footer class="footer">
+
+    <div class="footer-links">
+
+        <a href="pp.html" class="footer-link">
+            Privacy Policy
         </a>
 
-        <h1 class="title" onclick="location.href='/main.html'" style="cursor:pointer;">
-            <span class="typewriter">GAMES</span>
-        </h1>
+        <a href="#" class="footer-link">
+            Update Log
+        </a>
+
+        <a href="faq.html" class="footer-link">
+            FAQ
+        </a>
+
+        <a
+            href="#"
+            class="footer-link"
+            onclick="openBlank(); return false;"
+        >
+            Open Blank
+        </a>
+
+        <a
+            href="https://github.com/LEBRONGOAT2323"
+            target="_blank"
+            class="footer-link"
+        >
+            GitHub
+        </a>
+
+        <a
+            href="https://docs.google.com/forms/d/1t52FBl9fUIm6ftWzFQTSw4dutoIOP1rTe8AnQ4cg1pY/viewform?edit_requested=true"
+            target="_blank"
+            class="footer-link"
+        >
+            Support
+        </a>
+
     </div>
 
-    <div class="controls">
-        <input id="searchInput" class="search-input" placeholder="Search games...">
-        <select id="gridSelect" class="select">
-            <option value="auto">Auto Grid</option>
-            <option value="mobile">Mobile</option>
-            <option value="tablet">Tablet</option>
-            <option value="desktop">Desktop</option>
-        </select>
-    </div>
+</footer>
 
-    <div class="games-grid grid-desktop" id="gamesGrid"></div>
-
-    <footer class="footer">
-            <div class="footer-links">
-                <a href="pp.html" class="footer-link">privacy policy</a>
-                <a href="#" class="footer-link">update log</a>
-                <a href="faq.html" class="footer-link">faq</a>
-                <a href="#" class="footer-link" onclick="openBlank(); return false;">open blank</a>
-                <a href="https://github.com/LEBRONGOAT2323" target="_blank" class="footer-link">github</a>
-                <a href="https://docs.google.com/forms/d/1t52FBl9fUIm6ftWzFQTSw4dutoIOP1rTe8AnQ4cg1pY/viewform?edit_requested=true" target="_blank" class="footer-link">support</a>
-            </div>
-        </footer>
-    
 </div>
 
 <script>
-const gamesGrid = document.getElementById("gamesGrid");
-const searchInput = document.getElementById("searchInput");
-const gridSelect = document.getElementById("gridSelect");
 
-let games = []; // 1. Initialize an empty array globally
+const gamesGrid =
+    document.getElementById("gamesGrid");
 
-/* ========================= 500+ GAME DATA SYSTEM ========================= */
+const searchInput =
+    document.getElementById("searchInput");
+
+const gridSelect =
+    document.getElementById("gridSelect");
+
+let games = [];
+
+/* =========================
+   LOAD GAMES
+========================= */
+
 fetch("./games.json")
-    .then(res => res.json())
+
+    .then(res => {
+
+        if (!res.ok) {
+            throw new Error(
+                "Unable to load games.json"
+            );
+        }
+
+        return res.json();
+
+    })
+
     .then(data => {
-        // FILTER: This keeps only games that have a name and a URL.
-        // It also hides any that start with the word "Game " followed by a number.
+
         games = data.filter(game => {
-            const hasName = game.name && game.name.trim() !== "";
-            const hasUrl = game.url && game.url.trim() !== "";
-            const isNotFiller = !game.name.toLowerCase().startsWith("game "); 
-            
-            return hasName && hasUrl && isNotFiller;
+
+            const hasName =
+                game.name &&
+                game.name.trim() !== "";
+
+            const hasUrl =
+                game.url &&
+                game.url.trim() !== "";
+
+            const isNotFiller =
+                !game.name
+                    .toLowerCase()
+                    .startsWith("game ");
+
+            return (
+                hasName &&
+                hasUrl &&
+                isNotFiller
+            );
+
         });
 
-        render(games); 
+        render(games);
+
     })
-    .catch(err => console.error("Error loading games:", err));
 
+    .catch(err => {
 
-/* ========================= RENDER SYSTEM ========================= */
-function render(list) {
-    gamesGrid.innerHTML = "";
-    list.forEach(game => {
-        const card = document.createElement("div");
-        card.className = "game-card";
-        card.innerHTML = `
-            <div class="img-container" onclick="location.href='${game.url}'">
-                <img src="${game.img}" loading="lazy">
+        console.error(
+            "Error loading games:",
+            err
+        );
+
+        gamesGrid.innerHTML = `
+            <div style="
+                grid-column:1/-1;
+                padding:50px;
+                color:rgba(255,255,255,0.5);
+                font-family:Inter,sans-serif;
+            ">
+                Unable to load games.
             </div>
-            <div class="game-name">${game.name}</div>
         `;
-        gamesGrid.appendChild(card);
+
     });
+
+/* =========================
+   RENDER
+========================= */
+
+function render(list) {
+
+    gamesGrid.innerHTML = "";
+
+    list.forEach(game => {
+
+        const card =
+            document.createElement("div");
+
+        card.className = "game-card";
+
+        card.innerHTML = `
+
+            <div
+                class="img-container"
+                onclick="location.href='${game.url}'"
+            >
+
+                <img
+                    src="${game.img}"
+                    loading="lazy"
+                    alt="${game.name}"
+                >
+
+            </div>
+
+            <div class="game-name">
+                ${game.name}
+            </div>
+
+        `;
+
+        gamesGrid.appendChild(card);
+
+    });
+
 }
-
-// Remove the standalone render(games) call that was here
-
 
 /* =========================
    SEARCH
 ========================= */
 
-searchInput.addEventListener("input", () => {
-    const value = searchInput.value.toLowerCase();
-    render(games.filter(g => g.name.toLowerCase().includes(value)));
-});
+searchInput.addEventListener(
+    "input",
+    () => {
+
+        const value =
+            searchInput.value
+                .trim()
+                .toLowerCase();
+
+        render(
+            games.filter(game =>
+                game.name
+                    .toLowerCase()
+                    .includes(value)
+            )
+        );
+
+    }
+);
 
 /* =========================
    GRID CONTROL
 ========================= */
 
 function updateGrid() {
-    const val = gridSelect.value;
 
-    gamesGrid.classList.remove("grid-mobile","grid-tablet","grid-desktop");
+    const value =
+        gridSelect.value;
 
-    if (val === "auto") {
-        const w = window.innerWidth;
-        if (w < 768) gamesGrid.classList.add("grid-mobile");
-        else if (w < 1024) gamesGrid.classList.add("grid-tablet");
-        else gamesGrid.classList.add("grid-desktop");
+    gamesGrid.classList.remove(
+        "grid-mobile",
+        "grid-tablet",
+        "grid-desktop"
+    );
+
+    if (value === "auto") {
+
+        const width =
+            window.innerWidth;
+
+        if (width < 768) {
+
+            gamesGrid.classList.add(
+                "grid-mobile"
+            );
+
+        } else if (width < 1050) {
+
+            gamesGrid.classList.add(
+                "grid-tablet"
+            );
+
+        } else {
+
+            gamesGrid.classList.add(
+                "grid-desktop"
+            );
+
+        }
+
     } else {
-        gamesGrid.classList.add(`grid-${val}`);
+
+        gamesGrid.classList.add(
+            `grid-${value}`
+        );
+
     }
+
 }
 
-gridSelect.addEventListener("change", updateGrid);
-window.addEventListener("resize", updateGrid);
+gridSelect.addEventListener(
+    "change",
+    updateGrid
+);
+
+window.addEventListener(
+    "resize",
+    updateGrid
+);
 
 updateGrid();
+
+/* =========================
+   MOUSE PARALLAX
+========================= */
+
+const glow1 =
+    document.querySelector(".glow-1");
+
+const glow2 =
+    document.querySelector(".glow-2");
+
+document.addEventListener(
+    "mousemove",
+    event => {
+
+        const x =
+            event.clientX /
+            window.innerWidth -
+            0.5;
+
+        const y =
+            event.clientY /
+            window.innerHeight -
+            0.5;
+
+        glow1.style.transform =
+            `translate(${x * 35}px, ${y * 35}px)`;
+
+        glow2.style.transform =
+            `translate(${x * -30}px, ${y * -30}px)`;
+
+    }
+);
 
 </script>
 

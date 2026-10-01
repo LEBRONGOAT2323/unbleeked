@@ -3,389 +3,430 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>FIVE NIGHTS AT FREDDY'S - UNBLEEKED </title>
+    <title>FIVE NIGHTS AT FREDDY'S - UNBLEEKED</title>
     <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&display=swap" rel="stylesheet">
-
-     <link rel="icon" href="img/FirstAvatar.png">
+    <link class="favicon" rel="icon" href="img/FirstAvatar.png">
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
-        body {
-             font-family: 'Orbitron', monospace;
-            background:linear-gradient(-45deg,#0f0c29,#302b63,#24243e,#111);
-            background-size:400% 400%;
-            animation:gradient 15s ease infinite;
-            color:white;
-            text-align:center;
-            min-height:100vh;
-            overflow-x:hidden;
-            overflow-x: hidden;
-        }
+        * { 
+            margin: 0; 
+            padding: 0; 
+            box-sizing: border-box; 
+        } 
         
-        @keyframes gradient{
-        0%{background-position:0% 50%}
-        50%{background-position:100% 50%}
-        100%{background-position:0% 50%}
-        }
-        
-        
+        :root { 
+            --bg: #070707; 
+            --bg-soft: #0d0d0d; 
+            --card: rgba(18, 18, 18, 0.72); 
+            --card-hover: rgba(25, 25, 25, 0.9); 
+            --border: rgba(255, 255, 255, 0.09); 
+            --border-hover: rgba(255, 255, 255, 0.28); 
+            --text: #ffffff; 
+            --muted: rgba(255, 255, 255, 0.55); 
+        } 
 
-        .container {
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 0 20px;
-            position: relative;
-            z-index: 10;
-        }
+        body { 
+            font-family: "Orbitron", monospace; 
+            background: radial-gradient(circle at 15% 20%, rgba(255,255,255,0.035), transparent 30%), radial-gradient(circle at 85% 75%, rgba(255,255,255,0.025), transparent 30%), #070707; 
+            color: var(--text); 
+            min-height: 100vh; 
+            overflow-x: hidden; 
+        } 
 
-        /* Background Effects */
-        .background {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            z-index: 1;
-        }
+        /* Subtle background grid */ 
+        body::before { 
+            content: ""; 
+            position: fixed; 
+            inset: 0; 
+            z-index: 0; 
+            pointer-events: none; 
+            opacity: 0.18; 
+            background-image: linear-gradient(rgba(255,255,255,0.025) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.025) 1px, transparent 1px); 
+            background-size: 45px 45px; 
+            mask-image: linear-gradient(to bottom, black, transparent 85%); 
+            -webkit-mask-image: linear-gradient(to bottom, black, transparent 85%);
+        } 
 
-        .glow-ring {
-            position: absolute;
-            border-radius: 50%;
-            filter: blur(80px);
-        }
+        /* BACKGROUND */ 
+        .background { 
+            position: fixed; 
+            inset: 0; 
+            z-index: 0; 
+            pointer-events: none; 
+            overflow: hidden; 
+        } 
 
-        .glow-1 {
-top: 25%;
-left: 25%;
-width: 400px;
-height: 400px;
-background: rgba(212, 175, 55, 0.1);
-animation: float 12s ease-in-out infinite, pulseGlow 6s ease-in-out infinite;
-}
+        .glow-ring { 
+            position: absolute; 
+            border-radius: 50%; 
+            filter: blur(120px); 
+        } 
 
-.glow-2 {
-bottom: 25%;
-right: 25%;
-width: 400px;
-height: 400px;
-background: rgba(212, 175, 55, 0.08);
-animation: float 16s ease-in-out infinite reverse, pulseGlow 8s ease-in-out infinite;
-}
+        .glow-1 { 
+            top: 5%; 
+            left: 5%; 
+            width: 350px; 
+            height: 350px; 
+            background: rgba(255,255,255,0.025); 
+            animation: floatOne 14s ease-in-out infinite; 
+        } 
 
-.glow-3 {
-top: 50%;
-left: 50%;
-transform: translate(-50%, -50%);
-width: 800px;
-height: 800px;
-background: rgba(212, 175, 55, 0.05);
-filter: blur(120px);
-animation: float 20s ease-in-out infinite, pulseGlow 10s ease-in-out infinite;
-}
+        .glow-2 { 
+            bottom: 5%; 
+            right: 5%; 
+            width: 400px; 
+            height: 400px; 
+            background: rgba(255,255,255,0.02); 
+            animation: floatTwo 18s ease-in-out infinite; 
+        } 
 
-        /* Header */
-        .header {
-            text-align: center;
-            padding: 2rem 0;
-        }
+        .glow-3 { 
+            top: 45%; 
+            left: 50%; 
+            transform: translateX(-50%); 
+            width: 700px; 
+            height: 700px; 
+            background: rgba(255,255,255,0.012); 
+            filter: blur(150px); 
+        } 
 
-        .back-btn {
-            display: inline-flex;
-            align-items: center;
-            gap: 0.5rem;
-            padding: 0.75rem 1.5rem;
-            background: rgba(212, 175, 55, 0.1);
-            border: 1px solid rgba(255,255,255,0.3);
-            border-radius: 0.75rem;
-            color: #ffffff;
-            text-decoration: none;
-            transition: all 0.3s ease;
+        @keyframes floatOne { 
+            0%, 100% { transform: translate(0, 0); } 
+            50% { transform: translate(45px, -30px); } 
+        } 
+
+        @keyframes floatTwo { 
+            0%, 100% { transform: translate(0, 0); } 
+            50% { transform: translate(-35px, 30px); } 
+        } 
+
+        /* LAYOUT */ 
+        .container { 
+            position: relative; 
+            z-index: 5; 
+            max-width: 1200px; 
+            margin: 0 auto; 
+            padding: 0 20px; 
+        } 
+
+        /* HEADER */ 
+        .header { 
+            text-align: center; 
+            padding: 42px 0 30px; 
+        } 
+
+        .back-btn { 
+            display: inline-flex; 
+            align-items: center; 
+            justify-content: center; 
+            gap: 9px; 
+            padding: 12px 18px; 
+            margin-bottom: 30px; 
+            background: rgba(255,255,255,0.035); 
+            border: 1px solid var(--border); 
+            border-radius: 10px; 
+            color: #fff; 
+            text-decoration: none; 
+            font-family: "Orbitron", monospace; 
+            font-size: 12px; 
+            font-weight: 600; 
+            letter-spacing: 0.04em; 
+            backdrop-filter: blur(12px); 
+            transition: background 0.25s ease, border-color 0.25s ease, transform 0.25s ease; 
+        } 
+
+        .back-btn:hover { 
+            background: rgba(255,255,255,0.08); 
+            border-color: var(--border-hover); 
+            transform: translateY(-2px); 
+        } 
+
+        .back-btn svg { 
+            opacity: 0.75; 
+        } 
+
+        /* TITLE */ 
+        .title { 
+            display: flex; 
+            justify-content: center; 
+            align-items: center; 
+            min-height: 76px; 
+            font-family: "Orbitron", monospace; 
+            font-size: clamp(2rem, 5vw, 3.5rem); 
+            font-weight: 900; 
+            letter-spacing: 0.15em; 
+            color: #fff; 
+            cursor: pointer; 
+            user-select: none; 
+            text-shadow: 0 0 18px rgba(255,255,255,0.12); 
+            animation: titlePulse 3s ease-in-out infinite alternate; 
             margin-bottom: 2rem;
-        }
-
-        .back-btn:hover {
-            background: rgba(212, 175, 55, 0.2);
-            border-color: #ffffff;
-        }
-
-        .title {
-            font-size: 4rem;
-            font-weight: 900;
-            color: white;
-            text-shadow:0 0 10px rgba(0,123,255,0.7);
-            letter-spacing: 0.2em;
-            margin-bottom: 2rem;
-            animation: glow-pulse 2s ease-in-out infinite alternate;
-        }
-
-        .typewriter {
-            border-right: 2px solid #ffffff;
-            animation: typewriter 4s steps(5) 1s infinite, blink 1s step-end infinite;
-            white-space: nowrap;
-            overflow: hidden;
-            width: 5ch;
-            margin: 0 auto;
-        }
-
-        /* Controls */
-        .controls {
-            display: flex;
-            justify-content: center;
-            gap: 1.5rem;
-            margin-bottom: 3rem;
             flex-wrap: wrap;
-        }
+        } 
 
-        .search-container {
-            position: relative;
-        }
+        .cursor { 
+            margin-left: 5px; 
+            font-weight: 400; 
+            color: #fff;
+            animation: cursorBlink 0.9s infinite; 
+        } 
 
-        .search-input {
-            width: 300px;
-            height: 3.5rem;
-            padding: 0 1rem 0 3rem;
-            background: rgba(212, 175, 55, 0.1);
-            border: 1px solid rgba(255,255,255,0.3);
-            border-radius: 0.75rem;
-            color: #ffffff;
-            font-size: 1rem;
-            font-family: 'Orbitron', monospace;
-        }
+        @keyframes titlePulse { 
+            from { text-shadow: 0 0 12px rgba(255,255,255,0.08); } 
+            to { text-shadow: 0 0 20px rgba(255,255,255,0.18), 0 0 45px rgba(255,255,255,0.07); } 
+        } 
 
-        .search-input:focus {
-            outline: none;
-            border-color: #ffffff;
-              box-shadow: 0 0 25px rgba(255,255,255,0.4);
-        }
+        @keyframes cursorBlink { 
+            0%, 45% { opacity: 1; } 
+            46%, 100% { opacity: 0; } 
+        } 
 
-        .search-icon {
-            position: absolute;
-            left: 1rem;
-            top: 50%;
-            transform: translateY(-50%);
-            color: rgba(255,255,255,0.4);
-        }
+        /* CONTROLS */ 
+        .controls { 
+            display: flex; 
+            justify-content: center; 
+            align-items: center; 
+            gap: 12px; 
+            margin: 12px 0 34px; 
+            flex-wrap: wrap; 
+        } 
 
-        .select-container {
-            position: relative;
-        }
+        .search-container { 
+            position: relative; 
+        } 
 
-        .select {
-            height: 3.5rem;
-            padding: 0 2.5rem 0 1rem;
-            background: rgba(212, 175, 55, 0.1);
-            border: 1px solid rgba(255,255,255,0.3);
-            border-radius: 0.75rem;
-            color: #ffffff;
-            font-size: 1rem;
-            font-family: 'Orbitron', monospace;
-            cursor: pointer;
-            appearance: none;
-        }
-        
-        .select option {
-            color: #000000;
-            background: #ffffff;
-        }
+        .search-input { 
+            width: 320px; 
+            height: 48px; 
+            padding: 0 16px 0 46px; 
+            background: rgba(255,255,255,0.035); 
+            border: 1px solid var(--border); 
+            border-radius: 10px; 
+            color: #fff; 
+            font-family: "Orbitron", monospace; 
+            font-size: 12px; 
+            font-weight: 500; 
+            outline: none; 
+            backdrop-filter: blur(12px); 
+            transition: border-color 0.25s ease, background 0.25s ease, box-shadow 0.25s ease; 
+        } 
 
-        .select:focus {
-            outline: none;
-            border-color: #ffffff;
-            box-shadow: 0 0 25px rgba(255,255,255,0.4);
-        }
+        .search-input::placeholder { 
+            color: rgba(255,255,255,0.35); 
+        } 
 
-        /* Games Grid */
-        .games-grid {
-            display: grid;
-            gap: 1.5rem;
-            margin-bottom: 4rem;
-        }
+        .search-input:focus { 
+            background: rgba(255,255,255,0.055); 
+            border-color: rgba(255,255,255,0.28); 
+            box-shadow: 0 0 25px rgba(255,255,255,0.045); 
+        } 
 
-        .grid-mobile { grid-template-columns: 1fr; }
-        .grid-tablet { grid-template-columns: repeat(2, 1fr); }
-        .grid-desktop { grid-template-columns: repeat(3, 1fr); }
+        .search-icon { 
+            position: absolute; 
+            left: 16px; 
+            top: 50%; 
+            transform: translateY(-50%); 
+            color: rgba(255,255,255,0.42); 
+            pointer-events: none; 
+        } 
 
-        .game-card{
-cursor:pointer;
-background:rgba(0,0,0,0.3);
-backdrop-filter:blur(10px);
-border:1px solid rgba(0,0,0,0.3);
-border:1px solid rgba(255,255,255,0.1);
-border-radius:20px;
-overflow:hidden;
-transition:0.4s;
-}
+        .select-container { 
+            position: relative; 
+        } 
 
-.img-container{
-width:100%;
-height:180px;
-background:linear-gradient(45deg,#1e1e2f,#2a2a40);
-display:flex;
-justify-content:center;
-align-items:center;
-position:relative;
-}
+        .select { 
+            height: 48px; 
+            min-width: 180px; 
+            padding: 0 38px 0 15px; 
+            background: rgba(255,255,255,0.035); 
+            border: 1px solid var(--border); 
+            border-radius: 10px; 
+            color: #fff; 
+            font-family: "Orbitron", monospace; 
+            font-size: 11px; 
+            font-weight: 600; 
+            cursor: pointer; 
+            outline: none; 
+            appearance: none; 
+            backdrop-filter: blur(12px); 
+            transition: border-color 0.25s ease, background 0.25s ease; 
+        } 
 
-.img-container img {
-    width:100%;
-    height:100%;
-    object-fit:cover;
-    position:absolute;
-    top:0;
-    left:0;
-    z-index:2;
-}
+        .select:hover { 
+            background: rgba(255,255,255,0.055); 
+            border-color: rgba(255,255,255,0.18); 
+        } 
 
-.img-container::after{
-    content:"📂";
-    font-size:50px;
-    opacity:0.2;
-    position:absolute;
-    z-index:1;
-}
+        .select:focus { 
+            border-color: rgba(255,255,255,0.28); 
+            box-shadow: 0 0 25px rgba(255,255,255,0.045); 
+        } 
 
-.game-card img{
-width:100%;
-height:100%;
-object-fit:cover;
-position:absolute;
-top:0;
-left:0;
-}
+        .select option { 
+            background: #101010; 
+            color: #fff; 
+        } 
 
-.game-card:hover{
-transform:translateY(-10px);
-border-color:#007bff;
-box-shadow:0 0 20px rgba(0,123,255,0.6);
-}
+        /* GRID */ 
+        .games-grid { 
+            display: grid; 
+            gap: 18px; 
+            margin-bottom: 65px; 
+            transition: all 0.3s cubic-bezier(.2,.8,.2,1); 
+        } 
 
-.game-card p{
-padding:15px;
-margin:0;
-font-weight:600;
-background:rgba(0,0,0,0.3);
-}
+        .grid-mobile { grid-template-columns: 1fr !important; } 
+        .grid-tablet { grid-template-columns: repeat(2, 1fr) !important; } 
+        .grid-desktop { grid-template-columns: repeat(3, 1fr) !important; } 
 
-        .game-name {
-            padding: 0.75rem;
-            background: rgba(0, 0, 0, 0.3);
-            border-top: 1px solid rgba(212, 175, 55, 0.2);
-            height: 50px;
-            display: flex;
-            align-items: center;
-            font-size: 0.9rem;
-            font-weight: bold;
-            color: #ffffff;
-            text-transform: lowercase;
-            background:linear-gradient(45deg,#1e1e2f,#2a2a40);
-        }
-        
-        .games-grid{
-            transition:all 0.3s ease;
-        }
+        /* CARDS */ 
+        .game-card { 
+            position: relative; 
+            cursor: pointer; 
+            background: var(--card); 
+            border: 1px solid var(--border); 
+            border-radius: 16px; 
+            overflow: hidden; 
+            backdrop-filter: blur(14px); 
+            -webkit-backdrop-filter: blur(14px); 
+            transition: transform 0.3s cubic-bezier(.2,.8,.2,1), border-color 0.3s ease, box-shadow 0.3s ease, background 0.3s ease; 
+        } 
 
+        .game-card::before { 
+            content: ""; 
+            position: absolute; 
+            top: 0; 
+            left: 0; 
+            right: 0; 
+            height: 1px; 
+            background: linear-gradient( 90deg, transparent, rgba(255,255,255,0.18), transparent ); 
+            opacity: 0; 
+            transition: opacity 0.3s ease; 
+            z-index: 4; 
+        } 
 
-        /* Footer */
-        .footer {
-            text-align: center;
-            padding: 2rem 0;
-            border-top: 1px solid rgba(255,255,255,0.2);
-            margin-top: 2rem;
-        }
+        .game-card:hover { 
+            transform: translateY(-8px); 
+            background: var(--card-hover); 
+            border-color: var(--border-hover); 
+            box-shadow: 0 12px 30px rgba(0,0,0,0.4), 0 0 20px rgba(255,255,255,0.02); 
+        } 
 
-        .footer-links {
-            display: flex;
-            justify-content: center;
-            gap: 2rem;
-            flex-wrap: wrap;
-        }
+        .game-card:hover::before { 
+            opacity: 1; 
+        } 
 
-        .footer-link {
-            color: #ffffff;
-            text-decoration: none;
-            position: relative;
-            font-size: 0.9rem;
-            transition: all 0.3s ease;
-        }
+        .img-container { 
+            width: 100%; 
+            height: 190px; 
+            background: #0a0a0a; 
+            display: flex; 
+            justify-content: center; 
+            align-items: center; 
+            position: relative; 
+            overflow: hidden; 
+        } 
 
-        .footer-link::after {
-            content: '';
-            position: absolute;
-            width: 100%;
-            height: 1px;
-            bottom: -2px;
-            left: 0;
-            background-color: #ffffff;
-            transform: scaleX(0);
-            transform-origin: bottom right;
-            transition: transform 0.3s ease;
-        }
+        .img-container img { 
+            width: 100%; 
+            height: 100%; 
+            object-fit: cover; 
+            position: absolute; 
+            top: 0; 
+            left: 0; 
+            z-index: 2; 
+            transition: transform 0.5s cubic-bezier(.2,.8,.2,1); 
+        } 
 
-        .footer-link:hover::after {
-            transform: scaleX(1);
-            transform-origin: bottom left;
-        }
+        .game-card:hover .img-container img { 
+            transform: scale(1.05); 
+        } 
 
-        .footer-link:hover {
-            text-shadow: 0 0 10px #ffffff;
-        }
+        .img-container::after { 
+            content: "📂"; 
+            font-size: 42px; 
+            opacity: 0.08; 
+            position: absolute; 
+            z-index: 1; 
+        } 
 
-        /* Animations */
-       @keyframes glow-pulse {
-0% { text-shadow:0 0 10px rgba(0,123,255,0.7); }
+        .game-name { 
+            padding: 1.1rem; 
+            border-top: 1px solid var(--border); 
+            height: 64px; 
+            display: flex; 
+            align-items: center; 
+            justify-content: center; 
+            font-size: 0.85rem; 
+            font-weight: 700; 
+            color: var(--text); 
+            text-transform: uppercase; 
+            letter-spacing: 0.08em; 
+            background: rgba(10, 10, 10, 0.4); 
+            transition: background 0.3s ease; 
+        } 
 
-100% { 
-text-shadow:
-0 0 20px rgba(0,123,255,0.9),
-0 0 40px rgba(0,123,255,0.8),
-0 0 70px rgba(0,123,255,0.7);
-}
-}
+        .game-card:hover .game-name { 
+            background: rgba(20, 20, 20, 0.6); 
+        } 
 
-        @keyframes typewriter {
-            from { width: 0; }
-            to { width: 5ch; }
-        }
+        /* FOOTER */ 
+        .footer { 
+            text-align: center; 
+            padding: 3rem 0; 
+            border-top: 1px solid var(--border); 
+            margin-top: 4rem; 
+        } 
 
-        @keyframes blink {
-            from, to { border-color: transparent; }
-            50% { border-color: #ffffff; }
-        }
+        .footer-links { 
+            display: flex; 
+            justify-content: center; 
+            gap: 2.5rem; 
+            flex-wrap: wrap; 
+        } 
 
-        @keyframes float {
-0% {
-transform: translate(0px, 0px) scale(1);
-}
-50% {
-transform: translate(40px, -30px) scale(1.1);
-}
-100% {
-transform: translate(0px, 0px) scale(1);
-}
-}
+        .footer-link { 
+            color: var(--muted); 
+            text-decoration: none; 
+            position: relative; 
+            font-size: 0.8rem; 
+            font-weight: 600; 
+            text-transform: uppercase; 
+            letter-spacing: 0.1em; 
+            transition: color 0.25s ease, text-shadow 0.25s ease; 
+        } 
 
-@keyframes pulseGlow {
-0% { opacity: 0.3; }
-50% { opacity: 0.6; }
-100% { opacity: 0.3; }
-}
+        .footer-link::after { 
+            content: ''; 
+            position: absolute; 
+            width: 100%; 
+            height: 1px; 
+            bottom: -4px; 
+            left: 0; 
+            background-color: var(--border-hover); 
+            transform: scaleX(0); 
+            transform-origin: bottom right; 
+            transition: transform 0.3s ease; 
+        } 
 
-        /* Responsive */
-        @media (max-width: 768px) {
-            .title { font-size: 2.5rem; }
-            .search-input { width: 250px; }
-            .controls { gap: 1rem; }
-            .footer-links { gap: 1rem; }
-        }
-        
-        .game-card{
-transition:transform .3s ease, box-shadow .3s ease, border-color .3s ease;
-}
-        
+        .footer-link:hover::after { 
+            transform: scaleX(1); 
+            transform-origin: bottom left; 
+        } 
+
+        .footer-link:hover { 
+            color: #fff; 
+            text-shadow: 0 0 8px rgba(255,255,255,0.3); 
+        } 
+
+        /* RESPONSIVE */ 
+        @media (max-width: 768px) { 
+            .title { font-size: 1.8rem; letter-spacing: 0.1em; } 
+            .search-input { width: 100%; } 
+            .controls { gap: 12px; flex-direction: column; align-items: center; } 
+            .select-container, .search-container { width: 100%; max-width: 320px; } 
+            .select { width: 100%; } 
+            .footer-links { gap: 1.5rem; } 
+        } 
     </style>
 </head>
 <body>
@@ -398,20 +439,20 @@ transition:transform .3s ease, box-shadow .3s ease, border-color .3s ease;
     <div class="container">
         <header class="header">
             <a href="g.html" class="back-btn">
-                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
                     <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/>
                     <polyline points="9,22 9,12 15,12 15,22"/>
                 </svg>
                 Back to Games Page
             </a>
             
-             <h1 class="title" onclick="location.href='/main.html'" style="cursor:pointer;">
+            <h1 class="title" id="titleContainer">
                 <span id="typewriter"></span><span class="cursor">|</span>
             </h1>
 
             <div class="controls">
                 <div class="search-container">
-                    <svg class="search-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <svg class="search-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
                         <circle cx="11" cy="11" r="8"/>
                         <path d="M21 21l-4.35-4.35"/>
                     </svg>
@@ -420,7 +461,7 @@ transition:transform .3s ease, box-shadow .3s ease, border-color .3s ease;
 
                 <div class="select-container">
                     <select class="select" id="categorySelect">
-                        <option value="all">All</option>
+                        <option value="all">All Platforms</option>
                         <option value="pc">PC</option>
                         <option value="mobile">Mobile</option>
                     </select>
@@ -439,94 +480,90 @@ transition:transform .3s ease, box-shadow .3s ease, border-color .3s ease;
 
         <main>
             <div class="games-grid grid-desktop" id="gamesGrid">
-                <!-- Manual game cards - add each game here -->
-                
                 <!-- Game cards -->
                 <div class="game-card" data-category="pc">
                       <div class="img-container" onclick="window.location.href='/g/fnaf/fnaf-1.html'">
-                          <img src="https://files.catbox.moe/o0hffv.jpg" alt="fnaf 1">
+                          <img src="https://catbox.moe" alt="fnaf 1">
                       </div>
                       <div class="game-name">FNAF 1</div>
                 </div>
 
-              <div class="game-card" data-category="pc">
+                <div class="game-card" data-category="pc">
                     <div class="img-container" onclick="window.location.href='/g/fnaf/fnaf-2.html'">
-                        <img src="https://files.catbox.moe/61ljrt.jpg" alt="fnaf 2">
+                        <img src="https://catbox.moe" alt="fnaf 2">
                     </div>
                     <div class="game-name">FNAF 2</div>
-              </div>
+                </div>
 
-              <div class="game-card" data-category="pc">
-                    <div class="img-container" data-category="pc" onclick="window.location.href='/g/fnaf/fnaf-3.html'">
-                        <img src="https://files.catbox.moe/w6yem6.jpg" alt="fnaf 3">
+                <div class="game-card" data-category="pc">
+                    <div class="img-container" onclick="window.location.href='/g/fnaf/fnaf-3.html'">
+                        <img src="https://catbox.moe" alt="fnaf 3">
                     </div>
                     <div class="game-name">FNAF 3</div>
                 </div>
 
-              <div class="game-card" data-category="pc">
+                <div class="game-card" data-category="pc">
                     <div class="img-container" onclick="window.location.href='/g/fnaf/fnaf-4.html'">
-                        <img src="https://files.catbox.moe/44sgy5.jpg" alt="fnaf 4">
+                        <img src="https://catbox.moe" alt="fnaf 4">
                     </div>
                     <div class="game-name">FNAF 4</div>
                 </div>
 
-              <div class="game-card" data-category="pc">
+                <div class="game-card" data-category="pc">
                     <div class="img-container" onclick="window.location.href='/g/fnaf/fnaf-pizza.html'">
-                        <img src="https://files.catbox.moe/m78w0o" alt="fnaf Pizza">
+                        <img src="https://catbox.moe" alt="fnaf Pizza">
                     </div>
                     <div class="game-name">FNAF'S Pizzeria Simulator</div>
                 </div>
 
-              <div class="game-card" data-category="pc">
+                <div class="game-card" data-category="pc">
                     <div class="img-container" onclick="window.location.href='/g/fnaf/fnaf-sister.html'">
-                        <img src="https://files.catbox.moe/z7qg7o.jpg" alt="fnaf sister">
+                        <img src="https://catbox.moe" alt="fnaf sister">
                     </div>
                     <div class="game-name">FNAF'S Sister Location</div>
                 </div>
 
-              <div class="game-card" data-category="pc">
+                <div class="game-card" data-category="pc">
                     <div class="img-container" onclick="window.location.href='/g/fnaf/fnaf-custom.html'">
-                        <img src="https://files.catbox.moe/lkeh8u.jpg" alt="fnaf custom">
+                        <img src="https://catbox.moe" alt="fnaf custom">
                     </div>
                     <div class="game-name">FNAF'S Ultimate Custom Night</div>
                 </div>
 
-              <div class="game-card" data-category="pc">
+                <div class="game-card" data-category="pc">
                     <div class="img-container" onclick="window.location.href='/g/fnaf/fnaf-world.html'">
-                        <img src="https://files.catbox.moe/yeit00.ico" alt="fnaf's world">
+                        <img src="https://catbox.moe" alt="fnaf's world">
                     </div>
                     <div class="game-name">FNAF'S World</div>
                 </div>
 
-              <div class="game-card" data-category="pc">
+                <div class="game-card" data-category="pc">
                     <div class="img-container" onclick="window.location.href='/g/fnaf/fnaf-friskbears.html'">
-                        <img src="https://files.catbox.moe/fgkiet.png" alt="fnaf friskbear">
+                        <img src="https://catbox.moe" alt="fnaf friskbear">
                     </div>
                     <div class="game-name">Five Nights at Friskbears 3</div>
                 </div>
 
-              <div class="game-card" data-category="pc">
+                <div class="game-card" data-category="pc">
                     <div class="img-container" onclick="window.location.href='/g/fnaf/fnaf-winston.html'">
-                        <img src="https://files.catbox.moe/rqvts7.webp" alt="fnaw">
+                        <img src="https://catbox.moe" alt="fnaw">
                     </div>
                     <div class="game-name">Five Nights at Winstons</div>
                 </div>
 
-              <div class="game-card" data-category="pc">
+                <div class="game-card" data-category="mobile">
                     <div class="img-container" onclick="window.location.href='/g/fnaf/fnae.html'">
-                        <img src="images/fnae-1.png" alt="fnae ">
+                        <img src="images/fnae-1.png" alt="fnae">
                     </div>
                     <div class="game-name">Five Nights at Epsteins</div>
                 </div>
 
-              <div class="game-card" data-category="pc">
+                <div class="game-card" data-category="mobile">
                     <div class="img-container" onclick="window.location.href='/g/fnaf/fnae-2.html'">
                         <img src="images/fnae-2.png" alt="fnae 2">
                     </div>
                     <div class="game-name">Five Nights at Epsteins 2</div>
                 </div>
-                <!-- Add more games here -->
-                
             </div>
         </main>
 
@@ -536,124 +573,120 @@ transition:transform .3s ease, box-shadow .3s ease, border-color .3s ease;
                 <a href="ul.html" class="footer-link">update log</a>
                 <a href="faq.html" class="footer-link">faq</a>
                 <a href="#" class="footer-link" onclick="openBlank(); return false;">open blank</a>
-                <a href="https://github.com/LEBRONGOAT2323" target="_blank" class="footer-link">github</a>
-                <a href="#" target="_blank" class="footer-link">support</a>
             </div>
         </footer>
     </div>
 
     <script>
-        // Get elements
+        // Typewriter Effect
+        const words = ["FIVE NIGHTS AT FREDDY'S"];
+        let i = 0;
+        let timer;
+
+        function typingEffect() {
+            let word = words[i].split("");
+            var loopTyping = function() {
+                if (word.length > 0) {
+                    document.getElementById('typewriter').innerHTML += word.shift();
+                } else {
+                    setTimeout(deletingEffect, 3000);
+                    return false;
+                }
+                timer = setTimeout(loopTyping, 100);
+            };
+            loopTyping();
+        }
+
+        function deletingEffect() {
+            let word = words[i].split("");
+            var loopDeleting = function() {
+                if (word.length > 0) {
+                    word.pop();
+                    document.getElementById('typewriter').innerHTML = word.join("");
+                } else {
+                    i = (i + 1) % words.length;
+                    setTimeout(typingEffect, 500);
+                    return false;
+                }
+                timer = setTimeout(loopDeleting, 50);
+            };
+            loopDeleting();
+        }
+
+        // Title Navigation Click
+        document.getElementById('titleContainer').addEventListener('click', () => {
+            window.location.href = '/index.html';
+        });
+
+        // Search and Filter Functionality
         const searchInput = document.getElementById('searchInput');
         const categorySelect = document.getElementById('categorySelect');
-        const gridSelect = document.getElementById('gridSelect');
         const gamesGrid = document.getElementById('gamesGrid');
         const gameCards = document.querySelectorAll('.game-card');
 
-        // Search functionality
+        function filterGames() {
+            const searchTerm = searchInput.value.toLowerCase().trim();
+            const selectedCategory = categorySelect.value;
+
+            gameCards.forEach(card => {
+                const gameName = card.querySelector('.game-name').textContent.toLowerCase();
+                const gameCategory = card.getAttribute('data-category');
+
+                const matchesSearch = gameName.includes(searchTerm);
+                const matchesCategory = selectedCategory === 'all' || gameCategory === selectedCategory;
+
+                if (matchesSearch && matchesCategory) {
+                    card.style.display = 'block';
+                } else {
+                    card.style.display = 'none';
+                }
+            });
+        }
+
         searchInput.addEventListener('input', filterGames);
         categorySelect.addEventListener('change', filterGames);
-        gridSelect.addEventListener('change', changeGrid);
 
-        function filterGames() {
-    const searchTerm = searchInput.value.toLowerCase();
-    const category = categorySelect.value;
-
-    gameCards.forEach(card => {
-        const gameName = card.querySelector('.game-name').textContent.toLowerCase();
-        const gameCategory = card.dataset.category || 'pc';
-
-        const matchesSearch = gameName.includes(searchTerm);
-        const matchesCategory = category === 'all' || gameCategory === category;
-
-        if (matchesSearch && matchesCategory) {
-            card.style.display = "";
-        } else {
-            card.style.display = "none";
-        }
-    });
-}
-
-        function changeGrid() {
-            const gridType = gridSelect.value;
-            
-            // Remove all grid classes
+        // Grid Layout Customizer
+        const gridSelect = document.getElementById('gridSelect');
+        gridSelect.addEventListener('change', () => {
+            const val = gridSelect.value;
             gamesGrid.classList.remove('grid-mobile', 'grid-tablet', 'grid-desktop');
             
-            // Add appropriate grid class
-            if (gridType === 'auto') {
-                gamesGrid.classList.add('grid-desktop'); // default to desktop
+            if (val === 'mobile') {
+                gamesGrid.classList.add('grid-mobile');
+            } else if (val === 'tablet') {
+                gamesGrid.classList.add('grid-tablet');
+            } else if (val === 'desktop') {
+                gamesGrid.classList.add('grid-desktop');
             } else {
-                gamesGrid.classList.add(`grid-${gridType}`);
+                updateAutoGrid();
+            }
+        });
+
+        function updateAutoGrid() {
+            if (gridSelect.value !== 'auto') return;
+            gamesGrid.classList.remove('grid-mobile', 'grid-tablet', 'grid-desktop');
+            if (window.innerWidth <= 480) {
+                gamesGrid.classList.add('grid-mobile');
+            } else if (window.innerWidth <= 768) {
+                gamesGrid.classList.add('grid-tablet');
+            } else {
+                gamesGrid.classList.add('grid-desktop');
             }
         }
 
-        // Auto grid functionality (responsive)
-        function handleAutoGrid() {
-            if (gridSelect.value === 'auto') {
-                const width = window.innerWidth;
-                gamesGrid.classList.remove('grid-mobile', 'grid-tablet', 'grid-desktop');
-                
-                if (width <= 768) {
-                    gamesGrid.classList.add('grid-mobile');
-                } else if (width <= 1024) {
-                    gamesGrid.classList.add('grid-tablet');
-                } else {
-                    gamesGrid.classList.add('grid-desktop');
-                }
-            }
-        }
+        window.addEventListener('resize', updateAutoGrid);
 
-        // Listen for window resize for auto grid
-        window.addEventListener('resize', handleAutoGrid);
-        
-        // Initial auto grid setup
-        handleAutoGrid();
-    </script>
-    <script>
+        // Open Blank utility function
         function openBlank() {
-    const newTab = window.open('about:blank', '_blank');
-
-    if (!newTab) {
-        alert("Popup blocked");
-        return;
-    }
-
-    newTab.document.write(`
-    <iframe src="${window.location.href}" 
-    style="position:fixed;top:0;left:0;width:100vw;height:100vh;border:none;">
-    </iframe>
-`);
-
-    newTab.document.close();
-}
-        
-        const glow1 = document.querySelector(".glow-1");
-const glow2 = document.querySelector(".glow-2");
-const glow3 = document.querySelector(".glow-3");
-
-document.addEventListener("mousemove", (e) => {
-    const x = e.clientX / window.innerWidth - 0.5;
-    const y = e.clientY / window.innerHeight - 0.5;
-
-    glow1.style.transform = `translate(${x*40}px, ${y*40}px)`;
-    glow2.style.transform = `translate(${x*60}px, ${y*60}px)`;
-    glow3.style.transform = `translate(${x*20}px, ${y*20}px)`;
-});
-        const typewriter = document.getElementById('typewriter');
-        const text = 'Five Nights at Freddys';
-        let i = 0;
-
-        function typeEffect() {
-            if (i < text.length) {
-                typewriter.textContent += text.charAt(i);
-                i++;
-                setTimeout(typeEffect, 150);
-            }
+            window.open('about:blank', '_blank');
         }
 
-        // Start typewriter effect when page loads
-        window.addEventListener('load', typeEffect);
-        </script>
+        // Initialize script behaviors
+        window.onload = function() {
+            typingEffect();
+            updateAutoGrid();
+        };
+    </script>
 </body>
 </html>

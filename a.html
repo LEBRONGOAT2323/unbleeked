@@ -1,606 +1,1651 @@
 <!DOCTYPE html>
+
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>APPS | UNBLEEKED </title>
-    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&display=swap" rel="stylesheet">
 
-     <link rel="icon" href="https://files.catbox.moe/j364dj.png">
-    <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
 
-        body {
-             font-family: 'Orbitron', monospace;
-            background:linear-gradient(-45deg,#0f0c29,#302b63,#24243e,#111);
-            background-size:400% 400%;
-            animation:gradient 15s ease infinite;
-            color:white;
-            text-align:center;
-            min-height:100vh;
-            overflow-x:hidden;
-            overflow-x: hidden;
-        }
-        
-        @keyframes gradient{
-        0%{background-position:0% 50%}
-        50%{background-position:100% 50%}
-        100%{background-position:0% 50%}
-        }
-        
-        
+<title>APPS | UNBLEEKED</title>
 
-        .container {
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 0 20px;
-            position: relative;
-            z-index: 10;
-        }
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Orbitron:wght@500;600;700;800;900&display=swap" rel="stylesheet">
 
-        /* Background Effects */
-        .background {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            z-index: 1;
-        }
+<link rel="icon" href="https://files.catbox.moe/j364dj.png">
 
-        .glow-ring {
-            position: absolute;
-            border-radius: 50%;
-            filter: blur(80px);
-        }
 
-        .glow-1 {
-top: 25%;
-left: 25%;
-width: 400px;
-height: 400px;
-background: rgba(212, 175, 55, 0.1);
-animation: float 12s ease-in-out infinite, pulseGlow 6s ease-in-out infinite;
+<style>
+
+/* =========================
+   RESET
+========================= */
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+html {
+    scroll-behavior: smooth;
+}
+
+body {
+    font-family: "Inter", sans-serif;
+
+    color: #fff;
+
+    min-height: 100vh;
+
+    overflow-x: hidden;
+
+    background:
+        radial-gradient(
+            circle at 50% -15%,
+            rgba(255,255,255,0.07),
+            transparent 35%
+        ),
+        linear-gradient(
+            135deg,
+            #050505,
+            #090909 45%,
+            #111 70%,
+            #050505
+        );
+}
+
+/* =========================
+   BACKGROUND TEXTURE
+========================= */
+
+body::before {
+    content: "";
+
+    position: fixed;
+
+    inset: 0;
+
+    z-index: -3;
+
+    pointer-events: none;
+
+    opacity: 0.14;
+
+    background-image:
+        linear-gradient(
+            rgba(255,255,255,0.035) 1px,
+            transparent 1px
+        ),
+        linear-gradient(
+            90deg,
+            rgba(255,255,255,0.035) 1px,
+            transparent 1px
+        );
+
+    background-size: 55px 55px;
+
+    mask-image:
+        linear-gradient(
+            to bottom,
+            black,
+            transparent 90%
+        );
+}
+
+body::after {
+    content: "";
+
+    position: fixed;
+
+    inset: 0;
+
+    z-index: -2;
+
+    pointer-events: none;
+
+    background:
+        radial-gradient(
+            circle,
+            transparent 25%,
+            rgba(0,0,0,0.7) 100%
+        );
+}
+
+/* =========================
+   BACKGROUND AURA
+========================= */
+
+.background {
+    position: fixed;
+
+    inset: 0;
+
+    z-index: -1;
+
+    overflow: hidden;
+
+    pointer-events: none;
+}
+
+.glow-ring {
+    position: absolute;
+
+    border-radius: 50%;
+
+    filter: blur(120px);
+
+    transition:
+        transform 0.25s ease-out;
+}
+
+.glow-1 {
+    top: 8%;
+    left: 5%;
+
+    width: 450px;
+    height: 450px;
+
+    background:
+        rgba(255,255,255,0.045);
+
+    animation:
+        floatOne 14s ease-in-out infinite;
 }
 
 .glow-2 {
-bottom: 25%;
-right: 25%;
-width: 400px;
-height: 400px;
-background: rgba(212, 175, 55, 0.08);
-animation: float 16s ease-in-out infinite reverse, pulseGlow 8s ease-in-out infinite;
+    right: 0;
+    bottom: 5%;
+
+    width: 500px;
+    height: 500px;
+
+    background:
+        rgba(255,255,255,0.035);
+
+    animation:
+        floatTwo 17s ease-in-out infinite;
 }
 
 .glow-3 {
-top: 50%;
-left: 50%;
-transform: translate(-50%, -50%);
-width: 800px;
-height: 800px;
-background: rgba(212, 175, 55, 0.05);
-filter: blur(120px);
-animation: float 20s ease-in-out infinite, pulseGlow 10s ease-in-out infinite;
+    top: 50%;
+    left: 50%;
+
+    width: 800px;
+    height: 800px;
+
+    transform:
+        translate(-50%, -50%);
+
+    background:
+        rgba(255,255,255,0.018);
+
+    filter: blur(150px);
+
+    animation:
+        pulseGlow 10s ease-in-out infinite;
 }
 
-        /* Header */
-        .header {
-            text-align: center;
-            padding: 2rem 0;
-        }
+@keyframes floatOne {
 
-        .back-btn {
-            display: inline-flex;
-            align-items: center;
-            gap: 0.5rem;
-            padding: 0.75rem 1.5rem;
-            background: rgba(212, 175, 55, 0.1);
-            border: 1px solid rgba(255,255,255,0.3);
-            border-radius: 0.75rem;
-            color: #ffffff;
-            text-decoration: none;
-            transition: all 0.3s ease;
-            margin-bottom: 2rem;
-        }
+    0%, 100% {
+        transform:
+            translate(0, 0)
+            scale(1);
+    }
 
-        .back-btn:hover {
-            background: rgba(212, 175, 55, 0.2);
-            border-color: #ffffff;
-        }
+    50% {
+        transform:
+            translate(45px, -30px)
+            scale(1.1);
+    }
 
-        .title {
-            font-size: 4rem;
-            font-weight: 900;
-            color: white;
-            text-shadow:0 0 10px rgba(0,123,255,0.7);
-            letter-spacing: 0.2em;
-            margin-bottom: 2rem;
-            animation: glow-pulse 2s ease-in-out infinite alternate;
-        }
-
-        .typewriter {
-            border-right: 2px solid #ffffff;
-            animation: typewriter 4s steps(5) 1s infinite, blink 1s step-end infinite;
-            white-space: nowrap;
-            overflow: hidden;
-            width: 5ch;
-            margin: 0 auto;
-        }
-
-        /* Controls */
-        .controls {
-            display: flex;
-            justify-content: center;
-            gap: 1.5rem;
-            margin-bottom: 3rem;
-            flex-wrap: wrap;
-        }
-
-        .search-container {
-            position: relative;
-        }
-
-        .search-input {
-            width: 300px;
-            height: 3.5rem;
-            padding: 0 1rem 0 3rem;
-            background: rgba(212, 175, 55, 0.1);
-            border: 1px solid rgba(255,255,255,0.3);
-            border-radius: 0.75rem;
-            color: #ffffff;
-            font-size: 1rem;
-            font-family: 'Orbitron', monospace;
-        }
-
-        .search-input:focus {
-            outline: none;
-            border-color: #ffffff;
-              box-shadow: 0 0 25px rgba(255,255,255,0.4);
-        }
-
-        .search-icon {
-            position: absolute;
-            left: 1rem;
-            top: 50%;
-            transform: translateY(-50%);
-            color: rgba(255,255,255,0.4);
-        }
-
-        .select-container {
-            position: relative;
-        }
-
-        .select {
-            height: 3.5rem;
-            padding: 0 2.5rem 0 1rem;
-            background: rgba(212, 175, 55, 0.1);
-            border: 1px solid rgba(255,255,255,0.3);
-            border-radius: 0.75rem;
-            color: #ffffff;
-            font-size: 1rem;
-            font-family: 'Orbitron', monospace;
-            cursor: pointer;
-            appearance: none;
-        }
-        
-        .select option {
-            color: #000000;
-            background: #ffffff;
-        }
-
-        .select:focus {
-            outline: none;
-            border-color: #ffffff;
-            box-shadow: 0 0 25px rgba(255,255,255,0.4);
-        }
-
-        /* Games Grid */
-        .games-grid {
-            display: grid;
-            gap: 1.5rem;
-            margin-bottom: 4rem;
-        }
-
-        .grid-mobile { grid-template-columns: 1fr; }
-        .grid-tablet { grid-template-columns: repeat(2, 1fr); }
-        .grid-desktop { grid-template-columns: repeat(4, 1fr); }
-        .grid-big-desktop { grid-template-columns: repeat(3, 1fr); }
-
-        .game-card{
-cursor:pointer;
-background:rgba(0,0,0,0.3);
-backdrop-filter:blur(10px);
-border:1px solid rgba(0,0,0,0.3);
-border:1px solid rgba(255,255,255,0.1);
-border-radius:20px;
-overflow:hidden;
-transition:0.4s;
 }
 
-.img-container{
-width:100%;
-height:180px;
-background:linear-gradient(45deg,#1e1e2f,#2a2a40);
-display:flex;
-justify-content:center;
-align-items:center;
-position:relative;
-}
+@keyframes floatTwo {
 
-.img-container img {
-    width:100%;
-    height:100%;
-    object-fit:cover;
-    position:absolute;
-    top:0;
-    left:0;
-    z-index:2;
-}
+    0%, 100% {
+        transform:
+            translate(0, 0)
+            scale(1);
+    }
 
-.img-container::after{
-    content:"📂";
-    font-size:50px;
-    opacity:0.2;
-    position:absolute;
-    z-index:1;
-}
+    50% {
+        transform:
+            translate(-40px, 25px)
+            scale(1.08);
+    }
 
-.game-card img{
-width:100%;
-height:100%;
-object-fit:cover;
-position:absolute;
-top:0;
-left:0;
-}
-
-.game-card:hover{
-transform:translateY(-10px);
-border-color:#007bff;
-box-shadow:0 0 20px rgba(0,123,255,0.6);
-}
-
-.game-card p{
-padding:15px;
-margin:0;
-font-weight:600;
-background:rgba(0,0,0,0.3);
-}
-
-        .game-name {
-            padding: 0.75rem;
-            background: rgba(0, 0, 0, 0.3);
-            border-top: 1px solid rgba(212, 175, 55, 0.2);
-            height: 50px;
-            display: flex;
-            align-items: center;
-            font-size: 0.9rem;
-            font-weight: bold;
-            color: #ffffff;
-            text-transform: lowercase;
-            background:linear-gradient(45deg,#1e1e2f,#2a2a40);
-        }
-        
-        .games-grid{
-            transition:all 0.3s ease;
-        }
-
-
-        /* Footer */
-        .footer {
-            text-align: center;
-            padding: 2rem 0;
-            border-top: 1px solid rgba(255,255,255,0.2);
-            margin-top: 2rem;
-        }
-
-        .footer-links {
-            display: flex;
-            justify-content: center;
-            gap: 2rem;
-            flex-wrap: wrap;
-        }
-
-        .footer-link {
-            color: #ffffff;
-            text-decoration: none;
-            position: relative;
-            font-size: 0.9rem;
-            transition: all 0.3s ease;
-        }
-
-        .footer-link::after {
-            content: '';
-            position: absolute;
-            width: 100%;
-            height: 1px;
-            bottom: -2px;
-            left: 0;
-            background-color: #ffffff;
-            transform: scaleX(0);
-            transform-origin: bottom right;
-            transition: transform 0.3s ease;
-        }
-
-        .footer-link:hover::after {
-            transform: scaleX(1);
-            transform-origin: bottom left;
-        }
-
-        .footer-link:hover {
-            text-shadow: 0 0 10px #ffffff;
-        }
-
-        /* Animations */
-       @keyframes glow-pulse {
-0% { text-shadow:0 0 10px rgba(0,123,255,0.7); }
-
-100% { 
-text-shadow:
-0 0 20px rgba(0,123,255,0.9),
-0 0 40px rgba(0,123,255,0.8),
-0 0 70px rgba(0,123,255,0.7);
-}
-}
-
-        @keyframes typewriter {
-            from { width: 0; }
-            to { width: 5ch; }
-        }
-
-        @keyframes blink {
-            from, to { border-color: transparent; }
-            50% { border-color: #ffffff; }
-        }
-
-        @keyframes float {
-0% {
-transform: translate(0px, 0px) scale(1);
-}
-50% {
-transform: translate(40px, -30px) scale(1.1);
-}
-100% {
-transform: translate(0px, 0px) scale(1);
-}
 }
 
 @keyframes pulseGlow {
-0% { opacity: 0.3; }
-50% { opacity: 0.6; }
-100% { opacity: 0.3; }
+
+    0%, 100% {
+        opacity: 0.25;
+    }
+
+    50% {
+        opacity: 0.6;
+    }
+
 }
 
-        /* Responsive */
-        @media (max-width: 768px) {
-            .title { font-size: 2.5rem; }
-            .search-input { width: 250px; }
-            .controls { gap: 1rem; }
-            .footer-links { gap: 1rem; }
-        }
-        
-        .game-card{
-transition:transform .3s ease, box-shadow .3s ease, border-color .3s ease;
+/* =========================
+   LAYOUT
+========================= */
+
+.container {
+    width:
+        min(1200px, calc(100% - 40px));
+
+    margin:
+        0 auto;
+
+    padding:
+        20px 0 0;
+
+    position: relative;
+
+    z-index: 10;
 }
-        
-    </style>
+
+/* =========================
+   HEADER
+========================= */
+
+.header {
+    text-align: center;
+
+    padding:
+        25px 0 0;
+}
+
+/* =========================
+   BACK BUTTON
+========================= */
+
+.back-btn {
+    display: inline-flex;
+
+    align-items: center;
+    justify-content: center;
+
+    gap: 9px;
+
+    padding:
+        12px 18px;
+
+    margin-bottom:
+        30px;
+
+    background:
+        rgba(255,255,255,0.045);
+
+    border:
+        1px solid rgba(255,255,255,0.11);
+
+    border-radius:
+        13px;
+
+    color:
+        rgba(255,255,255,0.8);
+
+    text-decoration:
+        none;
+
+    font-family:
+        "Inter", sans-serif;
+
+    font-size:
+        13px;
+
+    font-weight:
+        600;
+
+    backdrop-filter:
+        blur(15px);
+
+    -webkit-backdrop-filter:
+        blur(15px);
+
+    box-shadow:
+        0 10px 30px rgba(0,0,0,0.25),
+        inset 0 1px 0 rgba(255,255,255,0.06);
+
+    transition:
+        all 0.3s ease;
+}
+
+.back-btn:hover {
+    transform:
+        translateY(-2px);
+
+    color:
+        #fff;
+
+    background:
+        rgba(255,255,255,0.08);
+
+    border-color:
+        rgba(255,255,255,0.28);
+
+    box-shadow:
+        0 12px 35px rgba(0,0,0,0.4),
+        0 0 30px rgba(255,255,255,0.045);
+}
+
+/* =========================
+   TITLE
+========================= */
+
+.title {
+    font-family:
+        "Orbitron", sans-serif;
+
+    font-size:
+        clamp(3rem, 8vw, 5.8rem);
+
+    font-weight:
+        900;
+
+    letter-spacing:
+        0.16em;
+
+    line-height:
+        1;
+
+    color:
+        #fff;
+
+    text-transform:
+        uppercase;
+
+    user-select:
+        none;
+
+    cursor:
+        pointer;
+
+    margin-bottom:
+        38px;
+
+    text-shadow:
+        0 0 10px rgba(255,255,255,0.25),
+        0 0 30px rgba(255,255,255,0.08);
+
+    animation:
+        titleAura 3.5s ease-in-out infinite alternate;
+}
+
+@keyframes titleAura {
+
+    from {
+        transform:
+            translateY(0);
+
+        text-shadow:
+            0 0 10px rgba(255,255,255,0.25),
+            0 0 25px rgba(255,255,255,0.07);
+    }
+
+    to {
+        transform:
+            translateY(-3px);
+
+        text-shadow:
+            0 0 12px rgba(255,255,255,0.45),
+            0 0 35px rgba(255,255,255,0.13),
+            0 0 65px rgba(255,255,255,0.06);
+    }
+
+}
+
+/* =========================
+   CONTROLS
+========================= */
+
+.controls {
+    display: flex;
+
+    justify-content: center;
+    align-items: center;
+
+    gap: 12px;
+
+    margin-bottom:
+        30px;
+
+    flex-wrap:
+        wrap;
+}
+
+.search-container,
+.select-container {
+    position:
+        relative;
+}
+
+.search-input,
+.select {
+    height:
+        50px;
+
+    padding:
+        0 17px;
+
+    background:
+        rgba(255,255,255,0.045);
+
+    border:
+        1px solid rgba(255,255,255,0.12);
+
+    border-radius:
+        13px;
+
+    color:
+        #fff;
+
+    font-family:
+        "Inter", sans-serif;
+
+    font-size:
+        14px;
+
+    font-weight:
+        500;
+
+    outline:
+        none;
+
+    backdrop-filter:
+        blur(15px);
+
+    -webkit-backdrop-filter:
+        blur(15px);
+
+    box-shadow:
+        inset 0 1px 0 rgba(255,255,255,0.05),
+        0 8px 25px rgba(0,0,0,0.2);
+
+    transition:
+        all 0.3s ease;
+}
+
+.search-input {
+    width:
+        330px;
+
+    padding-left:
+        48px;
+}
+
+.search-input::placeholder {
+    color:
+        rgba(255,255,255,0.4);
+}
+
+.search-input:focus,
+.select:focus {
+    border-color:
+        rgba(255,255,255,0.35);
+
+    background:
+        rgba(255,255,255,0.065);
+
+    box-shadow:
+        0 0 25px rgba(255,255,255,0.05),
+        inset 0 1px 0 rgba(255,255,255,0.08);
+}
+
+.search-icon {
+    position:
+        absolute;
+
+    left:
+        17px;
+
+    top:
+        50%;
+
+    transform:
+        translateY(-50%);
+
+    color:
+        rgba(255,255,255,0.42);
+
+    pointer-events:
+        none;
+}
+
+.select {
+    min-width:
+        130px;
+
+    padding:
+        0 38px 0 16px;
+
+    cursor:
+        pointer;
+
+    appearance:
+        none;
+
+    background-image:
+        linear-gradient(45deg, transparent 50%, rgba(255,255,255,0.6) 50%),
+        linear-gradient(135deg, rgba(255,255,255,0.6) 50%, transparent 50%);
+
+    background-position:
+        calc(100% - 18px) 21px,
+        calc(100% - 13px) 21px;
+
+    background-size:
+        5px 5px,
+        5px 5px;
+
+    background-repeat:
+        no-repeat;
+}
+
+.select option {
+    background:
+        #111;
+
+    color:
+        #fff;
+}
+
+/* =========================
+   GRID
+========================= */
+
+.games-grid {
+    display:
+        grid;
+
+    gap:
+        20px;
+
+    width:
+        100%;
+
+    margin-bottom:
+        4rem;
+
+    transition:
+        all 0.3s ease;
+}
+
+.grid-mobile {
+    grid-template-columns:
+        1fr;
+}
+
+.grid-tablet {
+    grid-template-columns:
+        repeat(2, 1fr);
+}
+
+.grid-desktop {
+    grid-template-columns:
+        repeat(4, 1fr);
+}
+
+.grid-big-desktop {
+    grid-template-columns:
+        repeat(3, 1fr);
+}
+
+/* =========================
+   APP CARDS
+========================= */
+
+.game-card {
+    position:
+        relative;
+
+    overflow:
+        hidden;
+
+    cursor:
+        pointer;
+
+    background:
+        linear-gradient(
+            145deg,
+            rgba(255,255,255,0.065),
+            rgba(255,255,255,0.025)
+        );
+
+    border:
+        1px solid rgba(255,255,255,0.1);
+
+    border-radius:
+        20px;
+
+    backdrop-filter:
+        blur(15px);
+
+    -webkit-backdrop-filter:
+        blur(15px);
+
+    box-shadow:
+        0 15px 40px rgba(0,0,0,0.35),
+        inset 0 1px 0 rgba(255,255,255,0.06);
+
+    transition:
+        transform 0.4s cubic-bezier(.175,.885,.32,1.275),
+        border-color 0.35s ease,
+        box-shadow 0.35s ease;
+}
+
+/* Shine sweep */
+
+.game-card::before {
+    content:
+        "";
+
+    position:
+        absolute;
+
+    top:
+        0;
+
+    left:
+        -130%;
+
+    width:
+        80%;
+
+    height:
+        100%;
+
+    z-index:
+        5;
+
+    pointer-events:
+        none;
+
+    background:
+        linear-gradient(
+            90deg,
+            transparent,
+            rgba(255,255,255,0.1),
+            transparent
+        );
+
+    transform:
+        skewX(-20deg);
+
+    transition:
+        left 0.7s ease;
+}
+
+.game-card:hover::before {
+    left:
+        140%;
+}
+
+.game-card:hover {
+    transform:
+        translateY(-9px)
+        scale(1.012);
+
+    border-color:
+        rgba(255,255,255,0.25);
+
+    box-shadow:
+        0 25px 55px rgba(0,0,0,0.5),
+        0 0 35px rgba(255,255,255,0.045),
+        inset 0 1px 0 rgba(255,255,255,0.1);
+}
+
+/* =========================
+   IMAGE
+========================= */
+
+.img-container {
+    width:
+        100%;
+
+    height:
+        180px;
+
+    position:
+        relative;
+
+    overflow:
+        hidden;
+
+    display:
+        flex;
+
+    justify-content:
+        center;
+
+    align-items:
+        center;
+
+    background:
+        linear-gradient(
+            135deg,
+            #0a0a0a,
+            #181818
+        );
+}
+
+.img-container::before {
+    content:
+        "";
+
+    position:
+        absolute;
+
+    width:
+        220px;
+
+    height:
+        220px;
+
+    top:
+        50%;
+
+    left:
+        50%;
+
+    transform:
+        translate(-50%, -50%);
+
+    border-radius:
+        50%;
+
+    background:
+        rgba(255,255,255,0.035);
+
+    filter:
+        blur(60px);
+
+    z-index:
+        0;
+}
+
+.img-container::after {
+    content:
+        "▦";
+
+    position:
+        absolute;
+
+    top:
+        50%;
+
+    left:
+        50%;
+
+    transform:
+        translate(-50%, -50%);
+
+    font-size:
+        55px;
+
+    color:
+        #fff;
+
+    opacity:
+        0.06;
+
+    z-index:
+        1;
+}
+
+.img-container img {
+    width:
+        100%;
+
+    height:
+        100%;
+
+    object-fit:
+        cover;
+
+    position:
+        absolute;
+
+    top:
+        0;
+
+    left:
+        0;
+
+    z-index:
+        2;
+
+    transition:
+        transform 0.5s ease,
+        filter 0.5s ease;
+}
+
+.game-card:hover .img-container img {
+    transform:
+        scale(1.055);
+
+    filter:
+        brightness(1.08)
+        contrast(1.04);
+}
+
+/* =========================
+   APP NAME
+========================= */
+
+.game-name {
+    height:
+        54px;
+
+    display:
+        flex;
+
+    align-items:
+        center;
+
+    padding:
+        0 16px;
+
+    background:
+        rgba(0,0,0,0.42);
+
+    border-top:
+        1px solid rgba(255,255,255,0.06);
+
+    color:
+        rgba(255,255,255,0.92);
+
+    font-family:
+        "Orbitron", sans-serif;
+
+    font-size:
+        12px;
+
+    font-weight:
+        700;
+
+    letter-spacing:
+        0.8px;
+
+    text-transform:
+        uppercase;
+
+    white-space:
+        nowrap;
+
+    overflow:
+        hidden;
+
+    text-overflow:
+        ellipsis;
+}
+
+/* =========================
+   FOOTER
+========================= */
+
+.footer {
+    text-align:
+        center;
+
+    padding:
+        30px 0 35px;
+
+    border-top:
+        1px solid rgba(255,255,255,0.08);
+
+    margin-top:
+        2rem;
+}
+
+.footer-links {
+    display:
+        flex;
+
+    justify-content:
+        center;
+
+    align-items:
+        center;
+
+    gap:
+        25px;
+
+    flex-wrap:
+        wrap;
+}
+
+.footer-link {
+    position:
+        relative;
+
+    color:
+        rgba(255,255,255,0.45);
+
+    text-decoration:
+        none;
+
+    font-family:
+        "Inter", sans-serif;
+
+    font-size:
+        11px;
+
+    font-weight:
+        600;
+
+    letter-spacing:
+        0.5px;
+
+    transition:
+        color 0.3s ease,
+        text-shadow 0.3s ease;
+}
+
+.footer-link::after {
+    content:
+        "";
+
+    position:
+        absolute;
+
+    width:
+        100%;
+
+    height:
+        1px;
+
+    bottom:
+        -5px;
+
+    left:
+        0;
+
+    background:
+        #fff;
+
+    transform:
+        scaleX(0);
+
+    transform-origin:
+        right;
+
+    transition:
+        transform 0.3s ease;
+}
+
+.footer-link:hover {
+    color:
+        #fff;
+
+    text-shadow:
+        0 0 12px rgba(255,255,255,0.35);
+}
+
+.footer-link:hover::after {
+    transform:
+        scaleX(1);
+
+    transform-origin:
+        left;
+}
+
+/* =========================
+   RESPONSIVE
+========================= */
+
+@media (max-width: 768px) {
+
+    .container {
+        width:
+            calc(100% - 28px);
+    }
+
+    .header {
+        padding-top:
+            15px;
+    }
+
+    .title {
+        font-size:
+            2.8rem;
+
+        letter-spacing:
+            0.09em;
+
+        margin-bottom:
+            30px;
+    }
+
+    .controls {
+        gap:
+            10px;
+
+        margin-bottom:
+            24px;
+    }
+
+    .search-container {
+        width:
+            100%;
+    }
+
+    .search-input {
+        width:
+            100%;
+    }
+
+    .select-container {
+        flex:
+            1;
+    }
+
+    .select {
+        width:
+            100%;
+    }
+
+    .games-grid {
+        grid-template-columns:
+            1fr;
+    }
+
+    .img-container {
+        height:
+            190px;
+    }
+
+    .footer-links {
+        gap:
+            17px;
+    }
+
+}
+
+@media (min-width: 769px) and (max-width: 1050px) {
+
+    .grid-desktop {
+        grid-template-columns:
+            repeat(2, 1fr);
+    }
+
+}
+
+/* =========================
+   ACCESSIBILITY
+========================= */
+
+@media (prefers-reduced-motion: reduce) {
+
+    *,
+    *::before,
+    *::after {
+        animation-duration:
+            0.01ms !important;
+
+        animation-iteration-count:
+            1 !important;
+
+        transition-duration:
+            0.01ms !important;
+    }
+
+}
+
+</style>
+
 </head>
+
 <body>
-    <div class="background">
-        <div class="glow-ring glow-1"></div>
-        <div class="glow-ring glow-2"></div>
-        <div class="glow-ring glow-3"></div>
+
+<div class="background">
+
+<div class="glow-ring glow-1"></div>
+<div class="glow-ring glow-2"></div>
+<div class="glow-ring glow-3"></div>
+
+</div>
+
+<div class="container">
+
+
+<header class="header">
+
+    <a href="index.html" class="back-btn">
+
+        <svg
+            width="16"
+            height="16"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+        >
+            <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/>
+            <polyline points="9,22 9,12 15,12 15,22"/>
+        </svg>
+
+        Back to Homepage
+
+    </a>
+
+    <h1
+        class="title"
+        onclick="location.href='/index.html'"
+    >
+        <span id="typewriter"></span>
+        <span class="cursor">|</span>
+    </h1>
+
+    <div class="controls">
+
+        <div class="search-container">
+
+            <svg
+                class="search-icon"
+                width="20"
+                height="20"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+            >
+                <circle cx="11" cy="11" r="8"/>
+                <path d="M21 21l-4.35-4.35"/>
+            </svg>
+
+            <input
+                type="text"
+                class="search-input"
+                placeholder="Search apps..."
+                id="searchInput"
+                autocomplete="off"
+            >
+
+        </div>
+
+        <div class="select-container">
+
+            <select
+                class="select"
+                id="categorySelect"
+            >
+                <option value="all">All</option>
+                <option value="pc">PC</option>
+                <option value="mobile">Mobile</option>
+            </select>
+
+        </div>
+
+        <div class="select-container">
+
+            <select
+                class="select"
+                id="gridSelect"
+            >
+                <option value="auto">Auto Grid</option>
+                <option value="mobile">Mobile (1 col)</option>
+                <option value="tablet">Tablet (2 col)</option>
+                <option value="desktop">Desktop (4 col)</option>
+                <option value="big-desktop">Large Cards (3 col)</option>
+            </select>
+
+        </div>
+
     </div>
 
-    <div class="container">
-        <header class="header">
-            <a href="main.html" class="back-btn">
-                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                    <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/>
-                    <polyline points="9,22 9,12 15,12 15,22"/>
-                </svg>
-                Back to Homepage
-            </a>
-            
-             <h1 class="title" onclick="location.href='/main.html'" style="cursor:pointer;">
-                <span id="typewriter"></span><span class="cursor">|</span>
-            </h1>
+</header>
 
-            <div class="controls">
-                <div class="search-container">
-                    <svg class="search-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                        <circle cx="11" cy="11" r="8"/>
-                        <path d="M21 21l-4.35-4.35"/>
-                    </svg>
-                    <input type="text" class="search-input" placeholder="Search games..." id="searchInput">
-                </div>
+<main>
 
-                <div class="select-container">
-                    <select class="select" id="categorySelect">
-                        <option value="all">All</option>
-                        <option value="pc">PC</option>
-                        <option value="mobile">Mobile</option>
-                    </select>
-                </div>
+    <div
+        class="games-grid grid-desktop"
+        id="gamesGrid"
+    >
 
-                <div class="select-container">
-                    <select class="select" id="gridSelect">
-                        <option value="auto">Auto Grid</option>
-                        <option value="mobile">Mobile (1 col)</option>
-                        <option value="tablet">Tablet (2 col)</option>
-                        <option value="desktop">Desktop (4 col)</option>
-                        <option value="big-desktop">Large Cards (3 col)</option>
-                    </select>
-                </div>
+        <!-- ETCH-A-SKETCH -->
+
+        <div
+            class="game-card"
+            data-category="pc"
+            onclick="window.location.href='/a/Etch-a-sketch.html'"
+        >
+
+            <div class="img-container">
+
+                <img
+                    src="/images/etchasketch.png"
+                    alt="Etch-a-Sketch"
+                >
+
             </div>
-        </header>
 
-        <main>
-            <div class="games-grid grid-desktop" id="gamesGrid">
-                <!-- Manual game cards - add each game here -->
-                
-                <!-- Game cards -->
-                <div class="game-card" data-category="pc">
-                      <div class="img-container" onclick="window.location.href='/a/Etch-a-sketch.html'">
-                          <img src="/images/etchasketch.png" alt="Etch-a-Sketch">
-                      </div>
-                      <div class="game-name">Etch-a-Sketch</div>
-                </div>
-
-              <div class="game-card" data-category="pc">
-                    <div class="img-container" onclick="window.location.href='/a/fluidsimulator.html'">
-                        <img src="/images/fluidsimulator.png" alt="Fluidsimulator">
-                    </div>
-                    <div class="game-name">FluidSimulator</div>
-              </div>
-
-              <div class="game-card" data-category="pc">
-                    <div class="img-container" data-category="pc" onclick="window.location.href='/a/godoblocks.html'">
-                        <img src="/images/godoblocks.png" alt="GoDoBlocks">
-                    </div>
-                    <div class="game-name">GoDoBlocks</div>
-                </div>
-
-              <div class="game-card" data-category="pc">
-                    <div class="img-container" onclick="window.location.href='/e.html'">
-                        <img src="/images/exploits.png" alt="Exploits">
-                    </div>
-                    <div class="game-name">Exploits</div>
-                </div>
-                
+            <div class="game-name">
+                Etch-a-Sketch
             </div>
-        </main>
 
-        <footer class="footer">
-            <div class="footer-links">
-                <a href="pp.html" class="footer-link">privacy policy</a>
-                <a href="ul.html" class="footer-link">update log</a>
-                <a href="faq.html" class="footer-link">faq</a>
-                <a href="#" class="footer-link" onclick="openBlank(); return false;">open blank</a>
-                <a href="https://github.com/LEBRONGOAT2323" target="_blank" class="footer-link">github</a>
-                <a href="#" target="_blank" class="footer-link">support</a>
+        </div>
+
+        <!-- FLUID SIMULATOR -->
+
+        <div
+            class="game-card"
+            data-category="pc"
+            onclick="window.location.href='/a/fluidsimulator.html'"
+        >
+
+            <div class="img-container">
+
+                <img
+                    src="/images/fluidsimulator.png"
+                    alt="FluidSimulator"
+                >
+
             </div>
-        </footer>
+
+            <div class="game-name">
+                FluidSimulator
+            </div>
+
+        </div>
+
+        <!-- GODObLOCKS -->
+
+        <div
+            class="game-card"
+            data-category="pc"
+            onclick="window.location.href='/a/godoblocks.html'"
+        >
+
+            <div class="img-container">
+
+                <img
+                    src="/images/godoblocks.png"
+                    alt="GoDoBlocks"
+                >
+
+            </div>
+
+            <div class="game-name">
+                GoDoBlocks
+            </div>
+
+        </div>
+
+        <!-- EXPLOITS -->
+
+        <div
+            class="game-card"
+            data-category="pc"
+            onclick="window.location.href='/e.html'"
+        >
+
+            <div class="img-container">
+
+                <img
+                    src="/images/exploits.png"
+                    alt="Exploits"
+                >
+
+            </div>
+
+            <div class="game-name">
+                Exploits
+            </div>
+
+        </div>
+
     </div>
 
-    <script>
-        // Get elements
-        const searchInput = document.getElementById('searchInput');
-        const categorySelect = document.getElementById('categorySelect');
-        const gridSelect = document.getElementById('gridSelect');
-        const gamesGrid = document.getElementById('gamesGrid');
-        const gameCards = document.querySelectorAll('.game-card');
+</main>
 
-        // Search functionality
-        searchInput.addEventListener('input', filterGames);
-        categorySelect.addEventListener('change', filterGames);
-        gridSelect.addEventListener('change', changeGrid);
+<footer class="footer">
 
-        function filterGames() {
-    const searchTerm = searchInput.value.toLowerCase();
-    const category = categorySelect.value;
+    <div class="footer-links">
+
+        <a
+            href="pp.html"
+            class="footer-link"
+        >
+            Privacy Policy
+        </a>
+
+        <a
+            href="ul.html"
+            class="footer-link"
+        >
+            Update Log
+        </a>
+
+        <a
+            href="faq.html"
+            class="footer-link"
+        >
+            FAQ
+        </a>
+
+        <a
+            href="#"
+            class="footer-link"
+            onclick="openBlank(); return false;"
+        >
+            Open Blank
+        </a>
+
+        <a
+            href="https://github.com/LEBRONGOAT2323"
+            target="_blank"
+            class="footer-link"
+        >
+            GitHub
+        </a>
+
+        <a
+            href="#"
+            target="_blank"
+            class="footer-link"
+        >
+            Support
+        </a>
+
+    </div>
+
+</footer>
+
+
+</div>
+
+<script>
+
+/* =========================
+   ELEMENTS
+========================= */
+
+const searchInput =
+    document.getElementById("searchInput");
+
+const categorySelect =
+    document.getElementById("categorySelect");
+
+const gridSelect =
+    document.getElementById("gridSelect");
+
+const gamesGrid =
+    document.getElementById("gamesGrid");
+
+const gameCards =
+    document.querySelectorAll(".game-card");
+
+/* =========================
+   SEARCH + CATEGORY
+========================= */
+
+searchInput.addEventListener(
+    "input",
+    filterGames
+);
+
+categorySelect.addEventListener(
+    "change",
+    filterGames
+);
+
+function filterGames() {
+
+    const searchTerm =
+        searchInput.value
+            .toLowerCase()
+            .trim();
+
+    const category =
+        categorySelect.value;
 
     gameCards.forEach(card => {
-        const gameName = card.querySelector('.game-name').textContent.toLowerCase();
-        const gameCategory = card.dataset.category || 'pc';
 
-        const matchesSearch = gameName.includes(searchTerm);
-        const matchesCategory = category === 'all' || gameCategory === category;
+        const gameName =
+            card.querySelector(
+                ".game-name"
+            ).textContent.toLowerCase();
 
-        if (matchesSearch && matchesCategory) {
+        const gameCategory =
+            card.dataset.category || "pc";
+
+        const matchesSearch =
+            gameName.includes(searchTerm);
+
+        const matchesCategory =
+            category === "all" ||
+            gameCategory === category;
+
+        if (
+            matchesSearch &&
+            matchesCategory
+        ) {
+
             card.style.display = "";
+
         } else {
+
             card.style.display = "none";
+
         }
+
     });
+
 }
 
-        function changeGrid() {
-            const gridType = gridSelect.value;
-            
-            // Remove all grid classes
-            gamesGrid.classList.remove('grid-mobile', 'grid-tablet', 'grid-desktop', 'grid-big-desktop');
-            
-            // Add appropriate grid class
-            if (gridType === 'auto') {
-                gamesGrid.classList.add('grid-big-desktop'); // default to desktop
-            } else {
-                gamesGrid.classList.add(`grid-${gridType}`);
-            }
-        }
+/* =========================
+   GRID SELECTOR
+========================= */
 
-        // Auto grid functionality (responsive)
-        function handleAutoGrid() {
-            if (gridSelect.value === 'auto') {
-                const width = window.innerWidth;
-                gamesGrid.classList.remove('grid-mobile', 'grid-tablet', 'grid-desktop', 'grid-big-desktop');
-                
-                if (width <= 768) {
-                    gamesGrid.classList.add('grid-mobile');
-                } else if (width <= 1024) {
-                    gamesGrid.classList.add('grid-tablet');
-                } else if (width <= 1024) {
-                    gamesGrid.classList.add('grid-tablet');
-                } else {
-                    gamesGrid.classList.add('grid-big-desktop');
-                }
-            }
-        }
+gridSelect.addEventListener(
+    "change",
+    changeGrid
+);
 
-        // Listen for window resize for auto grid
-        window.addEventListener('resize', handleAutoGrid);
-        
-        // Initial auto grid setup
+function changeGrid() {
+
+    const gridType =
+        gridSelect.value;
+
+    gamesGrid.classList.remove(
+        "grid-mobile",
+        "grid-tablet",
+        "grid-desktop",
+        "grid-big-desktop"
+    );
+
+    if (gridType === "auto") {
+
         handleAutoGrid();
-    </script>
-    <script>
-        function openBlank() {
-    const newTab = window.open('about:blank', '_blank');
 
-    if (!newTab) {
-        alert("Popup blocked");
+    } else {
+
+        gamesGrid.classList.add(
+            `grid-${gridType}`
+        );
+
+    }
+
+}
+
+/* =========================
+   AUTO GRID
+========================= */
+
+function handleAutoGrid() {
+
+    if (
+        gridSelect.value !== "auto"
+    ) {
         return;
     }
 
+    const width =
+        window.innerWidth;
+
+    gamesGrid.classList.remove(
+        "grid-mobile",
+        "grid-tablet",
+        "grid-desktop",
+        "grid-big-desktop"
+    );
+
+    if (width <= 768) {
+
+        gamesGrid.classList.add(
+            "grid-mobile"
+        );
+
+    } else if (width <= 1024) {
+
+        gamesGrid.classList.add(
+            "grid-tablet"
+        );
+
+    } else {
+
+        gamesGrid.classList.add(
+            "grid-big-desktop"
+        );
+
+    }
+
+}
+
+window.addEventListener(
+    "resize",
+    handleAutoGrid
+);
+
+handleAutoGrid();
+
+/* =========================
+   OPEN BLANK
+========================= */
+
+function openBlank() {
+
+    const newTab =
+        window.open(
+            "about:blank",
+            "_blank"
+        );
+
+    if (!newTab) {
+
+        alert("Popup blocked");
+
+        return;
+
+    }
+
     newTab.document.write(`
-    <iframe src="${window.location.href}" 
-    style="position:fixed;top:0;left:0;width:100vw;height:100vh;border:none;">
-    </iframe>
-`);
+        <iframe
+            src="${window.location.href}"
+            style="
+                position:fixed;
+                top:0;
+                left:0;
+                width:100vw;
+                height:100vh;
+                border:none;
+            "
+        ></iframe>
+    `);
 
     newTab.document.close();
+
 }
-        
-        const glow1 = document.querySelector(".glow-1");
-const glow2 = document.querySelector(".glow-2");
-const glow3 = document.querySelector(".glow-3");
 
-document.addEventListener("mousemove", (e) => {
-    const x = e.clientX / window.innerWidth - 0.5;
-    const y = e.clientY / window.innerHeight - 0.5;
+/* =========================
+   MOUSE AURA
+========================= */
 
-    glow1.style.transform = `translate(${x*40}px, ${y*40}px)`;
-    glow2.style.transform = `translate(${x*60}px, ${y*60}px)`;
-    glow3.style.transform = `translate(${x*20}px, ${y*20}px)`;
-});
-        const typewriter = document.getElementById('typewriter');
-        const text = 'APPS';
-        let i = 0;
+const glow1 =
+    document.querySelector(".glow-1");
 
-        function typeEffect() {
-            if (i < text.length) {
-                typewriter.textContent += text.charAt(i);
-                i++;
-                setTimeout(typeEffect, 150);
-            }
-        }
+const glow2 =
+    document.querySelector(".glow-2");
 
-        // Start typewriter effect when page loads
-        window.addEventListener('load', typeEffect);
-        </script>
+const glow3 =
+    document.querySelector(".glow-3");
+
+document.addEventListener(
+    "mousemove",
+    (e) => {
+
+        const x =
+            e.clientX /
+            window.innerWidth -
+            0.5;
+
+        const y =
+            e.clientY /
+            window.innerHeight -
+            0.5;
+
+        glow1.style.transform =
+            `translate(${x * 40}px, ${y * 40}px)`;
+
+        glow2.style.transform =
+            `translate(${x * -50}px, ${y * -50}px)`;
+
+        glow3.style.transform =
+            `translate(
+                calc(-50% + ${x * 20}px),
+                calc(-50% + ${y * 20}px)
+            )`;
+
+    }
+);
+
+/* =========================
+   TYPEWRITER
+========================= */
+
+const typewriter =
+    document.getElementById(
+        "typewriter"
+    );
+
+const text =
+    "APPS";
+
+let i = 0;
+
+function typeEffect() {
+
+    if (i < text.length) {
+
+        typewriter.textContent +=
+            text.charAt(i);
+
+        i++;
+
+        setTimeout(
+            typeEffect,
+            150
+        );
+
+    }
+
+}
+
+window.addEventListener(
+    "load",
+    typeEffect
+);
+
+</script>
+
 </body>
 </html>
