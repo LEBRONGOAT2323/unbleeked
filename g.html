@@ -727,6 +727,386 @@ body::after {
     }
 }
 
+
+/* =========================
+   PIZZA EDITION 2 ANNOUNCEMENT
+========================= */
+
+.announcement-overlay {
+    position: fixed;
+    inset: 0;
+    z-index: 9999;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    padding: 20px;
+
+    background: rgba(0, 0, 0, 0.78);
+
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+
+    opacity: 0;
+    visibility: hidden;
+
+    transition:
+        opacity 0.3s ease,
+        visibility 0.3s ease;
+}
+
+.announcement-overlay.show {
+    opacity: 1;
+    visibility: visible;
+}
+
+.announcement-modal {
+    position: relative;
+
+    width: min(100%, 460px);
+    padding: 34px;
+
+    background:
+        linear-gradient(
+            145deg,
+            #171717,
+            #090909 75%
+        );
+
+    border: 1px solid rgba(255,255,255,0.16);
+    border-radius: 20px;
+
+    box-shadow:
+        0 30px 100px rgba(0,0,0,0.7),
+        0 0 50px rgba(255,255,255,0.035);
+
+    transform: translateY(18px) scale(0.97);
+
+    transition: transform 0.35s cubic-bezier(.2,.8,.2,1);
+}
+
+.announcement-overlay.show .announcement-modal {
+    transform: translateY(0) scale(1);
+}
+
+.announcement-close {
+    position: absolute;
+    top: 15px;
+    right: 15px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    width: 34px;
+    height: 34px;
+
+    color: rgba(255,255,255,0.6);
+    font-size: 23px;
+    line-height: 1;
+
+    background: rgba(255,255,255,0.06);
+    border: 1px solid rgba(255,255,255,0.09);
+    border-radius: 10px;
+
+    cursor: pointer;
+
+    transition:
+        color 0.2s ease,
+        background 0.2s ease;
+}
+
+.announcement-close:hover {
+    color: #fff;
+    background: rgba(255,255,255,0.13);
+}
+
+.announcement-label {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+
+    margin-bottom: 20px;
+    padding: 7px 11px;
+
+    color: rgba(255,255,255,0.8);
+
+    font-size: 10px;
+    font-weight: 800;
+    letter-spacing: 1.8px;
+    text-transform: uppercase;
+
+    background: rgba(255,255,255,0.06);
+    border: 1px solid rgba(255,255,255,0.12);
+    border-radius: 7px;
+}
+
+.announcement-label::before {
+    content: "";
+
+    width: 7px;
+    height: 7px;
+
+    background: #fff;
+    border-radius: 50%;
+
+    box-shadow: 0 0 10px rgba(255,255,255,0.65);
+}
+
+.announcement-title {
+    margin-bottom: 14px;
+
+    color: #fff;
+
+    font-family: "Orbitron", sans-serif;
+    font-size: clamp(24px, 5vw, 32px);
+    font-weight: 900;
+    line-height: 1.3;
+    letter-spacing: -0.7px;
+}
+
+.announcement-title span {
+    display: block;
+    color: rgba(255,255,255,0.48);
+}
+
+.announcement-description {
+    margin-bottom: 20px;
+
+    color: rgba(255,255,255,0.68);
+
+    font-size: 14px;
+    line-height: 1.8;
+}
+
+.announcement-credit {
+    margin-bottom: 26px;
+    padding-top: 17px;
+
+    color: rgba(255,255,255,0.42);
+
+    font-size: 11px;
+    line-height: 1.8;
+
+    border-top: 1px solid rgba(255,255,255,0.1);
+}
+
+.announcement-credit strong {
+    color: rgba(255,255,255,0.78);
+    font-weight: 700;
+}
+
+.announcement-actions {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.announcement-primary,
+.announcement-secondary {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 9px;
+
+    width: 100%;
+    min-height: 48px;
+    padding: 13px 16px;
+
+    border-radius: 11px;
+
+    font-family: "Inter", sans-serif;
+    font-size: 13px;
+    font-weight: 800;
+    text-decoration: none;
+
+    cursor: pointer;
+
+    transition:
+        transform 0.2s ease,
+        background 0.2s ease,
+        border-color 0.2s ease;
+}
+
+.announcement-primary {
+    color: #080808;
+    background: #fff;
+    border: 1px solid #fff;
+}
+
+.announcement-primary:hover {
+    transform: translateY(-2px);
+    background: #e9e9e9;
+}
+
+.announcement-secondary {
+    color: rgba(255,255,255,0.65);
+    background: transparent;
+    border: 1px solid rgba(255,255,255,0.12);
+}
+
+.announcement-secondary:hover {
+    color: #fff;
+    background: rgba(255,255,255,0.06);
+    border-color: rgba(255,255,255,0.25);
+}
+
+@media (max-width: 480px) {
+    .announcement-modal {
+        padding: 27px 22px;
+        border-radius: 16px;
+    }
+
+    .announcement-description {
+        font-size: 13px;
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .announcement-overlay,
+    .announcement-modal,
+    .announcement-primary,
+    .announcement-secondary {
+        transition: none;
+    }
+}
+
+
+/* =========================
+   PIZZA EDITION 2 BANNER
+========================= */
+
+.pizza-banner {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 18px;
+
+    width: 100%;
+    margin: 0 auto 28px;
+    padding: 17px 20px;
+
+    background: linear-gradient(
+        110deg,
+        rgba(255,255,255,0.075),
+        rgba(255,255,255,0.025)
+    );
+
+    border: 1px solid rgba(255,255,255,0.13);
+    border-radius: 14px;
+
+    box-shadow: 0 12px 35px rgba(0,0,0,0.2);
+
+    animation: pizzaBannerIn 0.5s ease both;
+}
+
+@keyframes pizzaBannerIn {
+    from {
+        opacity: 0;
+        transform: translateY(-8px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.pizza-banner-content {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    min-width: 0;
+}
+
+.pizza-banner-icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    flex-shrink: 0;
+
+    width: 43px;
+    height: 43px;
+
+    color: #fff;
+    font-size: 20px;
+
+    background: rgba(255,255,255,0.07);
+    border: 1px solid rgba(255,255,255,0.1);
+    border-radius: 11px;
+}
+
+.pizza-banner-text {
+    min-width: 0;
+}
+
+.pizza-banner-title {
+    margin-bottom: 5px;
+
+    color: #fff;
+    font-family: "Orbitron", sans-serif;
+    font-size: 12px;
+    font-weight: 800;
+    letter-spacing: 0.5px;
+}
+
+.pizza-banner-description {
+    color: rgba(255,255,255,0.58);
+    font-size: 12px;
+    line-height: 1.6;
+}
+
+.pizza-banner-link {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 9px;
+
+    flex-shrink: 0;
+
+    padding: 12px 15px;
+
+    color: #090909;
+    background: #fff;
+
+    border: 1px solid #fff;
+    border-radius: 9px;
+
+    font-family: "Inter", sans-serif;
+    font-size: 11px;
+    font-weight: 800;
+    text-decoration: none;
+    white-space: nowrap;
+
+    transition:
+        transform 0.2s ease,
+        background 0.2s ease;
+}
+
+.pizza-banner-link:hover {
+    transform: translateY(-2px);
+    background: #e5e5e5;
+}
+
+@media (max-width: 650px) {
+    .pizza-banner {
+        align-items: flex-start;
+        flex-direction: column;
+        gap: 15px;
+        padding: 16px;
+    }
+
+    .pizza-banner-link {
+        width: 100%;
+    }
+
+    .pizza-banner-title {
+        font-size: 11px;
+    }
+}
+
 </style>
 
 </head>
@@ -738,8 +1118,113 @@ body::after {
     <div class="glow-ring glow-2"></div>
 </div>
 
+
+<!-- THE PIZZA EDITION 2 ANNOUNCEMENT -->
+<div
+    class="announcement-overlay"
+    id="announcementOverlay"
+    role="dialog"
+    aria-modal="true"
+    aria-labelledby="announcementTitle"
+    aria-describedby="announcementDescription"
+>
+    <div class="announcement-modal">
+
+        <button
+            class="announcement-close"
+            id="announcementClose"
+            type="button"
+            aria-label="Close announcement"
+        >&times;</button>
+
+        <div class="announcement-label">
+            NEW PROJECT
+        </div>
+
+        <h2 class="announcement-title" id="announcementTitle">
+            THE PIZZA
+            <span>EDITION 2</span>
+        </h2>
+
+        <p
+            class="announcement-description"
+            id="announcementDescription"
+        >
+            A new site is currently in development, bringing
+            together all the games on UNBLEEKED and even more.
+            It's the next chapter of the experience, with more
+            to discover as development continues.
+        </p>
+
+        <div class="announcement-credit">
+            Developed by the same creator behind
+            <strong>UNBLEEKED, PHANTOM, bi6zone, and Moonlight.</strong>
+        </div>
+
+        <div class="announcement-actions">
+
+            <a
+                href="https://pizza-edition-2.vercel.app/"
+                class="announcement-primary"
+                id="announcementVisit"
+                target="_blank"
+                rel="noopener noreferrer"
+            >
+                Explore The Pizza Edition 2
+                <span aria-hidden="true">&rarr;</span>
+            </a>
+
+            <button
+                class="announcement-secondary"
+                id="announcementLater"
+                type="button"
+            >
+                Maybe Later
+            </button>
+
+        </div>
+
+    </div>
+</div>
+
 <div class="container">
 
+
+<!-- PIZZA EDITION 2 RETURN-VISIT BANNER -->
+<div class="pizza-banner" id="pizzaBanner" hidden>
+
+    <div class="pizza-banner-content">
+
+        <div class="pizza-banner-icon" aria-hidden="true">
+            &#8599;
+        </div>
+
+        <div class="pizza-banner-text">
+
+            <div class="pizza-banner-title">
+                UNBLEEKED'S NEXT CHAPTER
+            </div>
+
+            <p class="pizza-banner-description">
+                UNBLEEKED is no longer being updated.
+                New games and updates are moving to The Pizza Edition 2.
+            </p>
+
+        </div>
+
+    </div>
+
+    <a
+        class="pizza-banner-link"
+        href="https://pizza-edition-2.vercel.app/"
+        target="_blank"
+        rel="noopener noreferrer"
+    >
+        VISIT THE NEW SITE
+        <span aria-hidden="true">&rarr;</span>
+    </a>
+
+</div>
 
 <div class="header-section">
 
@@ -1095,6 +1580,93 @@ document.addEventListener(
 
     }
 );
+
+
+/* =========================
+   FIRST-VISIT ANNOUNCEMENT
+========================= */
+
+(function () {
+    const overlay = document.getElementById("announcementOverlay");
+    const closeButton = document.getElementById("announcementClose");
+    const laterButton = document.getElementById("announcementLater");
+    const visitButton = document.getElementById("announcementVisit");
+
+    const storageKey = "unbleekedPizzaEdition2AnnouncementSeen";
+
+    if (!overlay || !closeButton || !laterButton || !visitButton) {
+        return;
+    }
+
+    function closeAnnouncement() {
+        overlay.classList.remove("show");
+
+        try {
+            localStorage.setItem(storageKey, "true");
+        } catch (error) {
+            console.warn("Unable to save announcement preference.", error);
+        }
+    }
+
+    let hasSeenAnnouncement = false;
+
+    try {
+        hasSeenAnnouncement = localStorage.getItem(storageKey) === "true";
+    } catch (error) {
+        console.warn("Unable to read announcement preference.", error);
+    }
+
+    if (!hasSeenAnnouncement) {
+        requestAnimationFrame(() => {
+            overlay.classList.add("show");
+            closeButton.focus();
+        });
+    }
+
+    closeButton.addEventListener("click", closeAnnouncement);
+    laterButton.addEventListener("click", closeAnnouncement);
+    visitButton.addEventListener("click", closeAnnouncement);
+
+    overlay.addEventListener("click", event => {
+        if (event.target === overlay) {
+            closeAnnouncement();
+        }
+    });
+
+    document.addEventListener("keydown", event => {
+        if (
+            event.key === "Escape" &&
+            overlay.classList.contains("show")
+        ) {
+            closeAnnouncement();
+        }
+    });
+})();
+
+
+/* =========================
+   RETURN-VISIT BANNER
+========================= */
+
+(function () {
+    const banner = document.getElementById("pizzaBanner");
+    const storageKey = "unbleekedPizzaEdition2AnnouncementSeen";
+
+    if (!banner) return;
+
+    let hasSeenAnnouncement = false;
+
+    try {
+        hasSeenAnnouncement =
+            localStorage.getItem(storageKey) === "true";
+    } catch (error) {
+        console.warn("Unable to check announcement status.", error);
+    }
+
+    if (hasSeenAnnouncement) {
+        banner.hidden = false;
+    }
+})();
 
 </script>
 
